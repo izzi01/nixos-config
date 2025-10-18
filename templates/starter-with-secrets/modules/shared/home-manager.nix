@@ -4,58 +4,243 @@ let name = "%NAME%";
     user = "%USER%";
     email = "%EMAIL%"; in
 {
+  direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   # Shared shell configuration
   zsh = {
     enable = true;
-    autocd = false;
-    cdpath = [ "~/Projects" ];
-    plugins = [
-      {
-          name = "powerlevel10k";
-          src = pkgs.zsh-powerlevel10k;
-          file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-          name = "powerlevel10k-config";
-          src = lib.cleanSource ./config;
-          file = "p10k.zsh";
-      }
-    ];
-    initContent = lib.mkBefore ''
+    autocd = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
+    # History configuration
+    history = {
+      size = 1000;
+      save = 1000;
+      path = "$HOME/.histfile";
+      ignorePatterns = [ "pwd" "ls" "cd" ];
+    };
+
+    # Completion settings (zstyle configurations)
+    completionInit = ''
+      autoload -Uz compinit
+      compinit
+
+      zstyle ':completion:*' auto-description 'specify: %d'
+      zstyle ':completion:*' completer _expand _complete _correct _approximate
+      zstyle ':completion:*' format 'Completing %d'
+      zstyle ':completion:*' group-name '''
+      zstyle ':completion:*' menu select=2
+      zstyle ':completion:*:default' list-colors ''${(s.:.)LS_COLORS}
+      zstyle ':completion:*' list-colors '''
+      zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+      zstyle ':completion:*' matcher-list ''' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+      zstyle ':completion:*' menu select=long
+      zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+      zstyle ':completion:*' use-compctl false
+      zstyle ':completion:*' verbose true
+      zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+      zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+    '';
+
+    # Vi mode
+    defaultKeymap = "viins";
+
+    initExtra = ''
+      # Nix daemon setup
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
         . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
       fi
 
-      # Define variables for directories
+      # OS-specific configurations
+      case "$(uname -s)" in
+        Darwin)
+          export LC_CTYPE=en_US.UTF-8
+          export LC_ALL=en_US.UTF-8
+          ;;
+        Linux)
+          eval "$(dircolors -b)"
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          # WSL SSH agent
+          if [ -n "$WSL_DISTRO_NAME" ] || [ -e /proc/version ] && grep -q Microsoft /proc/version; then
+            eval "$($HOME/wsl2-ssh-agent)"
+          fi
+          ;;
+      esac
+
+      # PATH variables
       export PATH=$HOME/.pnpm-packages/bin:$HOME/.pnpm-packages:$PATH
       export PATH=$HOME/.npm-packages/bin:$HOME/bin:$PATH
       export PATH=$HOME/.local/share/bin:$PATH
 
-      # Remove history data we don't want to see
-      export HISTIGNORE="pwd:ls:cd"
+      # Go PATH
+      if command -v go &> /dev/null; then
+        export PATH="$PATH:$(go env GOPATH)/bin"
+      fi
 
-      # Ripgrep alias
-      alias search=rg -p --glob '!node_modules/*'  $@
-
-      # Neovim is my editor
+      # Environment variables
       export EDITOR="nvim"
       export VISUAL="nvim"
+      export TALOSCONFIG="_out/talosconfig"
+
+      # Podman as Docker alias
+      if command -v podman &> /dev/null && ! command -v docker &> /dev/null; then
+        alias docker='podman'
+        export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+      fi
+
+      # Tool initializations
+      eval "$(zoxide init zsh)"
+      source <(fzf --zsh)
+      eval "$(direnv hook zsh)"
+
+      # Oh-my-posh with PowerLevel10k theme
+      if command -v oh-my-posh &> /dev/null; then
+        eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/powerlevel10k_lean.omp.json)"
+      fi
+
+      # vfox activation
+      if command -v vfox &> /dev/null; then
+        eval "$(vfox activate zsh)"
+      fi
+
+      # pay-respects (thefuck replacement)
+      if command -v pay-respects &> /dev/null; then
+        eval $(pay-respects --alias)
+        eval $(pay-respects --alias fk)
+      fi
+
+      # Aliases
+      alias cat="bat"
+      alias ls="eza --color=always"
+      alias zz="zellij"
+      alias lg="lazygit"
+      alias diff=difft
+
+      # tmux functions
+      function tn() {
+        tmux new -s "$1"
+      }
+
+      function ta() {
+        tmux a -t "$1"
+      }
+
+      # Yazi function
+      function y() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+        yazi "$@" --cwd-file="$tmp"
+        if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          builtin cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
+      }
+
+      # FZF functions
+      function of() {
+        open "$(fzf)" "$@"
+      }
+
+      function nf() {
+        nvim "$(fzf)" "$@"
+      }
+
+      # FZF theme (Catppuccin Macchiato colors)
+      fg="#CAD3F5"
+      bg="#24273A"
+      bg_highlight="#1E2030"
+      purple="#C6A0F6"
+      blue="#8AADF4"
+      cyan="#91D7E3"
+
+      export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
+
+      # FZF with fd integration
+      export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+      # FZF completion functions
+      _fzf_compgen_path() {
+        fd --hidden --exclude .git . "$1"
+      }
+
+      _fzf_compgen_dir() {
+        fd --type=d --hidden --exclude .git . "$1"
+      }
+
+      show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+
+      export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+      # FZF advanced customization
+      _fzf_comprun() {
+        local command=$1
+        shift
+
+        case "$command" in
+          cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+          export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
+          ssh)          fzf --preview 'dig {}'                   "$@" ;;
+          *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+        esac
+      }
+
+      # Zellij tab name function
+      function set_zellij_tab_name() {
+        if [[ -n "$ZELLIJ" ]]; then
+          local cmd="$1"
+          local new_name=$(basename "''${cmd%% *}")
+          zellij action rename-tab "$new_name" >/dev/null 2>&1
+        fi
+      }
+      preexec_functions+=(set_zellij_tab_name)
+
+      # Doppler auto-inject
+      if command -v doppler &> /dev/null; then
+        export DOPPLER_PROJECT="api-key"
+        export DOPPLER_CONFIG="dev"
+        eval "$(doppler secrets download --no-file --format env-no-quotes)"
+        unset DOPPLER_PROJECT
+        unset DOPPLER_CONFIG
+      fi
+
+      # Claude CLI functions
+      function cc() {
+        unset ANTHROPIC_BASE_URL
+        unset ANTHROPIC_AUTH_TOKEN
+        unset ANTHROPIC_MODEL
+        unset ANTHROPIC_SMALL_FAST_MODEL
+        claude --dangerously-skip-permissions "$@"
+      }
+
+      function glm() {
+        export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+        export ANTHROPIC_AUTH_TOKEN=$GLM_API_KEY
+        export ANTHROPIC_MODEL="glm-4.6"
+        export ANTHROPIC_SMALL_FAST_MODEL="glm-4.6-air"
+        claude --dangerously-skip-permissions "$@"
+      }
+
+      function glm-safe() {
+        export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+        export ANTHROPIC_AUTH_TOKEN=$GLM_API_KEY
+        export ANTHROPIC_MODEL="glm-4.6"
+        export ANTHROPIC_SMALL_FAST_MODEL="glm-4.6-air"
+        claude "$@"
+      }
 
       # nix shortcuts
       shell() {
-          nix-shell '<nixpkgs>' -A "$1"
+        nix-shell '<nixpkgs>' -A "$1"
       }
-
-      # pnpm is a javascript package manager
-      alias pn=pnpm
-      alias px=pnpx
-
-      # Use difftastic, syntax-aware diffing
-      alias diff=difft
-
-      # Always color ls and group directories
-      alias ls='ls --color=auto'
     '';
   };
 
@@ -73,13 +258,12 @@ let name = "%NAME%";
 	    editor = "nvim";
         autocrlf = "input";
       };
-      commit.gpgsign = true;
       pull.rebase = true;
       rebase.autoStash = true;
     };
   };
 
-  programs.neovim = {
+  neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
@@ -107,7 +291,7 @@ let name = "%NAME%";
     ];
   };
 
-  programs.wezterm = {
+  wezterm = {
     enable = true;
     extraConfig = ''
       local wezterm = require 'wezterm'
@@ -196,17 +380,18 @@ let name = "%NAME%";
         sendEnv = [ "LANG" "LC_*" ];
         hashKnownHosts = true;
       };
-      "github.com" = {
-        identitiesOnly = true;
-        identityFile = [
-          (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
-            "/home/${user}/.ssh/id_github"
-          )
-          (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
-            "/Users/${user}/.ssh/id_github"
-          )
-        ];
-      };
+      # Example SSH configuration for GitHub
+      # "github.com" = {
+      #   identitiesOnly = true;
+      #   identityFile = [
+      #     (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
+      #       "/home/${user}/.ssh/id_github"
+      #     )
+      #     (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
+      #       "/Users/${user}/.ssh/id_github"
+      #     )
+      #   ];
+      # };
     };
   };
 
