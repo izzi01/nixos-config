@@ -40,6 +40,22 @@
       url = "github:kptdev/homebrew-kpt";
       flake = false;
     };
+    homebrew-doppler = {
+      url = "github:dopplerhq/homebrew-cli";
+      flake = false;
+    };
+    homebrew-flux = {
+      url = "github:fluxcd/homebrew-tap";
+      flake = false;
+    };
+    homebrew-fuse = {
+      url = "github:gromgit/homebrew-fuse";
+      flake = false;
+    };
+    homebrew-youtube-music = {
+      url = "github:th-ch/homebrew-youtube-music";
+      flake = false;
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,7 +69,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, home-manager, plasma-manager, nixpkgs, flake-utils, disko, agenix, secrets, chaotic } @inputs:
+  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, home-manager, plasma-manager, nixpkgs, flake-utils, disko, agenix, secrets, chaotic } @inputs:
     let
       user = "bscx";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -130,6 +146,10 @@
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "kptdev/homebrew-kpt" = homebrew-kpt;
+                  "dopplerhq/homebrew-cli" = homebrew-doppler;
+                  "fluxcd/homebrew-tap" = homebrew-flux;
+                  "gromgit/homebrew-fuse" = homebrew-fuse;
+                  "th-ch/homebrew-youtube-music" = homebrew-youtube-music;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
