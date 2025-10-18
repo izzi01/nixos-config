@@ -18,10 +18,12 @@ in
     shell = pkgs.zsh;
   };
 
-  # Allow passwordless sudo for Homebrew cask installations
+  # Allow passwordless sudo for Homebrew operations
+  # Note: The homebrew directory should be owned by the user to avoid permission issues
   security.sudo.extraConfig = ''
     Defaults timestamp_timeout=30
     ${user} ALL=(root) NOPASSWD: /opt/homebrew/bin/brew
+    ${user} ALL=(root) NOPASSWD: /usr/bin/chown
   '';
 
   homebrew = {
