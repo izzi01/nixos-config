@@ -125,7 +125,7 @@ with pkgs; [
   # S
   slack # Team communication app
   sqlite # SQL database engine
-  steam # Gaming platform
+  # steam # Gaming platform - not available on macOS ARM64
   stow # Symlink farm manager
   syncthing # Continuous file synchronization
 
