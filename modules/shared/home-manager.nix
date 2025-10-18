@@ -298,7 +298,7 @@ let name = "bscx";  # Update with your name
     };
   };
 
-  programs.neovim = {
+  neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
@@ -326,7 +326,7 @@ let name = "bscx";  # Update with your name
     ];
   };
 
-  programs.wezterm = {
+  wezterm = {
     enable = true;
     extraConfig = ''
       local wezterm = require("wezterm")
