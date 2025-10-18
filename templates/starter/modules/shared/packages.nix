@@ -12,6 +12,7 @@ with pkgs; [
   sqlite
   wget
   zip
+  eza 
 
   # Encryption and security tools
   age
@@ -63,4 +64,6 @@ with pkgs; [
   # Python packages
   python3
   virtualenv
+
+  k9s
 ]
