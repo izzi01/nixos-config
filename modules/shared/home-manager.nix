@@ -13,82 +13,124 @@ let name = "bscx";  # Update with your name
 
   zsh = {
     enable = true;
-    autocd = false;
-    cdpath = [ "~/.local/share/src" ];
-    plugins = [
-      {
-          name = "powerlevel10k";
-          src = pkgs.zsh-powerlevel10k;
-          file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-          name = "powerlevel10k-config";
-          src = lib.cleanSource ./config;
-          file = "p10k.zsh";
-      }
-    ];
-    initContent = lib.mkBefore ''
+    autocd = true;  # From your .zshrc: setopt autocd
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
+    # History configuration from your .zshrc
+    history = {
+      size = 1000;
+      save = 1000;
+      path = "$HOME/.histfile";
+      ignorePatterns = [ "pwd" "ls" "cd" ];
+    };
+
+    # Completion settings from your .zshrc (zstyle configurations)
+    completionInit = ''
+      autoload -Uz compinit
+      compinit
+
+      zstyle ':completion:*' auto-description 'specify: %d'
+      zstyle ':completion:*' completer _expand _complete _correct _approximate
+      zstyle ':completion:*' format 'Completing %d'
+      zstyle ':completion:*' group-name '''
+      zstyle ':completion:*' menu select=2
+      zstyle ':completion:*:default' list-colors ''${(s.:.)LS_COLORS}
+      zstyle ':completion:*' list-colors '''
+      zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+      zstyle ':completion:*' matcher-list ''' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+      zstyle ':completion:*' menu select=long
+      zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+      zstyle ':completion:*' use-compctl false
+      zstyle ':completion:*' verbose true
+      zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+      zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+    '';
+
+    # Vi mode from your .zshrc: bindkey -v
+    defaultKeymap = "viins";
+
+    initExtra = ''
+      # Nix daemon setup
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
         . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
       fi
 
-      # Save and restore last directory
-      LAST_DIR_FILE="$HOME/.zsh_last_dir"
-      
-      # Save directory on every cd
-      function chpwd() {
-        echo "$PWD" > "$LAST_DIR_FILE"
-      }
-      
-      # Restore last directory on startup
-      if [[ -f "$LAST_DIR_FILE" ]] && [[ -r "$LAST_DIR_FILE" ]]; then
-        last_dir="$(cat "$LAST_DIR_FILE")"
-        if [[ -d "$last_dir" ]]; then
-          cd "$last_dir"
-        fi
-      fi
+      # OS-specific configurations from your .zshrc
+      case "$(uname -s)" in
+        Darwin)
+          export LC_CTYPE=en_US.UTF-8
+          export LC_ALL=en_US.UTF-8
+          ;;
+        Linux)
+          eval "$(dircolors -b)"
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          # WSL SSH agent
+          if [ -n "$WSL_DISTRO_NAME" ] || [ -e /proc/version ] && grep -q Microsoft /proc/version; then
+            eval "$($HOME/wsl2-ssh-agent)"
+          fi
+          ;;
+      esac
 
-      export TERM=xterm-256color
-
-      # Define PATH variables
+      # PATH variables from your .zshrc
       export PATH=$HOME/.pnpm-packages/bin:$HOME/.pnpm-packages:$PATH
       export PATH=$HOME/.npm-packages/bin:$HOME/bin:$PATH
-      export PATH=$HOME/.composer/vendor/bin:$PATH
       export PATH=$HOME/.local/share/bin:$PATH
-      export PATH=$HOME/.local/share/src/conductly/bin:$PATH
-      export PATH=$HOME/.local/share/src/conductly/utils:$PATH
-      export PYTHONPATH="$HOME/.local-pip/packages:$PYTHONPATH"
 
-      # Remove history data we don't want to see
-      export HISTIGNORE="pwd:ls:cd"
+      # Go PATH
+      if command -v go &> /dev/null; then
+        export PATH="$PATH:$(go env GOPATH)/bin"
+      fi
 
-      # Ripgrep alias
-      alias search='rg -p --glob "!node_modules/*" --glob "!vendor/*" "$@"'
-
-      # Neovim is my editor
+      # Environment variables
       export EDITOR="nvim"
-      export VISUAL="nvim"
+      export TALOSCONFIG="_out/talosconfig"
 
-      # Initialize tools
+      # Podman as Docker alias (from your .zshrc)
+      if command -v podman &> /dev/null && ! command -v docker &> /dev/null; then
+        alias docker='podman'
+        export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+      fi
+
+      # Tool initializations from your .zshrc
       eval "$(zoxide init zsh)"
+      source <(fzf --zsh)
       eval "$(direnv hook zsh)"
 
-      # Aliases from dotfiles
+      # Oh-my-posh with PowerLevel10k theme
+      if command -v oh-my-posh &> /dev/null; then
+        eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/powerlevel10k_lean.omp.json)"
+      fi
+
+      # vfox activation
+      if command -v vfox &> /dev/null; then
+        eval "$(vfox activate zsh)"
+      fi
+
+      # pay-respects (thefuck replacement) - Note: thefuck is deprecated, using pay-respects
+      if command -v pay-respects &> /dev/null; then
+        eval $(pay-respects --alias)
+        eval $(pay-respects --alias fk)
+      fi
+
+      # Aliases from your .zshrc
       alias cat="bat"
       alias ls="eza --color=always"
       alias zz="zellij"
       alias lg="lazygit"
 
-      # NixOS/nix-darwin management aliases
-      alias nix-switch="darwin-rebuild switch --flake ."
-      alias nix-update="nix flake update && darwin-rebuild switch --flake ."
-      alias nix-update-nixpkgs="nix flake lock --update-input nixpkgs && darwin-rebuild switch --flake ."
-      alias nix-clean="nix-collect-garbage -d && darwin-rebuild switch --flake ."
-      alias nix-check="nix flake check"
-      alias nix-search="nix search nixpkgs"
+      # tmux functions from your .zshrc
+      function tn() {
+        tmux new -s "$1"
+      }
 
-      # Functions from dotfiles
+      function ta() {
+        tmux a -t "$1"
+      }
+
+      # Yazi function from your .zshrc
       function y() {
         local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
         yazi "$@" --cwd-file="$tmp"
@@ -96,6 +138,101 @@ let name = "bscx";  # Update with your name
           builtin cd -- "$cwd"
         fi
         rm -f -- "$tmp"
+      }
+
+      # FZF functions from your .zshrc
+      function of() {
+        open "$(fzf)" "$@"
+      }
+
+      function nf() {
+        nvim "$(fzf)" "$@"
+      }
+
+      # FZF theme from your .zshrc (Catppuccin Macchiato colors)
+      fg="#CAD3F5"
+      bg="#24273A"
+      bg_highlight="#1E2030"
+      purple="#C6A0F6"
+      blue="#8AADF4"
+      cyan="#91D7E3"
+
+      export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
+
+      # FZF with fd integration from your .zshrc
+      export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+      # FZF completion functions from your .zshrc
+      _fzf_compgen_path() {
+        fd --hidden --exclude .git . "$1"
+      }
+
+      _fzf_compgen_dir() {
+        fd --type=d --hidden --exclude .git . "$1"
+      }
+
+      show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+
+      export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+      # FZF advanced customization from your .zshrc
+      _fzf_comprun() {
+        local command=$1
+        shift
+
+        case "$command" in
+          cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+          export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
+          ssh)          fzf --preview 'dig {}'                   "$@" ;;
+          *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+        esac
+      }
+
+      # Zellij tab name function from your .zshrc
+      function set_zellij_tab_name() {
+        if [[ -n "$ZELLIJ" ]]; then
+          local cmd="$1"
+          local new_name=$(basename "''${cmd%% *}")
+          zellij action rename-tab "$new_name" >/dev/null 2>&1
+        fi
+      }
+      preexec_functions+=(set_zellij_tab_name)
+
+      # Doppler auto-inject from your .zshrc
+      if command -v doppler &> /dev/null; then
+        export DOPPLER_PROJECT="api-key"
+        export DOPPLER_CONFIG="dev"
+        eval "$(doppler secrets download --no-file --format env-no-quotes)"
+        unset DOPPLER_PROJECT
+        unset DOPPLER_CONFIG
+      fi
+
+      # Claude CLI functions from your .zshrc
+      function cc() {
+        unset ANTHROPIC_BASE_URL
+        unset ANTHROPIC_AUTH_TOKEN
+        unset ANTHROPIC_MODEL
+        unset ANTHROPIC_SMALL_FAST_MODEL
+        claude --dangerously-skip-permissions "$@"
+      }
+
+      function glm() {
+        export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+        export ANTHROPIC_AUTH_TOKEN=$GLM_API_KEY
+        export ANTHROPIC_MODEL="glm-4.6"
+        export ANTHROPIC_SMALL_FAST_MODEL="glm-4.6-air"
+        claude --dangerously-skip-permissions "$@"
+      }
+
+      function glm-safe() {
+        export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+        export ANTHROPIC_AUTH_TOKEN=$GLM_API_KEY
+        export ANTHROPIC_MODEL="glm-4.6"
+        export ANTHROPIC_SMALL_FAST_MODEL="glm-4.6-air"
+        claude "$@"
       }
 
       function of() {
