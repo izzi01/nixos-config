@@ -164,3 +164,6 @@ with pkgs; [
   zoxide # Smarter cd command
   zsh-powerlevel10k # Zsh theme
 ] ++ myFonts
+  ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
+    pkgs.steam # Gaming platform - Linux only (requires i686 support)
+  ])
