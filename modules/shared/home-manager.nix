@@ -73,8 +73,6 @@ let name = "bscx";  # Update with your name
       # Initialize tools
       eval "$(zoxide init zsh)"
       eval "$(direnv hook zsh)"
-      eval "$(thefuck --alias)"
-      eval "$(thefuck --alias fk)"
 
       # Aliases from dotfiles
       alias cat="bat"
