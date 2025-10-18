@@ -16,11 +16,13 @@
       # Apply each overlay found in the /overlays directory
       let
         path = ../../overlays;
-        hostname = config.networking.hostName or "";
+        # Note: config.networking might not be available during overlay evaluation on Darwin
+        # So we use empty list for excluded files on non-NixOS systems
         excludeForHost = {
           "garfield" = [ "cider-appimage.nix" ];
         };
-        excludedFiles = excludeForHost.${hostname} or [];
+        hostname = config.networking.hostName or null;
+        excludedFiles = if hostname != null && builtins.hasAttr hostname excludeForHost then excludeForHost.${hostname} else [];
       in with builtins;
       map (n: import (path + ("/" + n)))
           (filter (n:

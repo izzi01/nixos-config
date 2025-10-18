@@ -1,7 +1,7 @@
 { config, pkgs, lib, home-manager, ... }:
 
 let
-  user            = "dustin";
+  user            = "bscx";
   sharedFiles     = import ../shared/files.nix { inherit config pkgs; };
   additionalFiles = import ./files.nix { inherit user config pkgs; };
 in
@@ -127,7 +127,7 @@ in
           ];
           stateVersion = "23.11";
         };
-        programs = {} // import ../shared/home-manager.nix { inherit config pkgs lib; };
+        programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
         manual.manpages.enable = false;
       };
   };
