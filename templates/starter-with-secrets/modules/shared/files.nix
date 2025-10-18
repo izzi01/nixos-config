@@ -14,4 +14,34 @@
     source = ./config/nvim;
     recursive = true;
   };
+
+  # WezTerm configuration
+  ".config/wezterm" = {
+    source = ./config/wezterm;
+    recursive = true;
+  };
+
+  # Tmux configuration
+  ".config/tmux" = {
+    source = ./config/tmux;
+    recursive = true;
+  };
+
+  # Yazi configuration
+  ".config/yazi" = {
+    source = ./config/yazi;
+    recursive = true;
+  };
+
+  # Zellij configuration
+  ".config/zellij" = {
+    source = ./config/zellij;
+    recursive = true;
+  };
+
+  # Kitty configuration
+  ".config/kitty" = {
+    source = ./config/kitty;
+    recursive = true;
+  };
 }

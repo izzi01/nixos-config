@@ -1,0 +1,14 @@
+[2025-09-28 11:24:34.990]	List of discovered tpm plugins: tmux-plugins/tmux-copycat tmux-plugins/tmux-cpu tmux-plugins/tmux-resurrect tmux-plugins/tmux-continuum sycanz04/tmux-windancer
+[2025-09-28 11:24:35.007]	Invoking /Users/bscx/.config/tmux/plugins/tpm/bin/install_plugins
+[2025-09-28 11:24:35.373]	Installing "tmux-cpu"
+[2025-09-28 11:24:35.389]	Installing "tmux-continuum"
+[2025-09-28 11:24:35.406]	Installing "tmux-resurrect"
+[2025-09-28 11:24:35.419]	Installing "tmux-copycat"
+[2025-09-28 11:24:35.429]	Installing "tmux-windancer"
+[2025-09-28 11:24:36.732]	  "tmux-windancer" download success
+[2025-09-28 11:24:36.745]	  "tmux-continuum" download success
+[2025-09-28 11:24:36.756]	  "tmux-cpu" download success
+[2025-09-28 11:24:36.792]	  "tmux-copycat" download success
+[2025-09-28 11:24:38.210]	  "tmux-resurrect" download success
+[2025-09-28 11:24:38.289]	Done.
+
