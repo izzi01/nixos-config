@@ -51,7 +51,7 @@ let name = "bscx";  # Update with your name
     # Vi mode from your .zshrc: bindkey -v
     defaultKeymap = "viins";
 
-    initExtra = ''
+    initContent = ''
       # Nix daemon setup
       if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
