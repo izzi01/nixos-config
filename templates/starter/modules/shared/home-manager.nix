@@ -35,14 +35,9 @@ let name = "%NAME%";
       # Remove history data we don't want to see
       export HISTIGNORE="pwd:ls:cd"
 
-      # Emacs is my editor
-      export ALTERNATE_EDITOR=""
-      export EDITOR="emacsclient -t"
-      export VISUAL="emacsclient -c -a emacs"
-
-      e() {
-          emacsclient -t "$@"
-      }
+      # Neovim is my editor
+      export EDITOR="nvim"
+      export VISUAL="nvim"
 
       # nix shortcuts
       shell() {
@@ -68,7 +63,7 @@ let name = "%NAME%";
     extraConfig = {
       init.defaultBranch = "main";
       core = {
-	    editor = "vim";
+	    editor = "nvim";
         autocrlf = "input";
       };
       pull.rebase = true;
@@ -76,172 +71,104 @@ let name = "%NAME%";
     };
   };
 
-  vim = {
+  programs.neovim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [ vim-airline vim-airline-themes vim-startify vim-tmux-navigator ];
-    settings = { ignorecase = true; };
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+
+    extraPackages = with pkgs; [
+      # Language servers
+      lua-language-server
+      nil # Nix LSP
+      nodePackages.typescript-language-server
+      nodePackages.bash-language-server
+      pyright
+      gopls
+
+      # Formatters
+      stylua
+      nixpkgs-fmt
+      nodePackages.prettier
+      black
+
+      # Other tools
+      ripgrep
+      fd
+      gcc
+    ];
+  };
+
+  programs.wezterm = {
+    enable = true;
     extraConfig = ''
-      "" General
-      set number
-      set history=1000
-      set nocompatible
-      set modelines=0
-      set encoding=utf-8
-      set scrolloff=3
-      set showmode
-      set showcmd
-      set hidden
-      set wildmenu
-      set wildmode=list:longest
-      set cursorline
-      set ttyfast
-      set nowrap
-      set ruler
-      set backspace=indent,eol,start
-      set laststatus=2
-      set clipboard=autoselect
+      local wezterm = require 'wezterm'
+      local config = {}
 
-      " Dir stuff
-      set nobackup
-      set nowritebackup
-      set noswapfile
-      set backupdir=~/.config/vim/backups
-      set directory=~/.config/vim/swap
+      if wezterm.config_builder then
+        config = wezterm.config_builder()
+      end
 
-      " Relative line numbers for easy movement
-      set relativenumber
-      set rnu
+      -- Font configuration
+      config.font = wezterm.font('MesloLGS NF')
+      config.font_size = '' + (if pkgs.stdenv.hostPlatform.isDarwin then "14.0" else "10.0") + ''
 
-      "" Whitespace rules
-      set tabstop=8
-      set shiftwidth=2
-      set softtabstop=2
-      set expandtab
+      -- Window configuration
+      config.window_padding = {
+        left = 24,
+        right = 24,
+        top = 24,
+        bottom = 24,
+      }
 
-      "" Searching
-      set incsearch
-      set gdefault
+      -- Color scheme
+      config.colors = {
+        foreground = '#c0c5ce',
+        background = '#1f2528',
+        cursor_bg = '#c0c5ce',
+        cursor_fg = '#1f2528',
+        cursor_border = '#c0c5ce',
+        selection_fg = '#1f2528',
+        selection_bg = '#c0c5ce',
+        scrollbar_thumb = '#65737e',
+        split = '#65737e',
 
-      "" Statusbar
-      set nocompatible " Disable vi-compatibility
-      set laststatus=2 " Always show the statusline
-      let g:airline_theme='bubblegum'
-      let g:airline_powerline_fonts = 1
+        ansi = {
+          '#1f2528', -- black
+          '#ec5f67', -- red
+          '#99c794', -- green
+          '#fac863', -- yellow
+          '#6699cc', -- blue
+          '#c594c5', -- magenta
+          '#5fb3b3', -- cyan
+          '#c0c5ce', -- white
+        },
+        brights = {
+          '#65737e', -- bright black
+          '#ec5f67', -- bright red
+          '#99c794', -- bright green
+          '#fac863', -- bright yellow
+          '#6699cc', -- bright blue
+          '#c594c5', -- bright magenta
+          '#5fb3b3', -- bright cyan
+          '#d8dee9', -- bright white
+        },
+      }
 
-      "" Local keys and such
-      let mapleader=","
-      let maplocalleader=" "
+      -- Cursor configuration
+      config.default_cursor_style = 'BlinkingBlock'
 
-      "" Change cursor on mode
-      :autocmd InsertEnter * set cul
-      :autocmd InsertLeave * set nocul
+      -- Tab bar
+      config.enable_tab_bar = true
+      config.hide_tab_bar_if_only_one_tab = false
+      config.use_fancy_tab_bar = true
 
-      "" File-type highlighting and configuration
-      syntax on
-      filetype on
-      filetype plugin on
-      filetype indent on
+      -- Performance
+      config.front_end = "WebGpu"
+      config.max_fps = 120
 
-      "" Paste from clipboard
-      nnoremap <Leader>, "+gP
-
-      "" Copy from clipboard
-      xnoremap <Leader>. "+y
-
-      "" Move cursor by display lines when wrapping
-      nnoremap j gj
-      nnoremap k gk
-
-      "" Map leader-q to quit out of window
-      nnoremap <leader>q :q<cr>
-
-      "" Move around split
-      nnoremap <C-h> <C-w>h
-      nnoremap <C-j> <C-w>j
-      nnoremap <C-k> <C-w>k
-      nnoremap <C-l> <C-w>l
-
-      "" Easier to yank entire line
-      nnoremap Y y$
-
-      "" Move buffers
-      nnoremap <tab> :bnext<cr>
-      nnoremap <S-tab> :bprev<cr>
-
-      "" Like a boss, sudo AFTER opening the file to write
-      cmap w!! w !sudo tee % >/dev/null
-
-      let g:startify_lists = [
-        \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
-        \ { 'type': 'sessions',  'header': ['   Sessions']       },
-        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      }
-        \ ]
-
-      let g:startify_bookmarks = [
-        \ '~/Projects',
-        \ '~/Documents',
-        \ ]
-
-      let g:airline_theme='bubblegum'
-      let g:airline_powerline_fonts = 1
-      '';
-     };
-
-  alacritty = {
-    enable = true;
-    settings = {
-      cursor = {
-        style = "Block";
-      };
-
-      window = {
-        opacity = 1.0;
-        padding = {
-          x = 24;
-          y = 24;
-        };
-      };
-
-      font = {
-        normal = {
-          family = "MesloLGS NF";
-          style = "Regular";
-        };
-        size = lib.mkMerge [
-          (lib.mkIf pkgs.stdenv.hostPlatform.isLinux 10)
-          (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin 14)
-        ];
-      };
-
-      colors = {
-        primary = {
-          background = "0x1f2528";
-          foreground = "0xc0c5ce";
-        };
-
-        normal = {
-          black = "0x1f2528";
-          red = "0xec5f67";
-          green = "0x99c794";
-          yellow = "0xfac863";
-          blue = "0x6699cc";
-          magenta = "0xc594c5";
-          cyan = "0x5fb3b3";
-          white = "0xc0c5ce";
-        };
-
-        bright = {
-          black = "0x65737e";
-          red = "0xec5f67";
-          green = "0x99c794";
-          yellow = "0xfac863";
-          blue = "0x6699cc";
-          magenta = "0xc594c5";
-          cyan = "0x5fb3b3";
-          white = "0xd8dee9";
-        };
-      };
-    };
+      return config
+    '';
   };
 
   ssh = {

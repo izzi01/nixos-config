@@ -40,9 +40,13 @@ with pkgs; [
   coreutils # Basic file/text/shell utilities
 
   # D
+  discord # Voice and text chat platform
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
   du-dust # Disk usage analyzer
+
+  # E
+  eza # Modern ls replacement
 
   # F
   fd # Fast find alternative
@@ -65,6 +69,7 @@ with pkgs; [
   # I
   iftop # Network bandwidth monitor
   imagemagick # Image manipulation toolkit
+  insomnia # HTTP client and API testing tool
   intelephense # PHP LSP server
 
   # J
@@ -74,8 +79,13 @@ with pkgs; [
 
   # K
   killall # Kill processes by name
+  kubectl # Kubernetes CLI
+  k9s # Kubernetes TUI
+  kubernetes-helm # Kubernetes package manager
+  kustomize # Kubernetes configuration customization
 
   # L
+  lazygit # Simple terminal UI for git
   linear-cli # Linear project management CLI
   lnav # Log file navigator
   libfido2 # FIDO2 library
@@ -110,28 +120,47 @@ with pkgs; [
   # R
   ripgrep # Fast text search tool
   repomix # AI tooling
+  rclone # Cloud storage sync tool
 
   # S
   slack # Team communication app
   sqlite # SQL database engine
+  steam # Gaming platform
+  stow # Symlink farm manager
+  syncthing # Continuous file synchronization
 
   # T
+  telegram-desktop # Telegram messaging client
+  termscp # Terminal file transfer client
+  thefuck # Command correction tool
   terraform # Infrastructure as code tool
   terraform-ls # Terraform language server
   tflint # Terraform linter
   tmux # Terminal multiplexer
   tree # Directory tree viewer
+  tree-sitter # Parsing system for programming tools
 
   # U
   unrar # RAR archive extractor
   unzip # ZIP archive extractor
   uv # Python package installer
 
+  # V
+  vlc # Media player
+  vscode # Visual Studio Code editor
+
   # W
   wget # File downloader
+  watch # Execute program periodically
+  wireshark # Network protocol analyzer
+
+  # Y
+  yazi # Terminal file manager
 
   # Z
   zed-editor
+  zellij # Terminal multiplexer
   zip # ZIP archive creator
+  zoxide # Smarter cd command
   zsh-powerlevel10k # Zsh theme
 ] ++ myFonts

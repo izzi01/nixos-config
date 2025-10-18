@@ -66,14 +66,104 @@ let name = "Dustin Lyons";
       # Ripgrep alias
       alias search='rg -p --glob "!node_modules/*" --glob "!vendor/*" "$@"'
 
-      # Emacs is my editor
-      export ALTERNATE_EDITOR=""
-      export EDITOR="emacsclient -t"
-      export VISUAL="emacsclient -c -a emacs"
-      e() {
-          emacsclient -t "$@"
+      # Neovim is my editor
+      export EDITOR="nvim"
+      export VISUAL="nvim"
+
+      # Initialize tools
+      eval "$(zoxide init zsh)"
+      eval "$(direnv hook zsh)"
+      eval "$(thefuck --alias)"
+      eval "$(thefuck --alias fk)"
+
+      # Aliases from dotfiles
+      alias cat="bat"
+      alias ls="eza --color=always"
+      alias zz="zellij"
+      alias lg="lazygit"
+
+      # NixOS/nix-darwin management aliases
+      alias nix-switch="darwin-rebuild switch --flake ."
+      alias nix-update="nix flake update && darwin-rebuild switch --flake ."
+      alias nix-update-nixpkgs="nix flake lock --update-input nixpkgs && darwin-rebuild switch --flake ."
+      alias nix-clean="nix-collect-garbage -d && darwin-rebuild switch --flake ."
+      alias nix-check="nix flake check"
+      alias nix-search="nix search nixpkgs"
+
+      # Functions from dotfiles
+      function y() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+        yazi "$@" --cwd-file="$tmp"
+        if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          builtin cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
       }
-      
+
+      function of() {
+        open "$(fzf)" "$@"
+      }
+
+      function nf() {
+        nvim "$(fzf)" "$@"
+      }
+
+      function tn() {
+        tmux new -s "$1"
+      }
+
+      function ta() {
+        tmux a -t "$1"
+      }
+
+      # FZF configuration
+      fg="#CAD3F5"
+      bg="#24273A"
+      bg_highlight="#1E2030"
+      purple="#C6A0F6"
+      blue="#8AADF4"
+      cyan="#91D7E3"
+
+      export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
+      export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+      # FZF completion functions
+      _fzf_compgen_path() {
+        fd --hidden --exclude .git . "$1"
+      }
+
+      _fzf_compgen_dir() {
+        fd --type=d --hidden --exclude .git . "$1"
+      }
+
+      show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+      export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+      _fzf_comprun() {
+        local command=$1
+        shift
+        case "$command" in
+          cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+          export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
+          ssh)          fzf --preview 'dig {}'                   "$@" ;;
+          *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+        esac
+      }
+
+      # Add Go bin to PATH if Go is installed
+      if command -v go &> /dev/null; then
+        export PATH="$PATH:$(go env GOPATH)/bin"
+      fi
+
+      # Podman as Docker alias if Docker is not installed
+      if command -v podman &> /dev/null && ! command -v docker &> /dev/null; then
+        alias docker='podman'
+        export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+      fi
+
       # Laravel Artisan
       alias art='php artisan'
 
@@ -199,7 +289,7 @@ let name = "Dustin Lyons";
     extraConfig = {
       init.defaultBranch = "main";
       core = {
-	    editor = "vim";
+	    editor = "nvim";
         autocrlf = "input";
       };
       commit.gpgsign = true;
@@ -208,169 +298,138 @@ let name = "Dustin Lyons";
     };
   };
 
-  vim = {
+  programs.neovim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [ vim-airline vim-airline-themes vim-tmux-navigator ];
-    settings = { ignorecase = true; };
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+
+    extraPackages = with pkgs; [
+      # Language servers
+      lua-language-server
+      nil # Nix LSP
+      nodePackages.typescript-language-server
+      nodePackages.bash-language-server
+      pyright
+      gopls
+
+      # Formatters
+      stylua
+      nixpkgs-fmt
+      nodePackages.prettier
+      black
+
+      # Other tools
+      ripgrep
+      fd
+      gcc
+    ];
+  };
+
+  programs.wezterm = {
+    enable = true;
     extraConfig = ''
-      "" General
-      set number
-      set history=1000
-      set nocompatible
-      set modelines=0
-      set encoding=utf-8
-      set scrolloff=3
-      set showmode
-      set showcmd
-      set hidden
-      set wildmenu
-      set wildmode=list:longest
-      set cursorline
-      set ttyfast
-      set nowrap
-      set ruler
-      set backspace=indent,eol,start
-      set laststatus=2
-      " Don't use clipboard=unnamedplus, use macOS pbcopy/pbpaste instead
+      local wezterm = require("wezterm")
+      local config = {}
 
-      " Dir stuff
-      set nobackup
-      set nowritebackup
-      set noswapfile
-      set backupdir=~/.config/vim/backups
-      set directory=~/.config/vim/swap
+      config.font = wezterm.font("JetBrains Mono")
+      config.font_size = 16.0
 
-      " Relative line numbers for easy movement
-      set relativenumber
-      set rnu
+      -- Set default program based on operating system (Zellij on macOS if available)
+      if wezterm.target_triple:find("apple") then
+        local homebrew_paths_string = "/opt/homebrew/bin/zellij, /usr/local/bin/zellij"
+        local zellij_in_homebrew = #wezterm.glob(homebrew_paths_string) > 0
+        if zellij_in_homebrew then
+          config.default_prog = { "/opt/homebrew/bin/zellij", "-l", "welcome" }
+        else
+          config.default_prog = nil
+        end
+      end
 
-      "" Whitespace rules
-      set tabstop=8
-      set shiftwidth=2
-      set softtabstop=2
-      set expandtab
+      -- Hiberee theme colors
+      local hiberee = {
+        foreground = "#c5c8c6",
+        background = "#1d1f21",
+        cursor_bg = "#c5c8c6",
+        cursor_border = "#c5c8c6",
+        cursor_fg = "#1d1f21",
+        selection_bg = "#373b41",
+        selection_fg = "#c5c8c6",
 
-      "" Searching
-      set incsearch
-      set gdefault
+        ansi = {
+          "#1d1f21", -- black
+          "#cc6666", -- red
+          "#b5bd68", -- green
+          "#f0c674", -- yellow
+          "#81a2be", -- blue
+          "#b294bb", -- magenta
+          "#8abeb7", -- cyan
+          "#c5c8c6", -- white
+        },
 
-      "" Statusbar
-      set nocompatible " Disable vi-compatibility
-      set laststatus=2 " Always show the statusline
-      let g:airline_theme='bubblegum'
-      let g:airline_powerline_fonts = 1
+        brights = {
+          "#373b41", -- bright black
+          "#cc6666", -- bright red
+          "#b5bd68", -- bright green
+          "#f0c674", -- bright yellow
+          "#81a2be", -- bright blue
+          "#b294bb", -- bright magenta
+          "#8abeb7", -- bright cyan
+          "#ffffff", -- bright white
+        },
+      }
 
-      "" Local keys and such
-      let mapleader=","
-      let maplocalleader=" "
+      config.colors = hiberee
 
-      "" Change cursor on mode
-      :autocmd InsertEnter * set cul
-      :autocmd InsertLeave * set nocul
+      -- Key bindings
+      config.keys = {
+        { key = "F11", action = wezterm.action.ToggleFullScreen },
+        { key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
+      }
 
-      "" File-type highlighting and configuration
-      syntax on
-      filetype on
-      filetype plugin on
-      filetype indent on
+      -- URL hyperlink rules (for Markdown files)
+      config.hyperlink_rules = {
+        -- Matches: a URL in parens: (URL)
+        {
+          regex = "\\((\\w+://\\S+)\\)",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Matches: a URL in brackets: [URL]
+        {
+          regex = "\\[(\\w+://\\S+)\\]",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Matches: a URL in curly braces: {URL}
+        {
+          regex = "\\{(\\w+://\\S+)\\}",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Matches: a URL in angle brackets: <URL>
+        {
+          regex = "<(\\w+://\\S+)>",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Handle URLs not wrapped in brackets
+        {
+          regex = "[^(]\\b(\\w+://\\S+[)/a-zA-Z0-9-]+)",
+          format = "$1",
+          highlight = 1,
+        },
+        -- implicit mailto link
+        {
+          regex = "\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b",
+          format = "mailto:$0",
+        },
+      }
 
-      "" macOS clipboard integration
-      vnoremap <Leader>. :w !pbcopy<CR><CR>
-      nnoremap <Leader>, :r !pbpaste<CR>
+      config.hide_mouse_cursor_when_typing = false
 
-      "" Move cursor by display lines when wrapping
-      nnoremap j gj
-      nnoremap k gk
-
-      "" Map leader-q to quit out of window
-      nnoremap <leader>q :q<cr>
-
-      "" Move around split
-      nnoremap <C-h> <C-w>h
-      nnoremap <C-j> <C-w>j
-      nnoremap <C-k> <C-w>k
-      nnoremap <C-l> <C-w>l
-
-      "" Easier to yank entire line
-      nnoremap Y y$
-
-      "" Move buffers
-      nnoremap <tab> :bnext<cr>
-      nnoremap <S-tab> :bprev<cr>
-
-      "" Like a boss, sudo AFTER opening the file to write
-      cmap w!! w !sudo tee % >/dev/null
-
-      let g:startify_lists = [
-        \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
-        \ { 'type': 'sessions',  'header': ['   Sessions']       },
-        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      }
-        \ ]
-
-      let g:startify_bookmarks = [
-        \ '~/.local/share/src',
-        \ ]
-
-      let g:airline_theme='bubblegum'
-      let g:airline_powerline_fonts = 1
-      '';
-     };
-
-  alacritty = {
-    enable = true;
-    settings = {
-      cursor = {
-        style = "Block";
-      };
-
-      window = {
-        opacity = 1.0;
-        padding = {
-          x = 24;
-          y = 24;
-        };
-      };
-
-      font = {
-        normal = {
-          family = "MesloLGS NF";
-          style = "Regular";
-        };
-        size = lib.mkMerge [
-          (lib.mkIf pkgs.stdenv.hostPlatform.isLinux 10)
-          (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin 14)
-        ];
-      };
-
-      colors = {
-        primary = {
-          background = "0x1f2528";
-          foreground = "0xc0c5ce";
-        };
-
-        normal = {
-          black = "0x1f2528";
-          red = "0xec5f67";
-          green = "0x99c794";
-          yellow = "0xfac863";
-          blue = "0x6699cc";
-          magenta = "0xc594c5";
-          cyan = "0x5fb3b3";
-          white = "0xc0c5ce";
-        };
-
-        bright = {
-          black = "0x65737e";
-          red = "0xec5f67";
-          green = "0x99c794";
-          yellow = "0xfac863";
-          blue = "0x6699cc";
-          magenta = "0xc594c5";
-          cyan = "0x5fb3b3";
-          white = "0xd8dee9";
-        };
-      };
-    };
+      return config
+    '';
   };
 
   ssh = {
