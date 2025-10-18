@@ -71,7 +71,7 @@ let name = "%NAME%";
     };
   };
 
-  programs.neovim = {
+  neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
@@ -99,7 +99,7 @@ let name = "%NAME%";
     ];
   };
 
-  programs.wezterm = {
+  wezterm = {
     enable = true;
     extraConfig = ''
       local wezterm = require 'wezterm'
