@@ -37,7 +37,7 @@
       flake = false;
     };
     homebrew-kpt = {
-      url = "github:kptdev/homebrew-kpt";
+      url = "github:kptdev/kpt";
       flake = false;
     };
     homebrew-doppler = {
