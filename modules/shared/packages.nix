@@ -132,7 +132,7 @@ with pkgs; [
   # T
   telegram-desktop # Telegram messaging client
   termscp # Terminal file transfer client
-  thefuck # Command correction tool
+  pay-respects # Command correction tool (replacement for thefuck)
   terraform # Infrastructure as code tool
   terraform-ls # Terraform language server
   tflint # Terraform linter
