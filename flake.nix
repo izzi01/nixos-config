@@ -36,6 +36,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-kpt = {
+      url = "github:kptdev/homebrew-kpt";
+      flake = false;
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,7 +53,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, plasma-manager, nixpkgs, flake-utils, disko, agenix, secrets, chaotic } @inputs:
+  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, home-manager, plasma-manager, nixpkgs, flake-utils, disko, agenix, secrets, chaotic } @inputs:
     let
       user = "bscx";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -112,6 +116,9 @@
           inherit system;
           specialArgs = inputs // { inherit user; };
           modules = [
+            ({ config, ...}: {
+              homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+            })
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew
             {
@@ -122,6 +129,7 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
+                  "kptdev/homebrew-kpt" = homebrew-kpt;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
