@@ -1,24 +1,24 @@
 { config, pkgs, lib, ... }:
 
-let name = "%NAME%";
-    user = "%USER%";
-    email = "%EMAIL%"; in
+let name = "bscx";  # Update with your name
+    user = "bscx";
+    email = "bscx@example.com"; in  # Update with your email
 {
-  direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
 
-  # Shared shell configuration
+  direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+
   zsh = {
     enable = true;
-    autocd = true;
+    autocd = true;  # From your .zshrc: setopt autocd
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    # History configuration
+    # History configuration from your .zshrc
     history = {
       size = 1000;
       save = 1000;
@@ -26,7 +26,7 @@ let name = "%NAME%";
       ignorePatterns = [ "pwd" "ls" "cd" ];
     };
 
-    # Completion settings (zstyle configurations)
+    # Completion settings from your .zshrc (zstyle configurations)
     completionInit = ''
       autoload -Uz compinit
       compinit
@@ -48,7 +48,7 @@ let name = "%NAME%";
       zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
     '';
 
-    # Vi mode
+    # Vi mode from your .zshrc: bindkey -v
     defaultKeymap = "viins";
 
     initContent = ''
@@ -58,7 +58,7 @@ let name = "%NAME%";
         . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
       fi
 
-      # OS-specific configurations
+      # OS-specific configurations from your .zshrc
       case "$(uname -s)" in
         Darwin)
           export LC_CTYPE=en_US.UTF-8
@@ -74,7 +74,7 @@ let name = "%NAME%";
           ;;
       esac
 
-      # PATH variables
+      # PATH variables from your .zshrc
       export PATH=$HOME/.pnpm-packages/bin:$HOME/.pnpm-packages:$PATH
       export PATH=$HOME/.npm-packages/bin:$HOME/bin:$PATH
       export PATH=$HOME/.local/share/bin:$PATH
@@ -86,16 +86,15 @@ let name = "%NAME%";
 
       # Environment variables
       export EDITOR="nvim"
-      export VISUAL="nvim"
       export TALOSCONFIG="_out/talosconfig"
 
-      # Podman as Docker alias
+      # Podman as Docker alias (from your .zshrc)
       if command -v podman &> /dev/null && ! command -v docker &> /dev/null; then
         alias docker='podman'
         export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
       fi
 
-      # Tool initializations
+      # Tool initializations from your .zshrc
       eval "$(zoxide init zsh)"
       source <(fzf --zsh)
       eval "$(direnv hook zsh)"
@@ -110,20 +109,18 @@ let name = "%NAME%";
         eval "$(vfox activate zsh)"
       fi
 
-      # pay-respects (thefuck replacement)
+      # pay-respects (thefuck replacement) - Note: thefuck is deprecated, using pay-respects
       if command -v pay-respects &> /dev/null; then
-        eval $(pay-respects --alias)
-        eval $(pay-respects --alias fk)
+        eval "$(pay-respects zsh --alias)"
       fi
 
-      # Aliases
+      # Aliases from your .zshrc
       alias cat="bat"
       alias ls="eza --color=always"
       alias zz="zellij"
       alias lg="lazygit"
-      alias diff=difft
 
-      # tmux functions
+      # tmux functions from your .zshrc
       function tn() {
         tmux new -s "$1"
       }
@@ -132,7 +129,7 @@ let name = "%NAME%";
         tmux a -t "$1"
       }
 
-      # Yazi function
+      # Yazi function from your .zshrc
       function y() {
         local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
         yazi "$@" --cwd-file="$tmp"
@@ -142,7 +139,7 @@ let name = "%NAME%";
         rm -f -- "$tmp"
       }
 
-      # FZF functions
+      # FZF functions from your .zshrc
       function of() {
         open "$(fzf)" "$@"
       }
@@ -151,7 +148,7 @@ let name = "%NAME%";
         nvim "$(fzf)" "$@"
       }
 
-      # FZF theme (Catppuccin Macchiato colors)
+      # FZF theme from your .zshrc (Catppuccin Macchiato colors)
       fg="#CAD3F5"
       bg="#24273A"
       bg_highlight="#1E2030"
@@ -161,12 +158,12 @@ let name = "%NAME%";
 
       export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
 
-      # FZF with fd integration
+      # FZF with fd integration from your .zshrc
       export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
       export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
 
-      # FZF completion functions
+      # FZF completion functions from your .zshrc
       _fzf_compgen_path() {
         fd --hidden --exclude .git . "$1"
       }
@@ -180,7 +177,7 @@ let name = "%NAME%";
       export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
       export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 
-      # FZF advanced customization
+      # FZF advanced customization from your .zshrc
       _fzf_comprun() {
         local command=$1
         shift
@@ -193,7 +190,7 @@ let name = "%NAME%";
         esac
       }
 
-      # Zellij tab name function
+      # Zellij tab name function from your .zshrc
       function set_zellij_tab_name() {
         if [[ -n "$ZELLIJ" ]]; then
           local cmd="$1"
@@ -203,7 +200,7 @@ let name = "%NAME%";
       }
       preexec_functions+=(set_zellij_tab_name)
 
-      # Doppler auto-inject
+      # Doppler auto-inject from your .zshrc
       if command -v doppler &> /dev/null; then
         export DOPPLER_PROJECT="api-key"
         export DOPPLER_CONFIG="dev"
@@ -212,7 +209,7 @@ let name = "%NAME%";
         unset DOPPLER_CONFIG
       fi
 
-      # Claude CLI functions
+      # Claude CLI functions from your .zshrc
       function cc() {
         unset ANTHROPIC_BASE_URL
         unset ANTHROPIC_AUTH_TOKEN
@@ -237,9 +234,180 @@ let name = "%NAME%";
         claude "$@"
       }
 
-      # nix shortcuts
-      shell() {
-        nix-shell '<nixpkgs>' -A "$1"
+      function of() {
+        open "$(fzf)" "$@"
+      }
+
+      function nf() {
+        nvim "$(fzf)" "$@"
+      }
+
+      function tn() {
+        tmux new -s "$1"
+      }
+
+      function ta() {
+        tmux a -t "$1"
+      }
+
+      # FZF configuration
+      fg="#CAD3F5"
+      bg="#24273A"
+      bg_highlight="#1E2030"
+      purple="#C6A0F6"
+      blue="#8AADF4"
+      cyan="#91D7E3"
+
+      export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
+      export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+      # FZF completion functions
+      _fzf_compgen_path() {
+        fd --hidden --exclude .git . "$1"
+      }
+
+      _fzf_compgen_dir() {
+        fd --type=d --hidden --exclude .git . "$1"
+      }
+
+      show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+      export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+      _fzf_comprun() {
+        local command=$1
+        shift
+        case "$command" in
+          cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+          export|unset) fzf --preview "eval 'echo \''${}'"         "$@" ;;
+          ssh)          fzf --preview 'dig {}'                   "$@" ;;
+          *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+        esac
+      }
+
+      # Add Go bin to PATH if Go is installed
+      if command -v go &> /dev/null; then
+        export PATH="$PATH:$(go env GOPATH)/bin"
+      fi
+
+      # Podman as Docker alias if Docker is not installed
+      if command -v podman &> /dev/null && ! command -v docker &> /dev/null; then
+        alias docker='podman'
+        export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+      fi
+
+      # Laravel Artisan
+      alias art='php artisan'
+
+      # Use difftastic, syntax-aware diffing
+      alias diff=difft
+
+      # Always color ls and group directories
+      alias ls='ls --color=auto'
+      
+      # SSH wrapper functions with terminal color changes
+      ssh-production() {
+          # Change terminal background to dark red
+          printf '\033]11;#3d1515\007'
+          command ssh production "$@"
+          # Reset terminal background
+          printf '\033]11;#1f2528\007'
+      }
+      
+      ssh-staging() {
+          # Change terminal background to dark orange
+          printf '\033]11;#3d2915\007'
+          command ssh staging "$@"
+          # Reset terminal background
+          printf '\033]11;#1f2528\007'
+      }
+      
+      ssh-droplet() {
+          # Change terminal background to dark green
+          printf '\033]11;#153d15\007'
+          command ssh droplet "$@"
+          # Reset terminal background
+          printf '\033]11;#1f2528\007'
+      }
+      
+      # Override ssh command to detect known hosts
+      ssh() {
+          case "$1" in
+              production|209.97.152.81)
+                  # Change terminal background to dark red
+                  printf '\033]11;#3d1515\007'
+                  command ssh "$@"
+                  # Reset terminal background
+                  printf '\033]11;#1f2528\007'
+                  ;;
+              staging|174.138.88.191)
+                  # Change terminal background to dark orange
+                  printf '\033]11;#3d2915\007'
+                  command ssh "$@"
+                  # Reset terminal background
+                  printf '\033]11;#1f2528\007'
+                  ;;
+              droplet|165.227.66.119)
+                  # Change terminal background to dark green
+                  printf '\033]11;#153d15\007'
+                  command ssh "$@"
+                  # Reset terminal background
+                  printf '\033]11;#1f2528\007'
+                  ;;
+              *)
+                  command ssh "$@"
+                  ;;
+          esac
+      }
+      
+      # Tmux alias for conductly devenv session
+      alias conductly='tmux -S /run/user/1000/tmux-conductly attach -t conductly'
+      
+      # Tmux alias for river devenv session
+      alias river='tmux -S /run/user/1000/tmux-river attach -t river'
+
+      # macOS-style open command using Nautilus
+      ${lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
+        alias open="xdg-open"
+        alias rxp="/home/dustin/.local/share/src/restxp/restxp"
+
+        # Reboot to Windows partition (Linux only)
+        alias windows='sudo systemctl reboot --boot-loader-entry=auto-windows'
+      ''}
+      
+      # Screenshot function with path selection
+      screenshot() {
+          local project_path
+          case "$1" in
+              conductly|c)
+                  project_path="/home/dustin/.local/share/src/conductly"
+                  ;;
+              bitcoin-noobs|b)
+                  project_path="/home/dustin/.local/share/src/bitcoin-noobs"
+                  ;;
+              *)
+                  echo "Usage: screenshot [conductly|c|bitcoin-noobs|b]"
+                  echo "  conductly (c) - Save to conductly project"
+                  echo "  bitcoin-noobs (b) - Save to bitcoin-noobs project"
+                  return 1
+                  ;;
+          esac
+          
+          # Prompt user for filename
+          echo -n "Enter screenshot filename (without .png extension): "
+          read -r user_filename
+          
+          # Use user input or fallback to timestamp if empty
+          if [[ -n "$user_filename" ]]; then
+              local filename="$user_filename.png"
+          else
+              local filename="screenshot-$(date +'%Y%m%d-%H%M%S').png"
+          fi
+          
+          spectacle -r -b -o "$project_path/$filename"
+          echo "Screenshot saved to: $project_path/$filename"
       }
     '';
   };
@@ -258,6 +426,7 @@ let name = "%NAME%";
 	    editor = "nvim";
         autocrlf = "input";
       };
+      commit.gpgsign = true;
       pull.rebase = true;
       rebase.autoStash = true;
     };
@@ -294,70 +463,104 @@ let name = "%NAME%";
   wezterm = {
     enable = true;
     extraConfig = ''
-      local wezterm = require 'wezterm'
+      local wezterm = require("wezterm")
       local config = {}
 
-      if wezterm.config_builder then
-        config = wezterm.config_builder()
+      config.font = wezterm.font("JetBrains Mono")
+      config.font_size = 16.0
+
+      -- Set default program based on operating system (Zellij on macOS if available)
+      if wezterm.target_triple:find("apple") then
+        local homebrew_paths_string = "/opt/homebrew/bin/zellij, /usr/local/bin/zellij"
+        local zellij_in_homebrew = #wezterm.glob(homebrew_paths_string) > 0
+        if zellij_in_homebrew then
+          config.default_prog = { "/opt/homebrew/bin/zellij", "-l", "welcome" }
+        else
+          config.default_prog = nil
+        end
       end
 
-      -- Font configuration
-      config.font = wezterm.font('MesloLGS NF')
-      config.font_size = '' + (if pkgs.stdenv.hostPlatform.isDarwin then "14.0" else "10.0") + ''
-
-      -- Window configuration
-      config.window_padding = {
-        left = 24,
-        right = 24,
-        top = 24,
-        bottom = 24,
-      }
-
-      -- Color scheme
-      config.colors = {
-        foreground = '#c0c5ce',
-        background = '#1f2528',
-        cursor_bg = '#c0c5ce',
-        cursor_fg = '#1f2528',
-        cursor_border = '#c0c5ce',
-        selection_fg = '#1f2528',
-        selection_bg = '#c0c5ce',
-        scrollbar_thumb = '#65737e',
-        split = '#65737e',
+      -- Hiberee theme colors
+      local hiberee = {
+        foreground = "#c5c8c6",
+        background = "#1d1f21",
+        cursor_bg = "#c5c8c6",
+        cursor_border = "#c5c8c6",
+        cursor_fg = "#1d1f21",
+        selection_bg = "#373b41",
+        selection_fg = "#c5c8c6",
 
         ansi = {
-          '#1f2528', -- black
-          '#ec5f67', -- red
-          '#99c794', -- green
-          '#fac863', -- yellow
-          '#6699cc', -- blue
-          '#c594c5', -- magenta
-          '#5fb3b3', -- cyan
-          '#c0c5ce', -- white
+          "#1d1f21", -- black
+          "#cc6666", -- red
+          "#b5bd68", -- green
+          "#f0c674", -- yellow
+          "#81a2be", -- blue
+          "#b294bb", -- magenta
+          "#8abeb7", -- cyan
+          "#c5c8c6", -- white
         },
+
         brights = {
-          '#65737e', -- bright black
-          '#ec5f67', -- bright red
-          '#99c794', -- bright green
-          '#fac863', -- bright yellow
-          '#6699cc', -- bright blue
-          '#c594c5', -- bright magenta
-          '#5fb3b3', -- bright cyan
-          '#d8dee9', -- bright white
+          "#373b41", -- bright black
+          "#cc6666", -- bright red
+          "#b5bd68", -- bright green
+          "#f0c674", -- bright yellow
+          "#81a2be", -- bright blue
+          "#b294bb", -- bright magenta
+          "#8abeb7", -- bright cyan
+          "#ffffff", -- bright white
         },
       }
 
-      -- Cursor configuration
-      config.default_cursor_style = 'BlinkingBlock'
+      config.colors = hiberee
 
-      -- Tab bar
-      config.enable_tab_bar = true
-      config.hide_tab_bar_if_only_one_tab = false
-      config.use_fancy_tab_bar = true
+      -- Key bindings
+      config.keys = {
+        { key = "F11", action = wezterm.action.ToggleFullScreen },
+        { key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
+      }
 
-      -- Performance
-      config.front_end = "WebGpu"
-      config.max_fps = 120
+      -- URL hyperlink rules (for Markdown files)
+      config.hyperlink_rules = {
+        -- Matches: a URL in parens: (URL)
+        {
+          regex = "\\((\\w+://\\S+)\\)",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Matches: a URL in brackets: [URL]
+        {
+          regex = "\\[(\\w+://\\S+)\\]",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Matches: a URL in curly braces: {URL}
+        {
+          regex = "\\{(\\w+://\\S+)\\}",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Matches: a URL in angle brackets: <URL>
+        {
+          regex = "<(\\w+://\\S+)>",
+          format = "$1",
+          highlight = 1,
+        },
+        -- Handle URLs not wrapped in brackets
+        {
+          regex = "[^(]\\b(\\w+://\\S+[)/a-zA-Z0-9-]+)",
+          format = "$1",
+          highlight = 1,
+        },
+        -- implicit mailto link
+        {
+          regex = "\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b",
+          format = "mailto:$0",
+        },
+      }
+
+      config.hide_mouse_cursor_when_typing = false
 
       return config
     '';
@@ -380,26 +583,27 @@ let name = "%NAME%";
         sendEnv = [ "LANG" "LC_*" ];
         hashKnownHosts = true;
       };
-      # Example SSH configuration for GitHub
-      # "github.com" = {
-      #   identitiesOnly = true;
-      #   identityFile = [
-      #     (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
-      #       "/home/${user}/.ssh/id_github"
-      #     )
-      #     (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
-      #       "/Users/${user}/.ssh/id_github"
-      #     )
-      #   ];
-      # };
+      #"github.com" = {
+      #  identitiesOnly = true;
+      #  identityFile = [
+      #    (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
+      #      "/home/${user}/.ssh/id_github"
+      #    )
+      #    (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin
+      #      "/Users/${user}/.ssh/id_github"
+      #    )
+      #  ];
+      #};
     };
   };
 
   tmux = {
     enable = true;
+    shell = "${pkgs.zsh}/bin/zsh";
+    sensibleOnTop = false;
     plugins = with pkgs.tmuxPlugins; [
       vim-tmux-navigator
-      sensible
+      sensible  # Re-enabled with workaround below
       yank
       prefix-highlight
       {
@@ -414,7 +618,7 @@ let name = "%NAME%";
         # Use XDG data directory
         # https://github.com/tmux-plugins/tmux-resurrect/issues/348
         extraConfig = ''
-          set -g @resurrect-dir '$HOME/.cache/tmux/resurrect'
+          set -g @resurrect-dir '/Users/dustin/.cache/tmux/resurrect'
           set -g @resurrect-capture-pane-contents 'on'
           set -g @resurrect-pane-contents-area 'visible'
         '';
@@ -476,6 +680,10 @@ let name = "%NAME%";
       bind-key -T copy-mode-vi 'C-k' select-pane -U
       bind-key -T copy-mode-vi 'C-l' select-pane -R
       bind-key -T copy-mode-vi 'C-\' select-pane -l
+      
+      # Darwin-specific fix for tmux 3.5a with sensible plugin
+      # This MUST be at the very end of the config
+      set -g default-command "$SHELL"
       '';
     };
 }
