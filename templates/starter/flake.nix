@@ -53,7 +53,7 @@
     };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, home-manager, nixpkgs, disko } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, homebrew-zadark, home-manager, nixpkgs, disko } @inputs:
     let
       user = "%USER%";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
