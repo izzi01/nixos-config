@@ -3,7 +3,6 @@
 let
   user = "dustin";
   xdg_configHome  = "/home/${user}/.config";
-  shared-programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
   shared-files = import ../shared/files.nix { inherit config pkgs; };
   kde-config = import ./kde-config.nix;
 
@@ -14,6 +13,9 @@ let
   ];
 in
 {
+  imports = [
+    ../shared/home-manager.nix
+  ];
 
   home = {
     enableNixpkgsReleaseCheck = false;
@@ -22,7 +24,7 @@ in
     packages = pkgs.callPackage ./packages.nix { inherit inputs config; };
     file = shared-files // import ./files.nix { inherit user pkgs; };
     stateVersion = "25.05";
-    
+
     # Playwright environment variables for NixOS
     sessionVariables = {
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
@@ -31,7 +33,7 @@ in
     };
   };
 
-  programs = shared-programs // { 
+  programs = { 
     gpg.enable = true;
     
     rofi = {

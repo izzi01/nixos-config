@@ -120,6 +120,8 @@ in
     backupFileExtension = "backup";
     users.${user} = { pkgs, config, lib, ... }:
       {
+        imports = [ ../shared/home-manager.nix ];
+
         home = {
           enableNixpkgsReleaseCheck = false;
           packages = pkgs.callPackage ./packages.nix {};
@@ -129,7 +131,6 @@ in
           ];
           stateVersion = "23.11";
         };
-        programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
         manual.manpages.enable = false;
       };
   };

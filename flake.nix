@@ -208,52 +208,33 @@
         };
 
       # Home Manager standalone configurations (for non-NixOS Linux with Nix installed)
-      homeConfigurations = {
-        "${user}@aarch64-linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            system = "aarch64-linux";
-            config.allowUnfree = true;
-          };
-          modules = [
-            {
-              nixpkgs.config.allowUnfree = true;
-              home = {
-                username = user;
-                homeDirectory = "/home/${user}";
-                stateVersion = "23.11";
-                packages = nixpkgs.legacyPackages.aarch64-linux.callPackage ./modules/shared/packages.nix {};
+      homeConfigurations =
+        let
+          mkHomeConfig = system:
+            let
+              pkgs = import nixpkgs {
+                inherit system;
+                config.allowUnfree = true;
               };
-              programs = import ./modules/shared/home-manager.nix {
-                config = {};
-                pkgs = nixpkgs.legacyPackages.aarch64-linux;
-                lib = nixpkgs.legacyPackages.aarch64-linux.lib;
-              };
-            }
-          ];
-        };
+            in {
+              inherit pkgs;
+              modules = [
+                {
+                  nixpkgs.config.allowUnfree = true;
+                  home = {
+                    username = user;
+                    homeDirectory = "/home/${user}";
+                    stateVersion = "23.11";
+                    packages = pkgs.callPackage ./modules/shared/packages.nix {};
+                  };
+                  imports = [ ./modules/shared/home-manager.nix ];
+                }
+              ];
+            };
+        in {
+        "${user}@aarch64-linux" = home-manager.lib.homeManagerConfiguration (mkHomeConfig "aarch64-linux");
 
-        "${user}@x86_64-linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-          };
-          modules = [
-            {
-              nixpkgs.config.allowUnfree = true;
-              home = {
-                username = user;
-                homeDirectory = "/home/${user}";
-                stateVersion = "23.11";
-                packages = nixpkgs.legacyPackages.x86_64-linux.callPackage ./modules/shared/packages.nix {};
-              };
-              programs = import ./modules/shared/home-manager.nix {
-                config = {};
-                pkgs = nixpkgs.legacyPackages.x86_64-linux;
-                lib = nixpkgs.legacyPackages.x86_64-linux.lib;
-              };
-            }
-          ];
-        };
+        "${user}@x86_64-linux" = home-manager.lib.homeManagerConfiguration (mkHomeConfig "x86_64-linux");
       };
     };
 }

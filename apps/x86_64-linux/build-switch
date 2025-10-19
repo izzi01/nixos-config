@@ -119,14 +119,14 @@ else
     _print ""
   fi
 
-  _print "${BLUE}Running: home-manager switch --flake .#$FLAKE_TARGET $OTHER_ARGS${NC}"
+  _print "${BLUE}Running: home-manager switch --flake .#$FLAKE_TARGET --impure $OTHER_ARGS${NC}"
   _print ""
 
   # Temporarily set HOME to match the flake configuration
   export ORIGINAL_HOME="$HOME"
   export HOME="/home/${USERNAME}"
 
-  if home-manager switch --flake ".#$FLAKE_TARGET" $OTHER_ARGS; then
+  if home-manager switch --flake ".#$FLAKE_TARGET" --impure $OTHER_ARGS; then
     # Restore original HOME
     export HOME="$ORIGINAL_HOME"
     _print ""

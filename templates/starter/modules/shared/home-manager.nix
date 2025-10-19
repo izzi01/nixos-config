@@ -4,6 +4,7 @@ let name = "bscx";  # Update with your name
     user = "bscx";
     email = "bscx@example.com"; in  # Update with your email
 {
+  programs = {
 
   direnv = {
       enable = true;
@@ -95,7 +96,7 @@ let name = "bscx";  # Update with your name
       fi
 
       # Tool initializations from your .zshrc
-      eval "$(zoxide init zsh)"
+      # zoxide init is handled by programs.zoxide.enableZshIntegration
       source <(fzf --zsh)
       eval "$(direnv hook zsh)"
 
@@ -111,7 +112,7 @@ let name = "bscx";  # Update with your name
 
       # pay-respects (thefuck replacement) - Note: thefuck is deprecated, using pay-respects
       if command -v pay-respects &> /dev/null; then
-        eval "$(pay-respects zsh --alias p)"
+        eval "$(pay-respects zsh --alias)"
       fi
 
       # Aliases from your .zshrc
@@ -460,6 +461,59 @@ let name = "bscx";  # Update with your name
     ];
   };
 
+  zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  kitty = {
+    enable = true;
+    font = {
+      name = "JetBrainsMono Nerd Font Mono";
+      size = 15.0;
+    };
+    settings = {
+      # Hiberee color scheme
+      background = "#1d1f21";
+      foreground = "#c5c8c6";
+      cursor = "#c5c8c6";
+      selection_background = "#373b41";
+      selection_foreground = "#c5c8c6";
+
+      # Black
+      color0 = "#1d1f21";
+      color8 = "#373b41";
+
+      # Red
+      color1 = "#cc6666";
+      color9 = "#cc6666";
+
+      # Green
+      color2 = "#b5bd68";
+      color10 = "#b5bd68";
+
+      # Yellow
+      color3 = "#f0c674";
+      color11 = "#f0c674";
+
+      # Blue
+      color4 = "#81a2be";
+      color12 = "#81a2be";
+
+      # Magenta
+      color5 = "#b294bb";
+      color13 = "#b294bb";
+
+      # Cyan
+      color6 = "#8abeb7";
+      color14 = "#8abeb7";
+
+      # White
+      color7 = "#c5c8c6";
+      color15 = "#ffffff";
+    };
+  };
+
   wezterm = {
     enable = true;
     extraConfig = ''
@@ -686,4 +740,137 @@ let name = "bscx";  # Update with your name
       set -g default-command "$SHELL"
       '';
     };
+  }; # end programs
+
+  # LazyVim configuration
+  xdg.configFile = {
+    "nvim/init.lua".text = ''
+      -- Bootstrap lazy.nvim, LazyVim and your plugins
+      require("config.lazy")
+    '';
+
+    "nvim/lua/config/lazy.lua".text = ''
+      local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+      if not (vim.uv or vim.loop).fs_stat(lazypath) then
+        local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+        local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+        if vim.v.shell_error ~= 0 then
+          vim.api.nvim_echo({
+            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+            { out, "WarningMsg" },
+            { "\nPress any key to exit..." },
+          }, true, {})
+          vim.fn.getchar()
+          os.exit(1)
+        end
+      end
+      vim.opt.rtp:prepend(lazypath)
+
+      require("lazy").setup({
+        spec = {
+          -- add LazyVim and import its plugins
+          { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+          -- import/override with your plugins
+          { import = "plugins" },
+        },
+        defaults = {
+          lazy = false,
+          version = false, -- always use the latest git commit
+        },
+        install = { colorscheme = { "tokyonight", "habamax" } },
+        checker = {
+          enabled = true, -- check for plugin updates periodically
+          notify = false, -- notify on update
+        },
+        performance = {
+          rtp = {
+            -- disable some rtp plugins
+            disabled_plugins = {
+              "gzip",
+              "tarPlugin",
+              "tohtml",
+              "tutor",
+              "zipPlugin",
+            },
+          },
+        },
+      })
+    '';
+
+    "nvim/lua/config/options.lua".text = ''
+      -- Options are automatically loaded before lazy.nvim startup
+      -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
+      -- Add any additional options here
+    '';
+
+    "nvim/lua/config/keymaps.lua".text = ''
+      -- Keymaps are automatically loaded on the VeryLazy event
+      -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+      -- Add any additional keymaps here
+      vim.keymap.set({ "n", "v" }, "x", '"_x')
+      vim.keymap.set({ "n", "v" }, "X", '"_X')
+    '';
+
+    "nvim/lua/config/autocmds.lua".text = ''
+      -- Autocmds are automatically loaded on the VeryLazy event
+      -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
+      -- Add any additional autocmds here
+    '';
+
+    "nvim/lua/plugins/colorscheme.lua".text = ''
+      return {
+        "catppuccin/nvim",
+        lazy = true,
+        name = "catppuccin",
+        opts = {
+          flavor = "frappe",
+          lsp_styles = {
+            underlines = {
+              errors = { "undercurl" },
+              hints = { "undercurl" },
+              warnings = { "undercurl" },
+              information = { "undercurl" },
+            },
+          },
+          integrations = {
+            aerial = true,
+            alpha = true,
+            cmp = true,
+            dashboard = true,
+            flash = true,
+            fzf = true,
+            grug_far = true,
+            gitsigns = true,
+            headlines = true,
+            illuminate = true,
+            indent_blankline = { enabled = true },
+            leap = true,
+            lsp_trouble = true,
+            mason = true,
+            mini = true,
+            navic = { enabled = true, custom_bg = "lualine" },
+            neotest = true,
+            neotree = true,
+            noice = true,
+            notify = true,
+            snacks = true,
+            telescope = true,
+            treesitter_context = true,
+            which_key = true,
+          },
+        },
+        specs = {
+          {
+            "akinsho/bufferline.nvim",
+            optional = true,
+            opts = function(_, opts)
+              if (vim.g.colors_name or ""):find("catppuccin") then
+                opts.highlights = require("catppuccin.special.bufferline").get_theme()
+              end
+            end,
+          },
+        },
+      }
+    '';
+  };
 }

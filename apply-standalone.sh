@@ -129,14 +129,14 @@ fi
 # Apply Home Manager configuration
 _print ""
 _print "${YELLOW}Applying Home Manager configuration...${NC}"
-_print "${BLUE}Running: home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
+_print "${BLUE}Running: home-manager switch --flake .#${USERNAME}@${ARCH}-linux --impure${NC}"
 _print ""
 
 # Temporarily set HOME to match the flake configuration
 export ORIGINAL_HOME="$HOME"
 export HOME="/home/${USERNAME}"
 
-if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
+if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux" --impure; then
   # Restore original HOME
   export HOME="$ORIGINAL_HOME"
   _print ""

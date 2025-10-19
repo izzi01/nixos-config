@@ -79,6 +79,7 @@ with pkgs; [
 
   # K
   killall # Kill processes by name
+  kitty # GPU-accelerated terminal emulator
   kubectl # Kubernetes CLI
   k9s # Kubernetes TUI
   kubernetes-helm # Kubernetes package manager
@@ -98,6 +99,7 @@ with pkgs; [
   ncurses # Terminal control library with terminfo database
   ncdu # Disk space utility
   neofetch # System information tool
+  neovim # Vim-based text editor
   ngrok # Secure tunneling service
   nodejs_20 # Node.js JavaScript runtime (includes npm)
 
@@ -150,6 +152,7 @@ with pkgs; [
   # W
   wget # File downloader
   watch # Execute program periodically
+  wezterm # GPU-accelerated terminal emulator
   wireshark # Network protocol analyzer
 
   # Y
