@@ -13,6 +13,7 @@ with pkgs; [
   wget
   zip
   eza 
+  zsh
 
   # Encryption and security tools
   age
