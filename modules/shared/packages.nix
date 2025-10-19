@@ -162,6 +162,7 @@ with pkgs; [
   zellij # Terminal multiplexer
   zip # ZIP archive creator
   zoxide # Smarter cd command
+  zsh # Z shell
   zsh-powerlevel10k # Zsh theme
 ] ++ myFonts
   ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
