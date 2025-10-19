@@ -152,6 +152,7 @@ in
       { path = "/Applications/Discord.app/"; }
       { path = "/Applications/TickTick.app/"; }
       { path = "/System/Applications/Home.app/"; }
+      { path = "/System/Applications/Launchpad.app/"; }
       {
         path    = "${config.users.users.${user}.home}/.local/share/";
         section = "others";

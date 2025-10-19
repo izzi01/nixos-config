@@ -153,6 +153,7 @@ in
       { path = "/System/Applications/Photos.app/"; }
       { path = "/System/Applications/Photo Booth.app/"; }
       { path = "/System/Applications/System Settings.app/"; }
+      { path = "/System/Applications/Launchpad.app/"; }
       {
         path = "${config.users.users.${user}.home}/Downloads";
         section = "others";

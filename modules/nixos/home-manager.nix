@@ -14,6 +14,8 @@ let
   ];
 in
 {
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
 
   home = {
     enableNixpkgsReleaseCheck = false;

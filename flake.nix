@@ -232,6 +232,85 @@
                     inherit pkgs;
                     lib = pkgs.lib;
                   };
+
+                  # LazyVim configuration
+                  xdg.configFile = {
+                    "nvim/init.lua".text = ''
+                      -- Bootstrap lazy.nvim, LazyVim and your plugins
+                      require("config.lazy")
+                    '';
+
+                    "nvim/lua/config/lazy.lua".text = ''
+                      local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+                      if not (vim.uv or vim.loop).fs_stat(lazypath) then
+                        local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+                        local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+                        if vim.v.shell_error ~= 0 then
+                          vim.api.nvim_echo({
+                            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+                            { out, "WarningMsg" },
+                            { "\nPress any key to exit..." },
+                          }, true, {})
+                          vim.fn.getchar()
+                          os.exit(1)
+                        end
+                      end
+                      vim.opt.rtp:prepend(lazypath)
+
+                      require("lazy").setup({
+                        spec = {
+                          { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+                          { import = "plugins" },
+                        },
+                        defaults = {
+                          lazy = false,
+                          version = false,
+                        },
+                        install = { colorscheme = { "tokyonight", "habamax" } },
+                        checker = { enabled = true, notify = false },
+                        performance = {
+                          rtp = {
+                            disabled_plugins = {
+                              "gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin",
+                            },
+                          },
+                        },
+                      })
+                    '';
+
+                    "nvim/lua/config/options.lua".text = ''
+                      -- Options are automatically loaded before lazy.nvim startup
+                    '';
+
+                    "nvim/lua/config/keymaps.lua".text = ''
+                      -- Keymaps are automatically loaded on the VeryLazy event
+                      vim.keymap.set({ "n", "v" }, "x", '"_x')
+                      vim.keymap.set({ "n", "v" }, "X", '"_X')
+                    '';
+
+                    "nvim/lua/config/autocmds.lua".text = ''
+                      -- Autocmds are automatically loaded on the VeryLazy event
+                    '';
+
+                    "nvim/lua/plugins/colorscheme.lua".text = ''
+                      return {
+                        "catppuccin/nvim",
+                        lazy = true,
+                        name = "catppuccin",
+                        opts = {
+                          flavor = "frappe",
+                          integrations = {
+                            cmp = true,
+                            gitsigns = true,
+                            nvimtree = true,
+                            treesitter = true,
+                            notify = true,
+                            mini = true,
+                          },
+                        },
+                      }
+                    '';
+                  };
                 }
               ];
             };

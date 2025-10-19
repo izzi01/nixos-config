@@ -147,6 +147,7 @@ in
     username = user;
     entries = [
       { path = "/Applications/Safari.app/"; }
+      { path = "/System/Applications/Launchpad.app/"; }
       { path = "/System/Applications/Messages.app/"; }
       { path = "/System/Applications/Notes.app/"; }
       { path = "${pkgs.wezterm}/Applications/WezTerm.app/"; }

@@ -66,7 +66,6 @@ let name = "bscx";  # Update with your name
           ;;
         Linux)
           eval "$(dircolors -b)"
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           # WSL SSH agent
           if [ -n "$WSL_DISTRO_NAME" ] || [ -e /proc/version ] && grep -q Microsoft /proc/version; then
             eval "$($HOME/wsl2-ssh-agent)"
@@ -99,9 +98,16 @@ let name = "bscx";  # Update with your name
       source <(fzf --zsh)
       eval "$(direnv hook zsh)"
 
-      # Oh-my-posh with PowerLevel10k theme
+      # Oh-my-posh with PowerLevel10k theme (using nixpkgs)
       if command -v oh-my-posh &> /dev/null; then
-        eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/powerlevel10k_lean.omp.json)"
+        # Find oh-my-posh theme directory from nix store
+        OH_MY_POSH_PATH=$(dirname $(dirname $(which oh-my-posh)))
+        if [ -f "$OH_MY_POSH_PATH/share/oh-my-posh/themes/powerlevel10k_lean.omp.json" ]; then
+          eval "$(oh-my-posh init zsh --config $OH_MY_POSH_PATH/share/oh-my-posh/themes/powerlevel10k_lean.omp.json)"
+        else
+          # Fallback to default theme if powerlevel10k_lean is not found
+          eval "$(oh-my-posh init zsh)"
+        fi
       fi
 
       # vfox activation

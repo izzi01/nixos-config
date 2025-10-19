@@ -75,6 +75,7 @@ with pkgs; [
   # O
   openssh # SSH client and server
   opentofu # Open-source Terraform alternative
+  oh-my-posh
 
   # P
   pandoc # Document converter
@@ -127,4 +128,7 @@ with pkgs; [
   ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
     pkgs.steam # Gaming platform - Linux only (requires i686 support)
     pkgs.vlc # Media player - Linux only (depends on libudev)
+  ])
+  ++ (pkgs.lib.optionals (pkgs.stdenv.system != "aarch64-linux") [
+    pkgs.google-chrome # Web browser - not available on aarch64-linux
   ])

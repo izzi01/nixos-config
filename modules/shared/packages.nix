@@ -101,6 +101,7 @@ with pkgs; [
   nodejs_20 # Node.js JavaScript runtime (includes npm)
 
   # O
+  oh-my-posh # Prompt theme engine
   openssh # SSH client and server
   opentofu # Open-source Terraform alternative
 
@@ -165,4 +166,7 @@ with pkgs; [
   ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
     pkgs.steam # Gaming platform - Linux only (requires i686 support)
     pkgs.vlc # Media player - Linux only (depends on libudev)
+  ])
+  ++ (pkgs.lib.optionals (pkgs.stdenv.system != "aarch64-linux") [
+    pkgs.google-chrome # Web browser - not available on aarch64-linux
   ])
