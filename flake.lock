@@ -289,6 +289,86 @@
         "type": "github"
       }
     },
+    "homebrew-doppler": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1750707268,
+        "narHash": "sha256-smN1wo5BKq+BdX7ifWTFDTNAmOf688uw0N6AUDfY4Dk=",
+        "owner": "dopplerhq",
+        "repo": "homebrew-cli",
+        "rev": "66825b7bd4e7d14ce5a2072b8a1c07d3fd3ca42d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dopplerhq",
+        "repo": "homebrew-cli",
+        "type": "github"
+      }
+    },
+    "homebrew-flux": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759947641,
+        "narHash": "sha256-VXa/hWeWtuO6ngDcFbwY6qDzG4vmrMTGWxousiaI7Lc=",
+        "owner": "fluxcd",
+        "repo": "homebrew-tap",
+        "rev": "2de37c5fc424451877c087939d10468c6b57a854",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fluxcd",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
+    "homebrew-fuse": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760615348,
+        "narHash": "sha256-+aAVuc3BeVDtNwDyPzCJdk5Cr9Egj+AyCai22U0vJPI=",
+        "owner": "gromgit",
+        "repo": "homebrew-fuse",
+        "rev": "bfdaf06e664c5e244b21a212ffd2df6e25257a9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gromgit",
+        "repo": "homebrew-fuse",
+        "type": "github"
+      }
+    },
+    "homebrew-kpt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760541259,
+        "narHash": "sha256-1dh23WNxqf2Y83zmXF9xH+v/YWAY3FKWqsFNFqKDr/A=",
+        "owner": "kptdev",
+        "repo": "kpt",
+        "rev": "cc0cc728e3348f6d9c79144bc11404cc6577784e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kptdev",
+        "repo": "kpt",
+        "type": "github"
+      }
+    },
+    "homebrew-youtube-music": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1758483973,
+        "narHash": "sha256-7rcUremYRB9JsqaY6SyRfXk1GnrTfyJjYUi0fDiI5Sk=",
+        "owner": "th-ch",
+        "repo": "homebrew-youtube-music",
+        "rev": "b87d9c3dfa2ec58c182b6bfda182ccbdc58beb5c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "th-ch",
+        "repo": "homebrew-youtube-music",
+        "type": "github"
+      }
+    },
     "jovian": {
       "inputs": {
         "nix-github-actions": "nix-github-actions",
@@ -435,6 +515,11 @@
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "homebrew-doppler": "homebrew-doppler",
+        "homebrew-flux": "homebrew-flux",
+        "homebrew-fuse": "homebrew-fuse",
+        "homebrew-kpt": "homebrew-kpt",
+        "homebrew-youtube-music": "homebrew-youtube-music",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_3",
         "plasma-manager": "plasma-manager",

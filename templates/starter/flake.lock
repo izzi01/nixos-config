@@ -204,6 +204,22 @@
         "type": "github"
       }
     },
+    "homebrew-zadark": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748629266,
+        "narHash": "sha256-lCuE/Hv3Z6E1lNJqUAQxhf8E+Bol7yG0/6Gs7tCVXWI=",
+        "owner": "quaric",
+        "repo": "homebrew-zadark",
+        "rev": "85add521d7f2a2dbe7affcf322803ea582582001",
+        "type": "github"
+      },
+      "original": {
+        "owner": "quaric",
+        "repo": "homebrew-zadark",
+        "type": "github"
+      }
+    },
     "nix-homebrew": {
       "inputs": {
         "brew-src": "brew-src"
@@ -267,6 +283,7 @@
         "homebrew-fuse": "homebrew-fuse",
         "homebrew-kpt": "homebrew-kpt",
         "homebrew-youtube-music": "homebrew-youtube-music",
+        "homebrew-zadark": "homebrew-zadark",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_2"
       }

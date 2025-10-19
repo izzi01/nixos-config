@@ -206,5 +206,46 @@
             ];
           };
         };
+
+      # Home Manager standalone configurations (for non-NixOS Linux with Nix installed)
+      homeConfigurations = {
+        "${user}@aarch64-linux" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.aarch64-linux;
+          modules = [
+            {
+              home = {
+                username = user;
+                homeDirectory = "/home/${user}";
+                stateVersion = "23.11";
+                packages = nixpkgs.legacyPackages.aarch64-linux.callPackage ./modules/shared/packages.nix {};
+              };
+              programs = import ./modules/shared/home-manager.nix {
+                config = {};
+                pkgs = nixpkgs.legacyPackages.aarch64-linux;
+                lib = nixpkgs.legacyPackages.aarch64-linux.lib;
+              };
+            }
+          ];
+        };
+
+        "${user}@x86_64-linux" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          modules = [
+            {
+              home = {
+                username = user;
+                homeDirectory = "/home/${user}";
+                stateVersion = "23.11";
+                packages = nixpkgs.legacyPackages.x86_64-linux.callPackage ./modules/shared/packages.nix {};
+              };
+              programs = import ./modules/shared/home-manager.nix {
+                config = {};
+                pkgs = nixpkgs.legacyPackages.x86_64-linux;
+                lib = nixpkgs.legacyPackages.x86_64-linux.lib;
+              };
+            }
+          ];
+        };
+      };
     };
 }
