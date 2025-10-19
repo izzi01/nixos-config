@@ -87,7 +87,6 @@ with pkgs; [
 
   # L
   lazygit # Simple terminal UI for git
-  linear-cli # Linear project management CLI
   lnav # Log file navigator
   libfido2 # FIDO2 library
 

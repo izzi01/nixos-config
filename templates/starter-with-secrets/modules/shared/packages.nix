@@ -1,25 +1,5 @@
 { pkgs, ... }:
 let
-  myPython = pkgs.python3.withPackages (ps: with ps; [
-    slpp
-    pip
-    rich
-    mysql-connector
-    virtualenv
-    black
-    requests
-    faker
-    textual
-    pyqt5
-    pyyaml
-    feedparser
-    python-dateutil
-  ]);
-
-  myPHP = pkgs.php82.withExtensions ({ enabled, all }: enabled ++ (with all; [
-    xdebug
-  ]));
-
   myFonts = import ./fonts.nix { inherit pkgs; };
 in
 with pkgs; [
@@ -27,7 +7,6 @@ with pkgs; [
   act # Run Github actions locally
   age # File encryption tool
   age-plugin-yubikey # YubiKey plugin for age encryption
-  ghostty # GPU-accelerated terminal emulator
   aspell # Spell checker
   aspellDicts.en # English dictionary for aspell
 
@@ -40,7 +19,6 @@ with pkgs; [
   coreutils # Basic file/text/shell utilities
 
   # D
-  discord # Voice and text chat platform
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
   du-dust # Disk usage analyzer
@@ -70,10 +48,8 @@ with pkgs; [
   iftop # Network bandwidth monitor
   imagemagick # Image manipulation toolkit
   insomnia # HTTP client and API testing tool
-  intelephense # PHP LSP server
 
   # J
-  jetbrains.phpstorm # PHP IDE
   jpegoptim # JPEG optimizer
   jq # JSON processor
 
@@ -87,13 +63,8 @@ with pkgs; [
 
   # L
   lazygit # Simple terminal UI for git
-  linear-cli # Linear project management CLI
   lnav # Log file navigator
   libfido2 # FIDO2 library
-
-  # M
-  myPHP # Custom PHP with extensions
-  myPython # Custom Python with packages
 
   # N
   ncurses # Terminal control library with terminfo database
@@ -109,12 +80,6 @@ with pkgs; [
 
   # P
   pandoc # Document converter
-  php82Packages.composer # PHP dependency manager
-  deployer # PHP deployment tool
-  php82Packages.php-cs-fixer # PHP code style fixer
-  php82Packages.phpstan # PHP static analysis tool
-  phpactor # PHP language server with better refactoring support
-  phpunit # PHP testing framework
   pngquant # PNG compression tool
 
   # Q
@@ -126,14 +91,12 @@ with pkgs; [
   rclone # Cloud storage sync tool
 
   # S
-  slack # Team communication app
   sqlite # SQL database engine
   # steam # Gaming platform - not available on macOS ARM64
   stow # Symlink farm manager
   syncthing # Continuous file synchronization
 
   # T
-  telegram-desktop # Telegram messaging client
   termscp # Terminal file transfer client
   pay-respects # Command correction tool (replacement for thefuck)
   tmux # Terminal multiplexer
@@ -143,7 +106,6 @@ with pkgs; [
   # U
   unrar # RAR archive extractor
   unzip # ZIP archive extractor
-  uv # Python package installer
 
   # V
   vlc # Media player
@@ -159,7 +121,6 @@ with pkgs; [
   yazi # Terminal file manager
 
   # Z
-  zed-editor
   zellij # Terminal multiplexer
   zip # ZIP archive creator
   zoxide # Smarter cd command
