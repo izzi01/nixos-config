@@ -97,6 +97,7 @@ in
       "utf8proc"
       "vfox"
       "xz"
+      "zadark"
       "zlib"
       "zstd"
     ];

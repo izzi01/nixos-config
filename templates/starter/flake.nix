@@ -43,6 +43,10 @@
       url = "github:th-ch/homebrew-youtube-music";
       flake = false;
     };
+    homebrew-zadark = {
+      url = "github:quaric/homebrew-zadark";
+      flake = false;
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -121,6 +125,7 @@
                   "fluxcd/homebrew-tap" = homebrew-flux;
                   "gromgit/homebrew-fuse" = homebrew-fuse;
                   "th-ch/homebrew-youtube-music" = homebrew-youtube-music;
+                  "quaric/zadark" = homebrew-zadark;
                 };
                 mutableTaps = true;
                 autoMigrate = true;
