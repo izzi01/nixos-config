@@ -97,7 +97,6 @@ with pkgs; [
   ncurses # Terminal control library with terminfo database
   ncdu # Disk space utility
   neofetch # System information tool
-  neovim # Vim-based text editor
   ngrok # Secure tunneling service
   nodejs_20 # Node.js JavaScript runtime (includes npm)
 
