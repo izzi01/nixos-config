@@ -121,7 +121,7 @@ in
   # Enable home-manager
   home-manager = {
     useGlobalPkgs = true;
-    backupFileExtension = "backup";
+    backupFileExtension = ".bak";
     users.${user} = { pkgs, config, lib, ... }:{
       home = {
         enableNixpkgsReleaseCheck = false;
@@ -149,9 +149,6 @@ in
       { path = "/System/Applications/Messages.app/"; }
       { path = "/System/Applications/Notes.app/"; }
       { path = "${pkgs.wezterm}/Applications/WezTerm.app/"; }
-      { path = "/System/Applications/Music.app/"; }
-      { path = "/System/Applications/Photos.app/"; }
-      { path = "/System/Applications/Photo Booth.app/"; }
       { path = "/System/Applications/System Settings.app/"; }
       {
         path = "${config.users.users.${user}.home}/Downloads";
