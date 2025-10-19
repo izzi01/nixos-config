@@ -3,6 +3,7 @@
 let
   user = "dustin";
   xdg_configHome  = "/home/${user}/.config";
+  shared-programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
   shared-files = import ../shared/files.nix { inherit config pkgs; };
   kde-config = import ./kde-config.nix;
 
@@ -13,9 +14,6 @@ let
   ];
 in
 {
-  imports = [
-    ../shared/home-manager.nix
-  ];
 
   home = {
     enableNixpkgsReleaseCheck = false;
@@ -33,7 +31,7 @@ in
     };
   };
 
-  programs = { 
+  programs = shared-programs // { 
     gpg.enable = true;
     
     rofi = {

@@ -227,7 +227,11 @@
                     stateVersion = "23.11";
                     packages = pkgs.callPackage ./modules/shared/packages.nix {};
                   };
-                  imports = [ ./modules/shared/home-manager.nix ];
+                  programs = import ./modules/shared/home-manager.nix {
+                    config = {};
+                    inherit pkgs;
+                    lib = pkgs.lib;
+                  };
                 }
               ];
             };
