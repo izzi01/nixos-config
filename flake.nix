@@ -210,9 +210,13 @@
       # Home Manager standalone configurations (for non-NixOS Linux with Nix installed)
       homeConfigurations = {
         "${user}@aarch64-linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-linux;
+          pkgs = import nixpkgs {
+            system = "aarch64-linux";
+            config.allowUnfree = true;
+          };
           modules = [
             {
+              nixpkgs.config.allowUnfree = true;
               home = {
                 username = user;
                 homeDirectory = "/home/${user}";
@@ -229,9 +233,13 @@
         };
 
         "${user}@x86_64-linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
           modules = [
             {
+              nixpkgs.config.allowUnfree = true;
               home = {
                 username = user;
                 homeDirectory = "/home/${user}";

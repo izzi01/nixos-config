@@ -9,6 +9,10 @@ in
     ../../modules/shared
     agenix.darwinModules.default
   ];
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   # Setup user, packages, programs
   nix = {
     enable = false;
