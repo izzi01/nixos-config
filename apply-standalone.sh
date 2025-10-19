@@ -132,7 +132,13 @@ _print "${YELLOW}Applying Home Manager configuration...${NC}"
 _print "${BLUE}Running: home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
 _print ""
 
+# Temporarily set HOME to match the flake configuration
+export ORIGINAL_HOME="$HOME"
+export HOME="/home/${USERNAME}"
+
 if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
+  # Restore original HOME
+  export HOME="$ORIGINAL_HOME"
   _print ""
   _print "${GREEN}╔════════════════════════════════════════════╗${NC}"
   _print "${GREEN}║  ✓ Configuration applied successfully!    ║${NC}"
@@ -148,6 +154,8 @@ if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
   # Save username for future reference
   echo "$USERNAME" > /tmp/username.txt
 else
+  # Restore original HOME even on failure
+  export HOME="$ORIGINAL_HOME"
   _print ""
   _print "${RED}╔════════════════════════════════════════════╗${NC}"
   _print "${RED}║  ✗ Configuration failed to apply          ║${NC}"

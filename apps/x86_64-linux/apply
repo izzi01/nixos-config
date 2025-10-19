@@ -209,7 +209,13 @@ else
   _print "${BLUE}Running: home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
   _print ""
 
+  # Temporarily set HOME to match the flake configuration
+  export ORIGINAL_HOME="$HOME"
+  export HOME="/home/${USERNAME}"
+
   if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
+    # Restore original HOME
+    export HOME="$ORIGINAL_HOME"
     _print ""
     _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
     _print "${GREEN}║  ✓ Home Manager configuration applied!   ║${NC}"
@@ -222,6 +228,8 @@ else
     _print "     or use alias: ${BLUE}nix-apply${NC}"
     _print ""
   else
+    # Restore original HOME even on failure
+    export HOME="$ORIGINAL_HOME"
     _print ""
     _print "${RED}╔═══════════════════════════════════════════╗${NC}"
     _print "${RED}║  ✗ Home Manager configuration failed     ║${NC}"
