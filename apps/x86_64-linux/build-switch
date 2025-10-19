@@ -72,10 +72,16 @@ else
   else
     # Standalone Linux uses user@architecture format
     USERNAME=$(whoami)
-    # Check if username is in flake.nix
+
+    # Try to get username from flake.nix (if it's not a placeholder)
     if grep -q "user = \".*\";" flake.nix 2>/dev/null; then
-      USERNAME=$(grep "user = \".*\";" flake.nix | sed 's/.*user = "\(.*\)";.*/\1/')
+      FLAKE_USER=$(grep "user = \".*\";" flake.nix | sed 's/.*user = "\(.*\)";.*/\1/' | head -1)
+      # Only use flake.nix username if it's not a placeholder
+      if [[ "$FLAKE_USER" != "%USER%" ]] && [[ -n "$FLAKE_USER" ]]; then
+        USERNAME="$FLAKE_USER"
+      fi
     fi
+
     FLAKE_TARGET="${USERNAME}@${ARCH}-linux"
     _print "${YELLOW}Building for user configuration: $FLAKE_TARGET${NC}"
   fi
