@@ -56,6 +56,7 @@ in
       "gnutls"
       "kpt"
       "kubectx"
+      "lima"
       "libassuan"
       "libcbor"
       "libevent"
