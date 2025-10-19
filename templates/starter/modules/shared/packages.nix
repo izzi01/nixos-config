@@ -64,7 +64,6 @@ with pkgs; [
   # L
   lazygit # Simple terminal UI for git
   lnav # Log file navigator
-  libfido2 # FIDO2 library
 
   # N
   ncurses # Terminal control library with terminfo database
@@ -108,7 +107,6 @@ with pkgs; [
   unzip # ZIP archive extractor
 
   # V
-  vlc # Media player
   vscode # Visual Studio Code editor
 
   # W
@@ -129,4 +127,5 @@ with pkgs; [
 ] ++ myFonts
   ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
     pkgs.steam # Gaming platform - Linux only (requires i686 support)
+    pkgs.vlc # Media player - Linux only (depends on libudev)
   ])
