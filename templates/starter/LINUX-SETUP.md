@@ -6,6 +6,8 @@ This guide is for setting up your Nix configuration on **regular Linux distribut
 
 ## Quick Start (Automated)
 
+### Option 1: Full Setup (Recommended for first-time setup)
+
 ```bash
 # 1. Clone this repository
 git clone <your-repo-url> ~/nixos-config
@@ -22,6 +24,27 @@ The script will:
 - ✅ Apply your complete configuration
 - ✅ Install all packages (zsh, git, neovim, tmux, etc.)
 - ✅ Set up all dotfiles and configurations
+
+### Option 2: Quick Apply (Unified command for all Linux systems)
+
+```bash
+# 1. Clone this repository
+git clone <your-repo-url> ~/nixos-config
+cd ~/nixos-config
+
+# 2. Run the unified apply script (works on both NixOS and standalone Linux!)
+nix run .#apply
+```
+
+This script **automatically detects** your system type:
+- ✅ **Full NixOS**: Uses `nixos-rebuild` (asks for hostname, boot disk, etc.)
+- ✅ **Standalone Linux** (Ubuntu/Debian/Arch/etc.): Uses `home-manager` (user-level only)
+- ✅ Auto-detects architecture (ARM64 or AMD64)
+- ✅ Pulls from git config if available
+- ✅ Replaces all %USER%, %EMAIL%, %NAME% tokens
+- ✅ Updates flake.nix with your username
+- ✅ Applies your configuration
+- ✅ One command for everything!
 
 ## Manual Setup
 
