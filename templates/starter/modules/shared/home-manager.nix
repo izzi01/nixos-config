@@ -111,7 +111,7 @@ let name = "bscx";  # Update with your name
 
       # pay-respects (thefuck replacement) - Note: thefuck is deprecated, using pay-respects
       if command -v pay-respects &> /dev/null; then
-        eval "$(pay-respects zsh --alias)"
+        eval "$(pay-respects zsh --alias p)"
       fi
 
       # Aliases from your .zshrc
