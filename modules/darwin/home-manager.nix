@@ -116,6 +116,7 @@ in
 
   home-manager = {
     useGlobalPkgs = true;
+    backupFileExtension = "backup";
     users.${user} = { pkgs, config, lib, ... }:
       {
         home = {
