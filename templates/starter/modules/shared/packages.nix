@@ -49,7 +49,7 @@ with pkgs; [
   # Development tools
   curl
   gh
-  terraform
+  opentofu
   kubectl
   awscli2
   lazygit
