@@ -173,6 +173,20 @@
                 stateVersion = "23.11";
                 packages = pkgs.callPackage ./modules/shared/packages.nix {};
                 file = import ./modules/shared/files.nix { inherit pkgs config; };
+
+                # Copy nvim config as writable directory (LazyVim needs to update lock files)
+                activation.copyNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+                  nvim_config_source="${./modules/shared/config/nvim}"
+                  nvim_config_target="$HOME/.config/nvim"
+
+                  # Only copy if source is newer or target doesn't exist
+                  if [ ! -d "$nvim_config_target" ] || [ "$nvim_config_source" -nt "$nvim_config_target" ]; then
+                    $DRY_RUN_CMD mkdir -p "$HOME/.config"
+                    $DRY_RUN_CMD rm -rf "$nvim_config_target"
+                    $DRY_RUN_CMD cp -r "$nvim_config_source" "$nvim_config_target"
+                    $DRY_RUN_CMD chmod -R u+w "$nvim_config_target"
+                  fi
+                '';
               };
               programs = import ./modules/shared/home-manager.nix { inherit config pkgs lib; };
             })
@@ -197,6 +211,20 @@
                 stateVersion = "23.11";
                 packages = pkgs.callPackage ./modules/shared/packages.nix {};
                 file = import ./modules/shared/files.nix { inherit pkgs config; };
+
+                # Copy nvim config as writable directory (LazyVim needs to update lock files)
+                activation.copyNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+                  nvim_config_source="${./modules/shared/config/nvim}"
+                  nvim_config_target="$HOME/.config/nvim"
+
+                  # Only copy if source is newer or target doesn't exist
+                  if [ ! -d "$nvim_config_target" ] || [ "$nvim_config_source" -nt "$nvim_config_target" ]; then
+                    $DRY_RUN_CMD mkdir -p "$HOME/.config"
+                    $DRY_RUN_CMD rm -rf "$nvim_config_target"
+                    $DRY_RUN_CMD cp -r "$nvim_config_source" "$nvim_config_target"
+                    $DRY_RUN_CMD chmod -R u+w "$nvim_config_target"
+                  fi
+                '';
               };
               programs = import ./modules/shared/home-manager.nix { inherit config pkgs lib; };
             })

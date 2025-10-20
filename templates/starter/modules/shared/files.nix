@@ -1,11 +1,8 @@
 { pkgs, config, ... }:
 
 {
-  # Neovim LazyVim configuration
-  ".config/nvim" = {
-    source = ./config/nvim;
-    recursive = true;
-  };
+  # Neovim LazyVim configuration is handled by home.activation in home-manager.nix
+  # to make it writable (LazyVim needs to update lazy-lock.json)
 
   # WezTerm configuration
   ".config/wezterm" = {
