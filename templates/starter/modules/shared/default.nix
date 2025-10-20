@@ -11,6 +11,9 @@ in
       allowBroken = true;
       allowInsecure = false;
       allowUnsupportedSystem = true;
+      # Handle incompatible packages by ignoring platform checks
+      # Useful for aarch64 systems where some packages may not be marked as compatible
+      permittedInsecurePackages = [];
     };
 
     overlays =
