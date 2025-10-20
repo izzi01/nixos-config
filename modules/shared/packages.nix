@@ -52,6 +52,8 @@ with pkgs; [
   discord # Voice and text chat platform
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
+  docker-client # Docker CLI client
+  docker-buildx # Docker CLI plugin for extended build capabilities
   du-dust # Disk usage analyzer
 
   # E
