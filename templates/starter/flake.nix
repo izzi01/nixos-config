@@ -166,27 +166,16 @@
             };
           };
           modules = [
-            {
+            ({ pkgs, config, lib, ... }: {
               home = {
                 username = "%USER%";
                 homeDirectory = "/home/%USER%";
                 stateVersion = "23.11";
-                packages = (import nixpkgs {
-                  system = "aarch64-linux";
-                  config.allowUnfree = true;
-                  config.allowUnsupportedSystem = true;
-                }).callPackage ./modules/shared/packages.nix {};
+                packages = pkgs.callPackage ./modules/shared/packages.nix {};
+                file = import ./modules/shared/files.nix { inherit pkgs config; };
               };
-              programs = import ./modules/shared/home-manager.nix {
-                config = {};
-                pkgs = import nixpkgs {
-                  system = "aarch64-linux";
-                  config.allowUnfree = true;
-                  config.allowUnsupportedSystem = true;
-                };
-                lib = nixpkgs.lib;
-              };
-            }
+              programs = import ./modules/shared/home-manager.nix { inherit config pkgs lib; };
+            })
           ];
         };
 
@@ -201,25 +190,16 @@
             };
           };
           modules = [
-            {
+            ({ pkgs, config, lib, ... }: {
               home = {
                 username = "%USER%";
                 homeDirectory = "/home/%USER%";
                 stateVersion = "23.11";
-                packages = (import nixpkgs {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
-                }).callPackage ./modules/shared/packages.nix {};
+                packages = pkgs.callPackage ./modules/shared/packages.nix {};
+                file = import ./modules/shared/files.nix { inherit pkgs config; };
               };
-              programs = import ./modules/shared/home-manager.nix {
-                config = {};
-                pkgs = import nixpkgs {
-                  system = "x86_64-linux";
-                  config.allowUnfree = true;
-                };
-                lib = nixpkgs.lib;
-              };
-            }
+              programs = import ./modules/shared/home-manager.nix { inherit config pkgs lib; };
+            })
           ];
         };
       };

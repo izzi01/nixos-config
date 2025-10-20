@@ -137,8 +137,10 @@ with pkgs; [
   zsh-powerlevel10k # Zsh theme
 ] ++ myFonts
   ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
-    pkgs.steam # Gaming platform - Linux only (requires i686 support)
     pkgs.vlc # Media player - Linux only (depends on libudev)
+  ])
+  ++ (pkgs.lib.optionals (pkgs.stdenv.system == "x86_64-linux") [
+    pkgs.steam # Gaming platform - x86_64-linux only (requires i686 support)
   ])
   ++ (pkgs.lib.optionals (pkgs.stdenv.system != "aarch64-linux") [
     pkgs.google-chrome # Web browser - not available on aarch64-linux
