@@ -432,7 +432,7 @@ let name = "bscx";  # Update with your name
 	    editor = "nvim";
         autocrlf = "input";
       };
-      commit.gpgsign = true;
+      commit.gpgsign = false;
       pull.rebase = true;
       rebase.autoStash = true;
     };

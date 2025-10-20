@@ -23,6 +23,15 @@ in
     ${user} ALL=(root) NOPASSWD: /opt/homebrew/bin/brew
   '';
 
+  # Custom activation script to run homebrew last and ignore errors
+  system.activationScripts.postActivation.text = ''
+    echo "Running homebrew bundle (errors will be ignored)..."
+    /opt/homebrew/bin/brew bundle --file=/etc/brew/Brewfile --no-lock || {
+      echo "Warning: Some homebrew packages failed to install, but continuing..."
+      exit 0
+    }
+  '';
+
   homebrew = {
     # This is a module from nix-darwin
     # Homebrew is *installed* via the flake input nix-homebrew
@@ -39,7 +48,6 @@ in
       autoUpdate = false;
       cleanup = "zap";
       upgrade = false;
-      extraFlags = [ "--continue" ];
     };
     taps   = [
       "dopplerhq/cli"
@@ -54,6 +62,7 @@ in
       "bash"
       "ca-certificates"
       "caddy"
+      "docker-buildx"
       "doppler"
       "flux@2.2"
       "gettext"
