@@ -32,6 +32,7 @@ in
       autoUpdate = false;
       cleanup = "zap";
       upgrade = false;
+      extraFlags = [ "--continue" ];
     };
     taps = [
       "dopplerhq/cli"
