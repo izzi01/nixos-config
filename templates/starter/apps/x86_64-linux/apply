@@ -180,6 +180,10 @@ _prompt "${YELLOW}Do you want to build and switch to the new configuration now? 
 
 case "$apply_now" in
   [Yy]*)
+    # Set environment variables for unfree and unsupported packages
+    export NIXPKGS_ALLOW_UNFREE=1
+    export NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1
+
     # Apply configuration based on system type
     _print ""
     if [[ "$IS_NIXOS" == true ]]; then
@@ -188,7 +192,7 @@ case "$apply_now" in
       _print "${BLUE}Running: sudo nixos-rebuild switch --flake .#${ARCH}-linux${NC}"
       _print ""
 
-      if sudo nixos-rebuild switch --flake ".#${ARCH}-linux"; then
+      if sudo NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${ARCH}-linux"; then
         _print ""
         _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
         _print "${GREEN}║  ✓ NixOS configuration applied!          ║${NC}"
@@ -216,7 +220,7 @@ case "$apply_now" in
       _print "${BLUE}Running: home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
       _print ""
 
-      if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
+      if NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
         _print ""
         _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
         _print "${GREEN}║  ✓ Home Manager configuration applied!   ║${NC}"

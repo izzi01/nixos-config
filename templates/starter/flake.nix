@@ -156,38 +156,68 @@
       # Home Manager standalone configurations (for non-NixOS Linux with Nix installed)
       homeConfigurations = {
         "%USER%@aarch64-linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-linux;
+          pkgs = import nixpkgs {
+            system = "aarch64-linux";
+            config = {
+              allowUnfree = true;
+              allowBroken = true;
+              allowInsecure = false;
+              allowUnsupportedSystem = true;
+            };
+          };
           modules = [
             {
               home = {
                 username = "%USER%";
                 homeDirectory = "/home/%USER%";
                 stateVersion = "23.11";
-                packages = nixpkgs.legacyPackages.aarch64-linux.callPackage ./modules/shared/packages.nix {};
+                packages = (import nixpkgs {
+                  system = "aarch64-linux";
+                  config.allowUnfree = true;
+                  config.allowUnsupportedSystem = true;
+                }).callPackage ./modules/shared/packages.nix {};
               };
               programs = import ./modules/shared/home-manager.nix {
                 config = {};
-                pkgs = nixpkgs.legacyPackages.aarch64-linux;
-                lib = nixpkgs.legacyPackages.aarch64-linux.lib;
+                pkgs = import nixpkgs {
+                  system = "aarch64-linux";
+                  config.allowUnfree = true;
+                  config.allowUnsupportedSystem = true;
+                };
+                lib = nixpkgs.lib;
               };
             }
           ];
         };
 
         "%USER%@x86_64-linux" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config = {
+              allowUnfree = true;
+              allowBroken = true;
+              allowInsecure = false;
+              allowUnsupportedSystem = true;
+            };
+          };
           modules = [
             {
               home = {
                 username = "%USER%";
                 homeDirectory = "/home/%USER%";
                 stateVersion = "23.11";
-                packages = nixpkgs.legacyPackages.x86_64-linux.callPackage ./modules/shared/packages.nix {};
+                packages = (import nixpkgs {
+                  system = "x86_64-linux";
+                  config.allowUnfree = true;
+                }).callPackage ./modules/shared/packages.nix {};
               };
               programs = import ./modules/shared/home-manager.nix {
                 config = {};
-                pkgs = nixpkgs.legacyPackages.x86_64-linux;
-                lib = nixpkgs.legacyPackages.x86_64-linux.lib;
+                pkgs = import nixpkgs {
+                  system = "x86_64-linux";
+                  config.allowUnfree = true;
+                };
+                lib = nixpkgs.lib;
               };
             }
           ];

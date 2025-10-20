@@ -59,7 +59,6 @@ with pkgs; [
   # I
   iftop # Network bandwidth monitor
   imagemagick # Image manipulation toolkit
-  insomnia # HTTP client and API testing tool
 
   # J
   jpegoptim # JPEG optimizer
@@ -143,4 +142,5 @@ with pkgs; [
   ])
   ++ (pkgs.lib.optionals (pkgs.stdenv.system != "aarch64-linux") [
     pkgs.google-chrome # Web browser - not available on aarch64-linux
+    pkgs.insomnia # HTTP client - not available on aarch64-linux
   ])
