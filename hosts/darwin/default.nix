@@ -1,4 +1,4 @@
-{ agenix, config, pkgs, ... }:
+{ agenix, config, pkgs, inputs, ... }:
 let
   user = "bscx";
 in
@@ -30,7 +30,7 @@ in
   # Load configuration that is shared across systems
   environment.systemPackages = with pkgs; [
     agenix.packages."${pkgs.system}".default
-  ] ++ (import ../../modules/shared/packages.nix { inherit pkgs; });
+  ] ++ (import ../../modules/shared/packages.nix { inherit pkgs; nixpkgs-specific = inputs.nixpkgs-specific; });
 
   #launchd.user.agents = {
   #  emacs = {

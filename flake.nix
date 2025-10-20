@@ -2,6 +2,7 @@
   description = "General Purpose Configuration for macOS and NixOS";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-specific.url = "github:nixos/nixpkgs/2c36ece932b8c0040893990da00034e46c33e3e7";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager";
     agenix.url = "github:ryantm/agenix";
@@ -69,7 +70,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, home-manager, plasma-manager, nixpkgs, flake-utils, disko, agenix, secrets, chaotic } @inputs:
+  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, home-manager, plasma-manager, nixpkgs, nixpkgs-specific, flake-utils, disko, agenix, secrets, chaotic } @inputs:
     let
       user = "bscx";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];

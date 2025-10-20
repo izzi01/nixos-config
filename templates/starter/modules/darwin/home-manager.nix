@@ -1,4 +1,4 @@
-{ config, pkgs, lib, home-manager, ... }:
+{ config, pkgs, lib, home-manager, inputs, ... }:
 
 let
   user = "%USER%";
@@ -28,6 +28,11 @@ in
 
   homebrew = {
     enable = true;
+    onActivation = {
+      autoUpdate = false;
+      cleanup = "zap";
+      upgrade = false;
+    };
     taps = [
       "dopplerhq/cli"
       "fluxcd/tap"
@@ -126,7 +131,7 @@ in
     users.${user} = { pkgs, config, lib, ... }:{
       home = {
         enableNixpkgsReleaseCheck = false;
-        packages = pkgs.callPackage ./packages.nix {};
+        packages = pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; };
         file = lib.mkMerge [
           sharedFiles
           additionalFiles

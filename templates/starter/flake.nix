@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-specific.url = "github:nixos/nixpkgs/2c36ece932b8c0040893990da00034e46c33e3e7";
     home-manager.url = "github:nix-community/home-manager";
     darwin = {
       url = "github:LnL7/nix-darwin/master";
@@ -53,7 +54,7 @@
     };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, homebrew-zadark, home-manager, nixpkgs, disko } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, homebrew-zadark, home-manager, nixpkgs, nixpkgs-specific, disko } @inputs:
     let
       user = "%USER%";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -105,7 +106,7 @@
       in
         darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = inputs;
+          specialArgs = inputs // { inherit inputs; };
           modules = [
             ({ config, ...}: {
               homebrew.taps = builtins.attrNames config.nix-homebrew.taps;

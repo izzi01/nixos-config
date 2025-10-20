@@ -1,7 +1,7 @@
-{ pkgs, inputs, config ? null }:
+{ pkgs, inputs, config ? null, nixpkgs-specific ? null }:
 with pkgs;
 let
-  shared-packages = import ../shared/packages.nix { inherit pkgs; };
+  shared-packages = import ../shared/packages.nix { inherit pkgs nixpkgs-specific; };
   hostname = if config != null then (config.networking.hostName or "") else "";
 
   # Custom scripts

@@ -1,6 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, nixpkgs-specific ? null, ... }:
 let
   myFonts = import ./fonts.nix { inherit pkgs; };
+
+  # Packages from specific nixpkgs version
+  specificPkgs = if nixpkgs-specific != null then
+    import nixpkgs-specific {
+      system = pkgs.system;
+      config.allowUnfree = true;
+    }
+  else pkgs;
 in
 with pkgs; [
   # A
@@ -14,6 +22,7 @@ with pkgs; [
   bash-completion # Bash completion scripts
   bat # Cat clone with syntax highlighting
   btop # System monitor and process viewer
+  bun # JavaScript runtime and toolkit
 
   # C
   coreutils # Basic file/text/shell utilities
@@ -29,6 +38,7 @@ with pkgs; [
   # F
   fd # Fast find alternative
   ffmpeg # Multimedia framework
+  specificPkgs.fluxcd # GitOps toolkit for Kubernetes
   flyctl # Fly.io tools
   fzf # Fuzzy finder
 

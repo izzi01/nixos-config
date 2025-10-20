@@ -21,7 +21,7 @@ in
     enableNixpkgsReleaseCheck = false;
     username = "${user}";
     homeDirectory = "/home/${user}";
-    packages = pkgs.callPackage ./packages.nix { inherit inputs config; };
+    packages = pkgs.callPackage ./packages.nix { inherit inputs config; nixpkgs-specific = inputs.nixpkgs-specific; };
     file = shared-files // import ./files.nix { inherit user pkgs; };
     stateVersion = "25.05";
 

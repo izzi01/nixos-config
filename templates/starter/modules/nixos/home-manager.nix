@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   user = "%USER%";
@@ -29,7 +29,7 @@ in
     enableNixpkgsReleaseCheck = false;
     username = "${user}";
     homeDirectory = "/home/${user}";
-    packages = pkgs.callPackage ./packages.nix {};
+    packages = pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; };
     file = shared-files // import ./files.nix { inherit user; };
     stateVersion = "21.05";
   };
