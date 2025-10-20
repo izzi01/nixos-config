@@ -173,59 +173,94 @@ fi
 echo "$USERNAME" > /tmp/username.txt
 _print "${GREEN}✓ Configuration files updated with user information.${NC}"
 
-# Apply configuration based on system type
+# Ask if user wants to apply configuration
 _print ""
-if [[ "$IS_NIXOS" == true ]]; then
-  # Full NixOS - use nixos-rebuild
-  _print "${YELLOW}Applying NixOS configuration...${NC}"
-  _print "${BLUE}Running: sudo nixos-rebuild switch --flake .#${ARCH}-linux${NC}"
-  _print ""
+_print "${YELLOW}Configuration files have been prepared.${NC}"
+_prompt "${YELLOW}Do you want to build and switch to the new configuration now? (yes/no): ${NC}" apply_now
 
-  if sudo nixos-rebuild switch --flake ".#${ARCH}-linux"; then
+case "$apply_now" in
+  [Yy]*)
+    # Apply configuration based on system type
+    _print ""
+    if [[ "$IS_NIXOS" == true ]]; then
+      # Full NixOS - use nixos-rebuild
+      _print "${YELLOW}Applying NixOS configuration...${NC}"
+      _print "${BLUE}Running: sudo nixos-rebuild switch --flake .#${ARCH}-linux${NC}"
+      _print ""
+
+      if sudo nixos-rebuild switch --flake ".#${ARCH}-linux"; then
+        _print ""
+        _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
+        _print "${GREEN}║  ✓ NixOS configuration applied!          ║${NC}"
+        _print "${GREEN}╚═══════════════════════════════════════════╝${NC}"
+        _print ""
+      else
+        _print ""
+        _print "${RED}╔═══════════════════════════════════════════╗${NC}"
+        _print "${RED}║  ✗ NixOS configuration failed            ║${NC}"
+        _print "${RED}╚═══════════════════════════════════════════╝${NC}"
+        exit 1
+      fi
+    else
+      # Standalone Linux - use Home Manager
+      _print "${YELLOW}Checking for Home Manager...${NC}"
+
+      if ! command -v home-manager &> /dev/null; then
+        _print "${YELLOW}Home Manager not found. Installing...${NC}"
+        nix run home-manager/master -- init --switch
+        _print "${GREEN}✓ Home Manager installed.${NC}"
+      fi
+
+      _print ""
+      _print "${YELLOW}Applying Home Manager configuration...${NC}"
+      _print "${BLUE}Running: home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
+      _print ""
+
+      if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
+        _print ""
+        _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
+        _print "${GREEN}║  ✓ Home Manager configuration applied!   ║${NC}"
+        _print "${GREEN}╚═══════════════════════════════════════════╝${NC}"
+        _print ""
+        _print "${GREEN}Next steps:${NC}"
+        _print "  1. Restart your terminal: ${BLUE}exec \$SHELL${NC}"
+        _print "  2. Your shell is now configured with all packages"
+        _print "  3. To update: ${BLUE}home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
+        _print "     or use alias: ${BLUE}nix-apply${NC}"
+        _print ""
+      else
+        _print ""
+        _print "${RED}╔═══════════════════════════════════════════╗${NC}"
+        _print "${RED}║  ✗ Home Manager configuration failed     ║${NC}"
+        _print "${RED}╚═══════════════════════════════════════════╝${NC}"
+        exit 1
+      fi
+    fi
+    ;;
+  [Nn]*)
     _print ""
     _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
-    _print "${GREEN}║  ✓ NixOS configuration applied!          ║${NC}"
-    _print "${GREEN}╚═══════════════════════════════════════════╝${NC}"
-    _print ""
-  else
-    _print ""
-    _print "${RED}╔═══════════════════════════════════════════╗${NC}"
-    _print "${RED}║  ✗ NixOS configuration failed            ║${NC}"
-    _print "${RED}╚═══════════════════════════════════════════╝${NC}"
-    exit 1
-  fi
-else
-  # Standalone Linux - use Home Manager
-  _print "${YELLOW}Checking for Home Manager...${NC}"
-
-  if ! command -v home-manager &> /dev/null; then
-    _print "${YELLOW}Home Manager not found. Installing...${NC}"
-    nix run home-manager/master -- init --switch
-    _print "${GREEN}✓ Home Manager installed.${NC}"
-  fi
-
-  _print ""
-  _print "${YELLOW}Applying Home Manager configuration...${NC}"
-  _print "${BLUE}Running: home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
-  _print ""
-
-  if home-manager switch --flake ".#${USERNAME}@${ARCH}-linux"; then
-    _print ""
-    _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
-    _print "${GREEN}║  ✓ Home Manager configuration applied!   ║${NC}"
+    _print "${GREEN}║  ✓ Configuration prepared!               ║${NC}"
     _print "${GREEN}╚═══════════════════════════════════════════╝${NC}"
     _print ""
     _print "${GREEN}Next steps:${NC}"
-    _print "  1. Restart your terminal: ${BLUE}exec \$SHELL${NC}"
-    _print "  2. Your shell is now configured with all packages"
-    _print "  3. To update: ${BLUE}home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
-    _print "     or use alias: ${BLUE}nix-apply${NC}"
+    if [[ "$IS_NIXOS" == true ]]; then
+      _print "  To apply later, run: ${BLUE}nix run .#build-switch${NC}"
+      _print "  Or manually: ${BLUE}sudo nixos-rebuild switch --flake .#${ARCH}-linux${NC}"
+    else
+      _print "  To apply later, run: ${BLUE}home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
+      _print "  Or use alias: ${BLUE}nix-apply${NC}"
+    fi
     _print ""
-  else
+    ;;
+  *)
+    _print "${RED}Invalid option. Configuration prepared but not applied.${NC}"
     _print ""
-    _print "${RED}╔═══════════════════════════════════════════╗${NC}"
-    _print "${RED}║  ✗ Home Manager configuration failed     ║${NC}"
-    _print "${RED}╚═══════════════════════════════════════════╝${NC}"
-    exit 1
-  fi
-fi
+    if [[ "$IS_NIXOS" == true ]]; then
+      _print "To apply later, run: ${BLUE}nix run .#build-switch${NC}"
+    else
+      _print "To apply later, run: ${BLUE}home-manager switch --flake .#${USERNAME}@${ARCH}-linux${NC}"
+    fi
+    _print ""
+    ;;
+esac
