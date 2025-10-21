@@ -126,6 +126,7 @@ with pkgs; [
   phpactor # PHP language server with better refactoring support
   phpunit # PHP testing framework
   pngquant # PNG compression tool
+  posting # HTTP posting client
 
   # Q
   qt5.qtbase # Qt5 base library with platform plugins

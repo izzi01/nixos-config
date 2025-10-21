@@ -91,6 +91,7 @@ with pkgs; [
   # P
   pandoc # Document converter
   pngquant # PNG compression tool
+  posting # HTTP Post client
 
   # Q
   qt5.qtbase # Qt5 base library with platform plugins

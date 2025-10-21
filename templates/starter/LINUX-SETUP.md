@@ -6,26 +6,7 @@ This guide is for setting up your Nix configuration on **regular Linux distribut
 
 ## Quick Start (Automated)
 
-### Option 1: Full Setup (Recommended for first-time setup)
-
-```bash
-# 1. Clone this repository
-git clone <your-repo-url> ~/nixos-config
-cd ~/nixos-config
-
-# 2. Run the setup script
-./setup-linux.sh
-```
-
-The script will:
-- ✅ Install Nix (if not already installed)
-- ✅ Install Home Manager
-- ✅ Install direnv for automatic environment loading
-- ✅ Apply your complete configuration
-- ✅ Install all packages (zsh, git, neovim, tmux, etc.)
-- ✅ Set up all dotfiles and configurations
-
-### Option 2: Quick Apply (Unified command for all Linux systems)
+### Option 1: Quick Apply (Unified command for all Linux systems)
 
 ```bash
 # 1. Clone this repository
@@ -137,7 +118,7 @@ When you apply the configuration, Home Manager will install and configure:
 
 ## Switching to a Different Machine
 
-Just clone your config and run `./setup-linux.sh` - all your settings will be applied automatically!
+Just clone your config and run `nix run .#apply` - all your settings will be applied automatically!
 
 ## Troubleshooting
 
