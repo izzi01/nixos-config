@@ -52,9 +52,11 @@ with pkgs; [
   discord # Voice and text chat platform
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
+  du-dust # Disk usage analyzer
+  docker # Docker Engine (includes daemon, CLI, and all tools)
   docker-client # Docker CLI client
   docker-buildx # Docker CLI plugin for extended build capabilities
-  du-dust # Disk usage analyzer
+  docker-compose # Docker Compose for multi-container orchestration
 
   # E
   eza # Modern ls replacement

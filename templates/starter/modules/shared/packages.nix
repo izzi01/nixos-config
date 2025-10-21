@@ -30,8 +30,10 @@ with pkgs; [
   # D
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
+  docker # Docker Engine (includes daemon, CLI, and all tools)
   docker-client # Docker CLI client
   docker-buildx # Docker CLI plugin for extended build capabilities
+  docker-compose # Docker Compose for multi-container orchestration
   du-dust # Disk usage analyzer
 
   # E
