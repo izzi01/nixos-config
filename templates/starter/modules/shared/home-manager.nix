@@ -83,6 +83,11 @@ let name = "bscx";  # Update with your name
         export PATH="$PATH:$(go env GOPATH)/bin"
       fi
 
+      # Bun PATH
+      if command -v bun &> /dev/null; then
+        export PATH="$HOME/.bun/bin:$PATH"
+      fi
+
       # Environment variables
       export EDITOR="nvim"
       export TALOSCONFIG="_out/talosconfig"
