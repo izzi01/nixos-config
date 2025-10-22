@@ -54,10 +54,10 @@ with pkgs; [
   difftastic # Structural diff tool
   du-dust # Disk usage analyzer
   # Docker - use specific version to avoid conflicts
-  pkgs.docker_27 # Use specific Docker 27.3.2 version
-  docker-client = pkgs.docker_27.cli # Docker CLI client from specific version
-  docker-buildx = pkgs.docker_27.buildx # Docker CLI plugin for extended build capabilities
-  docker-compose = pkgs.docker_27.compose # Docker Compose from specific version
+  pkgs.docker_28 # Use specific Docker 27.3.2 version
+  docker-client = pkgs.docker_28.cli # Docker CLI client from specific version
+  docker-buildx = pkgs.docker_28.buildx # Docker CLI plugin for extended build capabilities
+  docker-compose = pkgs.docker_28.compose # Docker Compose from specific version
 
   # E
   eza # Modern ls replacement

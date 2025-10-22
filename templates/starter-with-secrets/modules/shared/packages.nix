@@ -21,11 +21,11 @@ with pkgs; [
   # D
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
+  pkgs.docker_28 # Use specific Docker 27.3.2 version
+  docker-client = pkgs.docker_28.cli # Docker CLI client from specific version
+  docker-buildx = pkgs.docker_28.buildx # Docker CLI plugin for extended build capabilities
+  docker-compose = pkgs.docker_28.compose # Docker Compose from specific version
   du-dust # Disk usage analyzer
-  docker # Docker Engine (includes daemon, CLI, and all tools)
-  docker-client # Docker CLI client
-  docker-buildx # Docker CLI plugin for extended build capabilities
-  docker-compose # Docker Compose for multi-container orchestration
 
   # E
   eza # Modern ls replacement
