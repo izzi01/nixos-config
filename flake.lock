@@ -448,6 +448,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-specific": {
+      "locked": {
+        "lastModified": 1727390316,
+        "narHash": "sha256-XvKKl01RaLL8k/3CXS1NazdsxZ7B+5hIY6j9JNqdl7c=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "2c36ece932b8c0040893990da00034e46c33e3e7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "2c36ece932b8c0040893990da00034e46c33e3e7",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1758690382,
@@ -522,6 +538,7 @@
         "homebrew-youtube-music": "homebrew-youtube-music",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-specific": "nixpkgs-specific",
         "plasma-manager": "plasma-manager",
         "secrets": "secrets"
       }

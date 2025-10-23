@@ -1,4 +1,8 @@
-_:
+{ pkgs, ... }:
+
+let
+  isAarch64Darwin = pkgs.stdenv.system == "aarch64-darwin";
+in
 
 [
   # Development Tools
@@ -35,7 +39,6 @@ _:
   "kitty"
   "mysqlworkbench"
   "syncthing-app"
-  "battery"
   "font-jetbrains-mono-nerd-font"
   "localsend"
   "rclone-ui"
@@ -57,4 +60,7 @@ _:
   "keepassxc"
   "mounty"
   "stats"
+] ++ pkgs.lib.optionals isAarch64Darwin [
+  # Battery monitoring for Apple Silicon Macs
+  "battery"
 ]

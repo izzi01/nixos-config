@@ -71,7 +71,6 @@ with pkgs; [
 
   # N
   ncurses # Terminal control library with terminfo database
-  ncdu # Disk space utility
   neofetch # System information tool
   ngrok # Secure tunneling service
   nodejs_20 # Node.js JavaScript runtime (includes npm)
@@ -135,4 +134,7 @@ with pkgs; [
   ])
   ++ (pkgs.lib.optionals (pkgs.stdenv.system != "aarch64-linux") [
     pkgs.google-chrome # Web browser - not available on aarch64-linux
+  ])
+  ++ (pkgs.lib.optionals (pkgs.stdenv.system != "x86_64-darwin") [
+    pkgs.ncdu # Disk space utility - not for x64-darwin
   ])

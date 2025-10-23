@@ -1,4 +1,8 @@
-_:
+{ pkgs, ... }:
+
+let
+  isAarch64Darwin = pkgs.stdenv.system == "aarch64-darwin";
+in
 
 [
   # Development Tools
@@ -31,4 +35,7 @@ _:
 
   # Browsers
   "google-chrome"
+] ++ pkgs.lib.optionals isAarch64Darwin [
+  # Battery monitoring for Apple Silicon Macs
+  "battery"
 ]
