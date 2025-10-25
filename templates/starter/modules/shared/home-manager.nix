@@ -211,13 +211,32 @@ let name = "bscx";  # Update with your name
       }
       preexec_functions+=(set_zellij_tab_name)
 
-      # Doppler auto-inject from your .zshrc
+      # Doppler auto-inject from your .zshrc (only with internet connection)
       if command -v doppler &> /dev/null; then
-        export DOPPLER_PROJECT="api-key"
-        export DOPPLER_CONFIG="dev"
-        eval "$(doppler secrets download --no-file --format env-no-quotes)"
-        unset DOPPLER_PROJECT
-        unset DOPPLER_CONFIG
+        # Check for internet connection before running Doppler
+        # Try multiple methods to detect connectivity
+        internet_connected=false
+
+        # Method 1: Try to ping Google's DNS
+        if ping -c 1 -W 2 8.8.8.8 &> /dev/null; then
+          internet_connected=true
+        # Method 2: Try to connect to a reliable HTTP endpoint
+        elif curl -s --max-time 2 --connect-timeout 2 https://api.doppler.com &> /dev/null; then
+          internet_connected=true
+        # Method 3: Check if we can reach Apple's connectivity test (macOS specific)
+        elif [[ "$(uname -s)" == "Darwin" ]] && ping -c 1 -W 2 17.253.144.10 &> /dev/null; then
+          internet_connected=true
+        fi
+
+        if [[ "$internet_connected" == true ]]; then
+          export DOPPLER_PROJECT="api-key"
+          export DOPPLER_CONFIG="dev"
+          eval "$(doppler secrets download --no-file --format env-no-quotes)"
+          unset DOPPLER_PROJECT
+          unset DOPPLER_CONFIG
+        else
+          echo "⚠️  No internet connection detected - skipping Doppler secrets injection"
+        fi
       fi
 
       # Claude CLI alias and functions
