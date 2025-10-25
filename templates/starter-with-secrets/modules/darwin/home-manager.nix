@@ -20,6 +20,11 @@ in
 
   homebrew = {
     enable = true;
+    onActivation = {
+      autoUpdate = false;
+      cleanup = "none";
+      upgrade = false;
+    };
     taps = [
       "dopplerhq/cli"
       "fluxcd/tap"
