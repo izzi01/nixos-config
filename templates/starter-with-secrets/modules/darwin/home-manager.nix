@@ -122,7 +122,7 @@ in
     users.${user} = { pkgs, config, lib, ... }:{
       home = {
         enableNixpkgsReleaseCheck = false;
-        packages = pkgs.callPackage ./packages.nix {};
+        packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix {});
         file = lib.mkMerge [
           sharedFiles
           additionalFiles
