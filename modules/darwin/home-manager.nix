@@ -86,6 +86,7 @@ in
       "mysql-client"
       "nettle"
       "npth"
+      "gromgit/fuse/ntfs-3g-mac"
       "oh-my-posh"
       "oniguruma"
       "openssl@3"
