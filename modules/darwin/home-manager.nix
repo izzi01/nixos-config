@@ -158,6 +158,7 @@ in
       { path = "/Applications/Claude.app/"; }
       { path = "/Applications/Discord.app/"; }
       { path = "/Applications/TickTick.app/"; }
+      { path = "${pkgs.google-chrome}/Applications/Google Chrome.app/"; }
       { path = "/System/Applications/Home.app/"; }
       { path = "/System/Applications/Launchpad.app/"; }
       {

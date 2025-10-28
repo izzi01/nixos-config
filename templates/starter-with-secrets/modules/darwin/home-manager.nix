@@ -147,6 +147,7 @@ in
       { path = "/System/Applications/Messages.app/"; }
       { path = "/System/Applications/Notes.app/"; }
       { path = "${pkgs.wezterm}/Applications/WezTerm.app/"; }
+      { path = "${pkgs.google-chrome}/Applications/Google Chrome.app/"; }
       { path = "/System/Applications/Music.app/"; }
       { path = "/System/Applications/Photos.app/"; }
       { path = "/System/Applications/Photo Booth.app/"; }

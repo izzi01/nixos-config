@@ -158,6 +158,7 @@ in
       { path = "/System/Applications/Messages.app/"; }
       { path = "/System/Applications/Notes.app/"; }
       { path = "${pkgs.wezterm}/Applications/WezTerm.app/"; }
+      { path = "${pkgs.google-chrome}/Applications/Google Chrome.app/"; }
       { path = "/System/Applications/System Settings.app/"; }
       {
         path = "${config.users.users.${user}.home}/Downloads";
