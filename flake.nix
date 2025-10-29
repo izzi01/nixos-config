@@ -69,8 +69,12 @@
       url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-search-cli = {
+      url = "github:peterldowns/nix-search-cli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, home-manager, plasma-manager, nixpkgs, nixpkgs-specific, flake-utils, disko, agenix, secrets, chaotic } @inputs:
+  outputs = { self, darwin, claude-desktop, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-flux, homebrew-fuse, homebrew-youtube-music, home-manager, plasma-manager, nixpkgs, nixpkgs-specific, flake-utils, disko, agenix, secrets, chaotic, nix-search-cli } @inputs:
     let
       user = "bscx";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];

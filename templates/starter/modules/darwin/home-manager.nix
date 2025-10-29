@@ -133,12 +133,20 @@ in
     users.${user} = { pkgs, config, lib, ... }:{
       home = {
         enableNixpkgsReleaseCheck = false;
-        packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; });
+        packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; })
+          ++ [ inputs.nix-search-cli.packages.${pkgs.system}.default ];
         file = lib.mkMerge [
           sharedFiles
           additionalFiles
         ];
         stateVersion = "23.11";
+        activation = {
+          installClaudeCode = lib.hm.dag.entryAfter ["writeBoundary"] ''
+            if command -v npm >/dev/null 2>&1; then
+              $DRY_RUN_CMD npm install -g @anthropic-ai/claude-code || true
+            fi
+          '';
+        };
       };
       programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
 
