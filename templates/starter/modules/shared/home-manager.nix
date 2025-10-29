@@ -245,7 +245,7 @@ let name = "bscx";  # Update with your name
         unset ANTHROPIC_AUTH_TOKEN
         unset ANTHROPIC_MODEL
         unset ANTHROPIC_SMALL_FAST_MODEL
-        bun x @anthropic-ai/claude-code "$@"
+        command claude "$@"
       }
 
       function cc() {
@@ -253,7 +253,7 @@ let name = "bscx";  # Update with your name
         unset ANTHROPIC_AUTH_TOKEN
         unset ANTHROPIC_MODEL
         unset ANTHROPIC_SMALL_FAST_MODEL
-        bun x @anthropic-ai/claude-code --dangerously-skip-permissions "$@"
+        command claude --dangerously-skip-permissions "$@"
       }
 
       function glm() {
@@ -261,7 +261,7 @@ let name = "bscx";  # Update with your name
         export ANTHROPIC_AUTH_TOKEN=$GLM_API_KEY
         export ANTHROPIC_MODEL="glm-4.6"
         export ANTHROPIC_SMALL_FAST_MODEL="glm-4.6-air"
-        bun x @anthropic-ai/claude-code --dangerously-skip-permissions "$@"
+        command claude --dangerously-skip-permissions "$@"
       }
 
       function glm-safe() {
@@ -269,7 +269,7 @@ let name = "bscx";  # Update with your name
         export ANTHROPIC_AUTH_TOKEN=$GLM_API_KEY
         export ANTHROPIC_MODEL="glm-4.6"
         export ANTHROPIC_SMALL_FAST_MODEL="glm-4.6-air"
-        bun x @anthropic-ai/claude-code "$@"
+        command claude "$@"
       }
 
       function of() {

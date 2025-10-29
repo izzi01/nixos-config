@@ -76,6 +76,7 @@ with pkgs; [
   kustomize # Kubernetes configuration customization
 
   # L
+  lazydocker # Simple terminal UI for docker
   lazygit # Simple terminal UI for git
   lnav # Log file navigator
 
