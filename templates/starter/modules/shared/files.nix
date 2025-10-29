@@ -33,4 +33,10 @@
     source = ./config/kitty;
     recursive = true;
   };
+
+  # Kitty configuration
+  ".config/nvim" = {
+    source = ./config/nvim;
+    recursive = true;
+  };
 }

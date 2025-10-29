@@ -53,7 +53,7 @@ let user = "%USER%"; in
         autohide = false;
         show-recents = false;
         launchanim = true;
-        orientation = "left";
+        orientation = "bottom";
         tilesize = 48;
       };
 
