@@ -31,7 +31,6 @@ with pkgs; [
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
   # Docker - use specific version to avoid conflicts
-  pkgs.docker_28 # Use specific Docker 27.3.2 version
   docker-client # Docker CLI client from specific version
   docker-buildx # Docker CLI plugin for extended build capabilities
   docker-compose # Docker Compose from specific version
