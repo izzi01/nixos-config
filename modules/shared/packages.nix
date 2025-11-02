@@ -96,6 +96,7 @@ with pkgs; [
   killall # Kill processes by name
   kitty # GPU-accelerated terminal emulator
   kubectl # Kubernetes CLI
+  kubectx # Kube context switcher
   k9s # Kubernetes TUI
   kubernetes-helm # Kubernetes package manager
   kustomize # Kubernetes configuration customization
