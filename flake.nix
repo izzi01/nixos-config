@@ -1,10 +1,10 @@
 {
   description = "General Purpose Configuration for macOS and NixOS";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-specific.url = "github:nixos/nixpkgs/2c36ece932b8c0040893990da00034e46c33e3e7";
     flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     agenix.url = "github:ryantm/agenix";
     claude-desktop = {
       url = "github:k3d3/claude-desktop-linux-flake";
@@ -19,7 +19,7 @@
       inputs.home-manager.follows = "home-manager";
     };
     darwin = {
-      url = "github:LnL7/nix-darwin/master";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew = {
