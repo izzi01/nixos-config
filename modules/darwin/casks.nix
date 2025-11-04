@@ -61,6 +61,7 @@ in
   "keepassxc"
   "mounty"
   "stats"
+  "macfuse"
 ] ++ pkgs.lib.optionals isAarch64Darwin [
   # Battery monitoring for Apple Silicon Macs
   "battery"
