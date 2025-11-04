@@ -6,6 +6,7 @@
   "gromgit/fuse/ntfs-3g-mac"  # macOS specific NTFS support
   "zadark"  # WhatsApp enhancement tool (Homebrew only)
   "screenfetch"  # System info tool (neofetch available in Nixpkgs as alternative)
+  "vfox"  # System info tool (neofetch available in Nixpkgs as alternative)
 
   # Note: All development tools and libraries have been moved to Nixpkgs
   # Nix automatically handles all dependencies, so explicit libraries are not needed

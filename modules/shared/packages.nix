@@ -94,7 +94,6 @@ with pkgs; [
 
   # S - Additional tools moved from Homebrew
   superfile # Pretty fancy and modern terminal file manager
-  vfox # Extendable version manager
 
   # P
   pandoc # Document converter
