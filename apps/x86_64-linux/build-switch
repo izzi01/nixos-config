@@ -90,13 +90,17 @@ fi
 _print "${YELLOW}Starting build and switch...${NC}"
 _print ""
 
+# Set environment variables to allow unfree and unsupported system packages
+export NIXPKGS_ALLOW_UNFREE=1
+export NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1
+
 # Apply configuration based on system type
 if [[ "$IS_NIXOS" == true ]]; then
   # Full NixOS - use nixos-rebuild
   _print "${BLUE}Running: sudo nixos-rebuild switch --flake .#$FLAKE_TARGET $OTHER_ARGS${NC}"
   _print ""
 
-  if sudo /run/current-system/sw/bin/nixos-rebuild switch --flake ".#$FLAKE_TARGET" $OTHER_ARGS; then
+  if sudo NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 /run/current-system/sw/bin/nixos-rebuild switch --flake ".#$FLAKE_TARGET" $OTHER_ARGS; then
     _print ""
     _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
     _print "${GREEN}║  ✓ NixOS switch complete!                ║${NC}"
@@ -119,16 +123,10 @@ else
     _print ""
   fi
 
-  _print "${BLUE}Running: home-manager switch --flake .#$FLAKE_TARGET --impure $OTHER_ARGS${NC}"
+  _print "${BLUE}Running: home-manager switch --flake .#$FLAKE_TARGET $OTHER_ARGS${NC}"
   _print ""
 
-  # Temporarily set HOME to match the flake configuration
-  export ORIGINAL_HOME="$HOME"
-  export HOME="/home/${USERNAME}"
-
-  if home-manager switch --flake ".#$FLAKE_TARGET" --impure $OTHER_ARGS; then
-    # Restore original HOME
-    export HOME="$ORIGINAL_HOME"
+  if NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 home-manager switch --flake ".#$FLAKE_TARGET" $OTHER_ARGS; then
     _print ""
     _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
     _print "${GREEN}║  ✓ Home Manager switch complete!         ║${NC}"
@@ -138,8 +136,6 @@ else
     _print "${YELLOW}Tip: Restart your terminal to load new shell: ${BLUE}exec \$SHELL${NC}"
     _print ""
   else
-    # Restore original HOME even on failure
-    export HOME="$ORIGINAL_HOME"
     _print ""
     _print "${RED}╔═══════════════════════════════════════════╗${NC}"
     _print "${RED}║  ✗ Home Manager switch failed            ║${NC}"

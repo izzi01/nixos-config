@@ -1,264 +1,117 @@
 { config, pkgs, lib, inputs, ... }:
 
 let
-  user = "dustin";
+  user = "%USER%";
   xdg_configHome  = "/home/${user}/.config";
   shared-programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
   shared-files = import ../shared/files.nix { inherit config pkgs; };
-  kde-config = import ./kde-config.nix;
 
-  # These files are generated when secrets are decrypted at build time
-  gpgKeys = [
-    "/home/${user}/.ssh/pgp_github.key"
-    "/home/${user}/.ssh/pgp_github.pub"
-  ];
+  polybar-user_modules = builtins.readFile (pkgs.replaceVars ./config/polybar/user_modules.ini {
+    packages = "${xdg_configHome}/polybar/bin/check-nixos-updates.sh";
+    searchpkgs = "${xdg_configHome}/polybar/bin/search-nixos-updates.sh";
+    launcher = "${xdg_configHome}/polybar/bin/launcher.sh";
+    powermenu = "${xdg_configHome}/rofi/bin/powermenu.sh";
+    calendar = "${xdg_configHome}/polybar/bin/popup-calendar.sh";
+  });
+
+  polybar-config = pkgs.replaceVars ./config/polybar/config.ini {
+    font0 = "DejaVu Sans:size=12;3";
+    font1 = "feather:size=12;3"; # from overlay
+  };
+
+  polybar-modules = builtins.readFile ./config/polybar/modules.ini;
+  polybar-bars = builtins.readFile ./config/polybar/bars.ini;
+  polybar-colors = builtins.readFile ./config/polybar/colors.ini;
+
 in
 {
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   home = {
     enableNixpkgsReleaseCheck = false;
     username = "${user}";
     homeDirectory = "/home/${user}";
-    packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { inherit inputs config; nixpkgs-specific = inputs.nixpkgs-specific; });
-    file = shared-files // import ./files.nix { inherit user pkgs; };
-    stateVersion = "25.05";
+    packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; });
+    file = shared-files // import ./files.nix { inherit user; };
+    stateVersion = "21.05";
+  };
 
-    # Playwright environment variables for NixOS
-    sessionVariables = {
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
-      PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
-      PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+  # Use a dark theme
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Adwaita-dark";
+      package = pkgs.adwaita-icon-theme;
+    };
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.adwaita-icon-theme;
     };
   };
 
-  programs = shared-programs // { 
-    gpg.enable = true;
-    
-    rofi = {
+  # Screen lock
+  services = {
+    screen-locker = {
       enable = true;
-      package = pkgs.rofi;
-      theme = let
-        inherit (config.lib.formats.rasi) mkLiteral;
-      in {
-        "*" = {
-          # Plasma 6 Breeze Dark color scheme
-          background = mkLiteral "#1e1e2e";
-          background-alt = mkLiteral "#252536";
-          foreground = mkLiteral "#eff1f5";
-          selected = mkLiteral "#3daee9";
-          selected-foreground = mkLiteral "#1e1e2e";
-          active = mkLiteral "#7aa2f7";
-          urgent = mkLiteral "#f38ba8";
-          border-color = mkLiteral "#31363b";
-          
-          border-radius = mkLiteral "6px";
-          font = "Inter 11";
-        };
-        
-        "window" = {
-          transparency = "real";
-          background-color = mkLiteral "@background";
-          text-color = mkLiteral "@foreground";
-          border = mkLiteral "1px";
-          border-color = mkLiteral "@border-color";
-          border-radius = mkLiteral "8px";
-          width = mkLiteral "650px";
-          location = mkLiteral "center";
-          x-offset = 0;
-          y-offset = 0;
-          padding = mkLiteral "2px";
-        };
-        
-        "mainbox" = {
-          background-color = mkLiteral "@background";
-          border = mkLiteral "0";
-          padding = mkLiteral "0";
-        };
-        
-        "inputbar" = {
-          children = mkLiteral "[ prompt,textbox-prompt-colon,entry,case-indicator ]";
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@foreground";
-          expand = false;
-          border = mkLiteral "0px 0px 1px 0px";
-          border-radius = mkLiteral "6px 6px 0px 0px";
-          border-color = mkLiteral "@border-color";
-          margin = mkLiteral "0px";
-          padding = mkLiteral "12px";
-        };
-        
-        "prompt" = {
-          enabled = true;
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@selected";
-        };
-        
-        "textbox-prompt-colon" = {
-          expand = false;
-          str = ":";
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@foreground";
-        };
-        
-        "entry" = {
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@foreground";
-          placeholder-color = mkLiteral "@foreground";
-          expand = true;
-          horizontal-align = mkLiteral "0";
-          placeholder = "Search...";
-          padding = mkLiteral "0px 0px 0px 8px";
-          blink = true;
-        };
-        
-        "case-indicator" = {
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@foreground";
-          spacing = mkLiteral "0";
-        };
-        
-        "listview" = {
-          background-color = mkLiteral "@background";
-          columns = 1;
-          lines = 10;
-          spacing = mkLiteral "8px";
-          cycle = true;
-          dynamic = true;
-          layout = mkLiteral "vertical";
-          padding = mkLiteral "8px";
-        };
-        
-        "element" = {
-          background-color = mkLiteral "@background";
-          text-color = mkLiteral "@foreground";
-          orientation = mkLiteral "horizontal";
-          border-radius = mkLiteral "6px";
-          padding = mkLiteral "8px 12px";
-          spacing = mkLiteral "8px";
-        };
-        
-        "element-icon" = {
-          background-color = mkLiteral "inherit";
-          text-color = mkLiteral "inherit";
-          size = mkLiteral "24px";
-          border = mkLiteral "0px";
-        };
-        
-        "element-text" = {
-          background-color = mkLiteral "inherit";
-          text-color = mkLiteral "inherit";
-          expand = true;
-          horizontal-align = mkLiteral "0";
-          vertical-align = mkLiteral "0.5";
-          margin = mkLiteral "0px 2.5px 0px 2.5px";
-        };
-        
-        "element selected" = {
-          background-color = mkLiteral "@selected";
-          text-color = mkLiteral "@selected-foreground";
-          border = mkLiteral "0px";
-          border-radius = mkLiteral "6px";
-        };
-        
-        "element alternate" = {
-          background-color = mkLiteral "@background";
-          text-color = mkLiteral "@foreground";
-        };
-        
-        "mode-switcher" = {
-          enabled = true;
-          background-color = mkLiteral "@background-alt";
-          expand = false;
-          border = mkLiteral "1px 0px 0px 0px";
-          border-radius = mkLiteral "0px 0px 6px 6px";
-          border-color = mkLiteral "@border-color";
-          padding = mkLiteral "12px";
-          spacing = mkLiteral "8px";
-        };
-        
-        "button" = {
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@foreground";
-          cursor = mkLiteral "pointer";
-          padding = mkLiteral "8px 12px";
-          border-radius = mkLiteral "6px";
-        };
-        
-        "button selected" = {
-          background-color = mkLiteral "@selected";
-          text-color = mkLiteral "@selected-foreground";
-        };
-        
-        "message" = {
-          enabled = true;
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@foreground";
-          border = mkLiteral "1px 0px 0px 0px";
-          border-radius = mkLiteral "0px 0px 6px 6px";
-          border-color = mkLiteral "@border-color";
-          padding = mkLiteral "12px";
-        };
-        
-        "textbox" = {
-          background-color = mkLiteral "@background-alt";
-          text-color = mkLiteral "@foreground";
-          vertical-align = mkLiteral "0.5";
-          horizontal-align = mkLiteral "0.0";
-        };
-      };
-      extraConfig = {
-        show-icons = true;
-        icon-theme = "breeze-dark";
-        display-drun = "Applications";
-        display-run = "Run";
-        display-window = "Windows";
-        drun-display-format = "{name}";
-        disable-history = false;
-        hide-scrollbar = true;
-        sidebar-mode = true;
-        matching = "fuzzy";
-        sort = true;
-      };
+      inactiveInterval = 10;
+      lockCmd = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 10 15";
     };
-    plasma = lib.recursiveUpdate kde-config.programs.plasma {
-      hotkeys.commands = {
-        "view-cheatsheets" = {
-          name = "View Cheatsheets";  
-          key = "Meta+C";
-          command = "cheatsheet-viewer";
+
+    # Auto mount devices
+    udiskie.enable = true;
+
+    polybar = {
+      enable = true;
+      config = polybar-config;
+      extraConfig = polybar-bars + polybar-colors + polybar-modules + polybar-user_modules;
+      package = pkgs.polybarFull;
+      script = "polybar main &";
+    };
+
+    dunst = {
+      enable = true;
+      package = pkgs.dunst;
+      settings = {
+        global = {
+          monitor = 0;
+          follow = "mouse";
+          border = 0;
+          height = 400;
+          width = 320;
+          offset = "33x65";
+          indicate_hidden = "yes";
+          shrink = "no";
+          separator_height = 0;
+          padding = 32;
+          horizontal_padding = 32;
+          frame_width = 0;
+          sort = "no";
+          idle_threshold = 120;
+          font = "Noto Sans";
+          line_height = 4;
+          markup = "full";
+          format = "<b>%s</b>\n%b";
+          alignment = "left";
+          transparency = 10;
+          show_age_threshold = 60;
+          word_wrap = "yes";
+          ignore_newline = "no";
+          stack_duplicates = false;
+          hide_duplicate_count = "yes";
+          show_indicators = "no";
+          icon_position = "left";
+          icon_theme = "Adwaita-dark";
+          sticky_history = "yes";
+          history_length = 20;
+          history = "ctrl+grave";
+          browser = "google-chrome-stable";
+          always_run_script = true;
+          title = "Dunst";
+          class = "Dunst";
+          max_icon_size = 64;
         };
-        "zeditor" = {
-          name = "Zed Editor";
-          key = "Meta+Z";
-          command = "zeditor";
-        };
-      };
-      
-      workspace = {
-        clickItemTo = "select";
       };
     };
   };
 
-  # This installs my GPG signing keys for Github
-  systemd.user.services.gpg-import-keys = {
-    Unit = {
-      Description = "Import gpg keys";
-      After = [ "gpg-agent.socket" ];
-    };
+  programs = shared-programs // {};
 
-    Service = {
-      Type = "oneshot";
-      ExecStart = toString (pkgs.writeScript "gpg-import-keys" ''
-        #! ${pkgs.runtimeShell} -el
-        ${lib.optionalString (gpgKeys != []) ''
-        ${pkgs.gnupg}/bin/gpg --import ${lib.concatStringsSep " " gpgKeys}
-        ''}
-      '');
-    };
-
-    Install = { WantedBy = [ "default.target" ]; };
-  };
 }

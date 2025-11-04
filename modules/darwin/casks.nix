@@ -6,35 +6,60 @@ in
 
 [
   # Development Tools
-  "claude"
-  "insomnia"
-  "tableplus"
-  "ngrok"
-  "postico"
+  "homebrew/cask/docker"
   "visual-studio-code"
-  "wireshark-app"
+  "iterm2"
+  "postman"
+  "cursor"
 
-  # Communication Tools
+  # Productivity Tools
+  "raycast"
+
+  # Browsers
+  "google-chrome"
+
+  # Communication Tools - Examples (uncomment as needed)
   "discord"
-  "loom"
+  "notion"
   "slack"
   "telegram"
   "zoom"
 
-  # Utility Tools
-  "appcleaner"
-  "syncthing-app"
+  # Utility Tools - Examples (uncomment as needed)
+  "syncthing"
+  "1password"
+  "rectangle"
 
-  # Entertainment Tools
-  "steam"
+  # Entertainment Tools - Examples (uncomment as needed)
+  "spotify"
   "vlc"
 
-  # Productivity Tools
-  "raycast"
-  "asana"
-
-  # Browsers
+  "amethyst"
+  "font-fira-mono-nerd-font"
+  "kitty"
+  "mysqlworkbench"
+  "syncthing-app"
+  "font-jetbrains-mono-nerd-font"
+  "localsend"
+  "rclone-ui"
+  "visual-studio-code"
+  "betterdisplay"
+  "free-download-manager"
+  "macfuse"
+  "rio"
+  "warp"
+  "claude"
   "google-chrome"
+  "mailspring"
+  "rustdesk"
+  "cursor"
+  "iina"
+  "mos"
+  "spaceid"
+  "docker-desktop"
+  "keepassxc"
+  "mounty"
+  "stats"
 ] ++ pkgs.lib.optionals isAarch64Darwin [
   # Battery monitoring for Apple Silicon Macs
   "battery"

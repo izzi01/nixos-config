@@ -15,7 +15,6 @@
   "gnutls"
   "kpt"
   "kubectx"
-  "lima"
   "libassuan"
   "libcbor"
   "libevent"
@@ -65,6 +64,7 @@
   "utf8proc"
   "vfox"
   "xz"
+  "zadark"
   "zlib"
   "zstd"
 ]
