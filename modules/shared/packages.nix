@@ -69,6 +69,7 @@ with pkgs; [
   # K
   killall # Kill processes by name
   kitty # GPU-accelerated terminal emulator
+  kpt # Automate Kubernetes Configuration Editing
   kubectl # Kubernetes CLI
   kubectx # Kube context switcher
   k9s # Kubernetes TUI
@@ -91,10 +92,16 @@ with pkgs; [
   opentofu # Open-source Terraform alternative
   oh-my-posh
 
+  # S - Additional tools moved from Homebrew
+  superfile # Pretty fancy and modern terminal file manager
+  vfox # Extendable version manager
+
   # P
   pandoc # Document converter
+  p7zip # New 7zip fork with additional codecs and improvements
   pngquant # PNG compression tool
   posting # HTTP Post client
+  protobuf # Protocol Buffers with protoc compiler (includes protoc-gen-go, protoc-gen-go-grpc)
 
   # Q
   qt5.qtbase # Qt5 base library with platform plugins
@@ -111,6 +118,7 @@ with pkgs; [
   syncthing # Continuous file synchronization
 
   # T
+  talosctl # CLI for out-of-band management of Kubernetes nodes created by Talos
   termscp # Terminal file transfer client
   pay-respects # Command correction tool (replacement for thefuck)
   tmux # Terminal multiplexer
@@ -118,6 +126,7 @@ with pkgs; [
   tree-sitter # Parsing system for programming tools
 
   # U
+  unbound # Validating, recursive, and caching DNS resolver
   unrar # RAR archive extractor
   unzip # ZIP archive extractor
 

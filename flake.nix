@@ -32,10 +32,7 @@
       url = "github:dopplerhq/homebrew-cli";
       flake = false;
     };
-    homebrew-flux = {
-      url = "github:fluxcd/homebrew-tap";
-      flake = false;
-    };
+    # fluxcd is now provided by Nixpkgs
     homebrew-fuse = {
       url = "github:gromgit/homebrew-fuse";
       flake = false;
@@ -127,7 +124,7 @@
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "kptdev/homebrew-kpt" = homebrew-kpt;
                   "dopplerhq/homebrew-cli" = homebrew-doppler;
-                  "fluxcd/homebrew-tap" = homebrew-flux;
+                  # fluxcd is now provided by Nixpkgs
                   "gromgit/homebrew-fuse" = homebrew-fuse;
                   "th-ch/homebrew-youtube-music" = homebrew-youtube-music;
                   "quaric/zadark" = homebrew-zadark;

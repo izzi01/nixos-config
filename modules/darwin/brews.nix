@@ -1,70 +1,15 @@
 { pkgs, ... }:
 
 [
-  "abseil"
-  "atuin"
-  "bash"
-  "ca-certificates"
-  "caddy"
-  "docker-buildx"
-  "doppler"
-  "flux@2.2"
-  "gettext"
-  "gmp"
-  "gnu-getopt"
-  "gnutls"
-  "kpt"
-  "kubectx"
-  "libassuan"
-  "libcbor"
-  "libevent"
-  "libgcrypt"
-  "libgit2"
-  "libgpg-error"
-  "libidn2"
-  "libksba"
-  "libnghttp2"
-  "libpng"
-  "libssh2"
-  "libtasn1"
-  "libunistring"
-  "libusb"
-  "libuv"
-  "lpeg"
-  "luajit"
-  "luv"
-  "lz4"
-  "mpdecimal"
-  "mysql-client"
-  "nettle"
-  "npth"
-  "gromgit/fuse/ntfs-3g-mac"
-  "oh-my-posh"
-  "oniguruma"
-  "openssl@3"
-  "opentofu"
-  "p11-kit"
-  "p7zip"
-  "pass"
-  "pcre2"
-  "pinentry"
-  "protobuf"
-  "protoc-gen-go"
-  "protoc-gen-go-grpc"
-  "python@3.13"
-  "qrencode"
-  "readline"
-  "screenfetch"
-  "skaffold"
-  "superfile"
-  "talosctl"
-  "terragrunt"
-  "unbound"
-  "unibilium"
-  "utf8proc"
-  "vfox"
-  "xz"
-  "zadark"
-  "zlib"
-  "zstd"
+  # Packages that truly need Homebrew (not available or better in Homebrew)
+  "gnu-getopt"  # macOS specific GNU getopt
+  "gromgit/fuse/ntfs-3g-mac"  # macOS specific NTFS support
+  "zadark"  # WhatsApp enhancement tool (Homebrew only)
+  "screenfetch"  # System info tool (neofetch available in Nixpkgs as alternative)
+
+  # Note: All development tools and libraries have been moved to Nixpkgs
+  # Nix automatically handles all dependencies, so explicit libraries are not needed
+  # - CLI tools: atuin, caddy, doppler, fluxcd, kpt, kubectx, mysql-client, p7zip, protobuf, talosctl, unbound
+  # - Dev tools: oh-my-posh, opentofu, pass, python3, skaffold, superfile, terragrunt, vfox
+  # - All build-time and runtime dependencies are managed by Nixpkgs
 ]

@@ -35,7 +35,7 @@ in
     };
     taps = [
       "dopplerhq/cli"
-      "fluxcd/tap"
+      # fluxcd is now provided by Nixpkgs
       "gromgit/fuse"
       "kptdev/kpt"
       "th-ch/youtube-music"

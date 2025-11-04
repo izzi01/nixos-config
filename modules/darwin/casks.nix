@@ -6,7 +6,8 @@ in
 
 [
   # Development Tools
-  "homebrew/cask/docker"
+  # Note: Docker CLI tools are now managed via Nixpkgs in modules/shared/packages.nix
+  # Docker Desktop can be added here if GUI is needed
   "visual-studio-code"
   "iterm2"
   "postman"
