@@ -26,6 +26,7 @@ with pkgs; [
 
   # C
   coreutils # Basic file/text/shell utilities
+  colima # Docker tools
 
   # D
   direnv # Environment variable management per directory
@@ -80,6 +81,7 @@ with pkgs; [
   lazydocker # Simple terminal UI for docker
   lazygit # Simple terminal UI for git
   lnav # Log file navigator
+  lima # Linux runtimes
 
   # N
   ncurses # Terminal control library with terminfo database
