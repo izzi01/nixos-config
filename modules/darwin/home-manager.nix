@@ -36,7 +36,6 @@ in
     taps = [
       # fluxcd is now provided by Nixpkgs
       "gromgit/fuse"  # For ntfs-3g-mac
-      "th-ch/youtube-music"
       "quaric/zadark"  # For zadark WhatsApp enhancement
     ];
     brews = pkgs.callPackage ./brews.nix {};

@@ -31,10 +31,6 @@
       url = "github:gromgit/homebrew-fuse";
       flake = false;
     };
-    homebrew-youtube-music = {
-      url = "github:th-ch/homebrew-youtube-music";
-      flake = false;
-    };
     homebrew-zadark = {
       url = "github:quaric/homebrew-zadark";
       flake = false;
@@ -49,7 +45,7 @@
     };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-fuse, homebrew-youtube-music, homebrew-zadark, home-manager, nixpkgs, nixpkgs-specific, nixpkgs-unstable, disko, nix-search-cli } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-fuse, homebrew-zadark, home-manager, nixpkgs, nixpkgs-specific, nixpkgs-unstable, disko, nix-search-cli } @inputs:
     let
       user = "%USER%";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -118,7 +114,6 @@
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   # fluxcd, doppler, kpt are now provided by Nixpkgs
                   "gromgit/homebrew-fuse" = homebrew-fuse;
-                  "th-ch/homebrew-youtube-music" = homebrew-youtube-music;
                   "quaric/zadark" = homebrew-zadark;
                 };
                 mutableTaps = true;
