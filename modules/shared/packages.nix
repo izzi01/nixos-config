@@ -1,10 +1,18 @@
-{ pkgs, nixpkgs-specific ? null, ... }:
+{ pkgs, nixpkgs-specific ? null, nixpkgs-unstable ? null, ... }:
 let
   myFonts = import ./fonts.nix { inherit pkgs; };
 
   # Packages from specific nixpkgs version
   specificPkgs = if nixpkgs-specific != null then
     import nixpkgs-specific {
+      system = pkgs.system;
+      config.allowUnfree = true;
+    }
+  else pkgs;
+
+  # Packages from nixpkgs-unstable
+  unstablePkgs = if nixpkgs-unstable != null then
+    import nixpkgs-unstable {
       system = pkgs.system;
       config.allowUnfree = true;
     }
@@ -157,7 +165,7 @@ with pkgs; [
     pkgs.steam # Gaming platform - x86_64-linux only (requires i686 support)
   ])
   ++ (pkgs.lib.optionals (pkgs.stdenv.system != "aarch64-linux") [
-    pkgs.google-chrome # Web browser - not available on aarch64-linux
+    unstablePkgs.google-chrome # Web browser from unstable - not available on aarch64-linux
     pkgs.insomnia # HTTP client - not available on aarch64-linux
   ])
   ++ (pkgs.lib.optionals (pkgs.stdenv.system != "x86_64-darwin") [

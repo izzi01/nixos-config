@@ -1,7 +1,7 @@
-{ pkgs, nixpkgs-specific ? null }:
+{ pkgs, nixpkgs-specific ? null, nixpkgs-unstable ? null }:
 
 with pkgs;
-let shared-packages = import ../shared/packages.nix { inherit pkgs nixpkgs-specific; }; in
+let shared-packages = import ../shared/packages.nix { inherit pkgs nixpkgs-specific nixpkgs-unstable; }; in
 shared-packages ++ [
 
   # Security and authentication
@@ -45,7 +45,7 @@ shared-packages ++ [
   xdg-utils
 
   # Other utilities
-  google-chrome
+  # google-chrome is now in shared packages from nixpkgs-unstable
 
   # PDF viewer
   zathura

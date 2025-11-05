@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-specific.url = "github:nixos/nixpkgs/2c36ece932b8c0040893990da00034e46c33e3e7";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.05";
@@ -24,15 +25,8 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    homebrew-kpt = {
-      url = "github:kptdev/kpt";
-      flake = false;
-    };
-    homebrew-doppler = {
-      url = "github:dopplerhq/homebrew-cli";
-      flake = false;
-    };
     # fluxcd is now provided by Nixpkgs
+    # doppler, kpt are now provided by Nixpkgs
     homebrew-fuse = {
       url = "github:gromgit/homebrew-fuse";
       flake = false;
@@ -55,7 +49,7 @@
     };
   };
 
-  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-kpt, homebrew-doppler, homebrew-fuse, homebrew-youtube-music, homebrew-zadark, home-manager, nixpkgs, nixpkgs-specific, disko, nix-search-cli } @inputs:
+  outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, homebrew-fuse, homebrew-youtube-music, homebrew-zadark, home-manager, nixpkgs, nixpkgs-specific, nixpkgs-unstable, disko, nix-search-cli } @inputs:
     let
       user = "%USER%";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -122,9 +116,7 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
-                  "kptdev/homebrew-kpt" = homebrew-kpt;
-                  "dopplerhq/homebrew-cli" = homebrew-doppler;
-                  # fluxcd is now provided by Nixpkgs
+                  # fluxcd, doppler, kpt are now provided by Nixpkgs
                   "gromgit/homebrew-fuse" = homebrew-fuse;
                   "th-ch/homebrew-youtube-music" = homebrew-youtube-music;
                   "quaric/zadark" = homebrew-zadark;
@@ -172,7 +164,7 @@
                 username = "%USER%";
                 homeDirectory = "/home/%USER%";
                 stateVersion = "23.11";
-                packages = pkgs.callPackage ./modules/shared/packages.nix {};
+                packages = pkgs.callPackage ./modules/shared/packages.nix { nixpkgs-unstable = nixpkgs-unstable; };
                 file = import ./modules/shared/files.nix { inherit pkgs config; };
 
                 # Copy nvim config as writable directory (LazyVim needs to update lock files)
@@ -210,7 +202,7 @@
                 username = "%USER%";
                 homeDirectory = "/home/%USER%";
                 stateVersion = "23.11";
-                packages = pkgs.callPackage ./modules/shared/packages.nix {};
+                packages = pkgs.callPackage ./modules/shared/packages.nix { nixpkgs-unstable = nixpkgs-unstable; };
                 file = import ./modules/shared/files.nix { inherit pkgs config; };
 
                 # Copy nvim config as writable directory (LazyVim needs to update lock files)

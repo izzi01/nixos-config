@@ -29,7 +29,7 @@ in
     enableNixpkgsReleaseCheck = false;
     username = "${user}";
     homeDirectory = "/home/${user}";
-    packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; });
+    packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; nixpkgs-unstable = inputs.nixpkgs-unstable; });
     file = shared-files // import ./files.nix { inherit user; };
     stateVersion = "21.05";
   };

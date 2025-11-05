@@ -34,11 +34,10 @@ in
       upgrade = false;
     };
     taps = [
-      "dopplerhq/cli"
       # fluxcd is now provided by Nixpkgs
-      "gromgit/fuse"
-      "kptdev/kpt"
+      "gromgit/fuse"  # For ntfs-3g-mac
       "th-ch/youtube-music"
+      "quaric/zadark"  # For zadark WhatsApp enhancement
     ];
     brews = pkgs.callPackage ./brews.nix {};
     casks = pkgs.callPackage ./casks.nix {};
@@ -66,7 +65,7 @@ in
     users.${user} = { pkgs, config, lib, ... }:{
       home = {
         enableNixpkgsReleaseCheck = false;
-        packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; })
+        packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; nixpkgs-unstable = inputs.nixpkgs-unstable; })
           ++ [ inputs.nix-search-cli.packages.${pkgs.system}.default ];
         file = lib.mkMerge [
           sharedFiles
@@ -90,7 +89,12 @@ in
   };
 
   # Fully declarative dock using the latest from Nix Store
-  local.dock = {
+  local.dock = let
+    unstablePkgs = import inputs.nixpkgs-unstable {
+      system = pkgs.system;
+      config.allowUnfree = true;
+    };
+  in {
     enable = true;
     username = user;
     entries = [
@@ -99,7 +103,7 @@ in
       { path = "/System/Applications/Messages.app/"; }
       { path = "/System/Applications/Notes.app/"; }
       { path = "${pkgs.wezterm}/Applications/WezTerm.app/"; }
-      { path = "${pkgs.google-chrome}/Applications/Google Chrome.app/"; }
+      { path = "${unstablePkgs.google-chrome}/Applications/Google Chrome.app/"; }
       { path = "/System/Applications/System Settings.app/"; }
       {
         path = "${config.users.users.${user}.home}/Downloads";

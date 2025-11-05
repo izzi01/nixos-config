@@ -66,6 +66,7 @@ in
   "mounty"
   "stats"
   "macfuse"
+  "youtube-music"
 ] ++ pkgs.lib.optionals isAarch64Darwin [
   # Battery monitoring for Apple Silicon Macs
   "battery"
