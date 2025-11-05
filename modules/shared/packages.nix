@@ -23,6 +23,7 @@ with pkgs; [
   act # Run Github actions locally
   age # File encryption tool
   age-plugin-yubikey # YubiKey plugin for age encryption
+  ansible # Automations tools
   aspell # Spell checker
   aspellDicts.en # English dictionary for aspell
 
@@ -150,6 +151,7 @@ with pkgs; [
 
   # Y
   yazi # Terminal file manager
+  yarn # Yarn tools
 
   # Z
   zellij # Terminal multiplexer
