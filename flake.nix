@@ -90,8 +90,8 @@
     in
     {
       templates = {
-        starter = {
-          path = ./;
+        default = {
+          path = ./.;
           description = "Starter configuration without secrets";
         };
       };     devShells = forAllSystems devShell;
