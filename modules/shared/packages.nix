@@ -159,6 +159,9 @@ with pkgs; [
   zoxide # Smarter cd command
   zsh # Z shell
   zsh-powerlevel10k # Zsh theme
+
+  # Other tools
+  androidenv.androidPkgs.platform-tools
 ] ++ myFonts
   ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
     pkgs.vlc # Media player - Linux only (depends on libudev)
