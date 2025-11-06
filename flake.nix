@@ -89,7 +89,12 @@
       };
     in
     {
-      devShells = forAllSystems devShell;
+      templates = {
+        starter = {
+          path = ./;
+          description = "Starter configuration without secrets";
+        };
+      };     devShells = forAllSystems devShell;
       apps = nixpkgs.lib.genAttrs linuxSystems mkLinuxApps // nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
 
       darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (system: let
