@@ -45,6 +45,7 @@ with pkgs; [
   docker-buildx # Docker CLI plugin for extended build capabilities
   docker-compose # Docker Compose from specific version
   du-dust # Disk usage analyzer
+  doppler # Secret manager 
 
   # E
   eza # Modern ls replacement
