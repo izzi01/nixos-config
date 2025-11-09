@@ -131,6 +131,11 @@ let name = "bscx";  # Update with your name
       alias zz="zellij"
       alias lg="lazygit"
 
+      # Wezterm SSH alias
+      if command -v wezterm &> /dev/null; then
+        alias wssh='wezterm ssh'
+      fi
+
       # tmux functions from your .zshrc
       function tn() {
         tmux new -s "$1"
