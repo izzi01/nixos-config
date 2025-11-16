@@ -147,7 +147,7 @@ with pkgs; [
   # W
   wget # File downloader
   watch # Execute program periodically
-  wezterm # GPU-accelerated terminal emulator
+  unstablePkgs.wezterm # GPU-accelerated terminal emulator
   wireshark # Network protocol analyzer
 
   # Y
