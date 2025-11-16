@@ -112,4 +112,12 @@ config.hyperlink_rules = {
 	},
 }
 config.hide_mouse_cursor_when_typing = false
+config.ssh_domains = {
+	{
+		name = "lima-default",
+		remote_address = "lima-default", -- or simply 'host' if in ~/.ssh/config
+		-- The multiplexing = "WezTerm" is implied when you use `wezterm connect SSHMUX:my.server`
+		-- or configure the domain without a proxy_command.
+	},
+}
 return config
