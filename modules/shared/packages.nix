@@ -93,6 +93,9 @@ with pkgs; [
   lnav # Log file navigator
   lima # Linux runtimes
 
+  # M
+  musikcube # Music listening
+
   # N
   ncurses # Terminal control library with terminfo database
   neofetch # System information tool
@@ -118,11 +121,13 @@ with pkgs; [
   qt5.qtbase # Qt5 base library with platform plugins
 
   # R
+  rainfrog # Rainfrog 
   ripgrep # Fast text search tool
   repomix # AI tooling
   rclone # Cloud storage sync tool
 
   # S
+  skaffold #Skaffold dev tools
   sqlite # SQL database engine
   # steam # Gaming platform - not available on macOS ARM64
   stow # Symlink farm manager
@@ -153,6 +158,7 @@ with pkgs; [
   # Y
   yazi # Terminal file manager
   yarn # Yarn tools
+  yt-dlp # Youtube download
 
   # Z
   zellij # Terminal multiplexer

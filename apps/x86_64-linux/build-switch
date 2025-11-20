@@ -126,7 +126,7 @@ else
   _print "${BLUE}Running: home-manager switch --flake .#$FLAKE_TARGET $OTHER_ARGS${NC}"
   _print ""
 
-  if NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 home-manager switch -b backup --flake ".#$FLAKE_TARGET" $OTHER_ARGS; then
+  if NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 NIXPKGS_ALLOW_INSECURE=1 home-manager switch -b backup --flake ".#$FLAKE_TARGET" --impure $OTHER_ARGS; then
     _print ""
     _print "${GREEN}╔═══════════════════════════════════════════╗${NC}"
     _print "${GREEN}║  ✓ Home Manager switch complete!         ║${NC}"
