@@ -452,6 +452,11 @@ let name = "%NAME%";  # Update with your name
           spectacle -r -b -o "$project_path/$filename"
           echo "Screenshot saved to: $project_path/$filename"
       }
+      # SSH Agent Startup Script
+      if [ -z "$SSH_AUTH_SOCK" ]; then
+          # Start the agent only if the environment variable is not set
+          eval "$(ssh-agent -s)"
+      fi
     '';
   };
 
@@ -557,7 +562,7 @@ let name = "%NAME%";  # Update with your name
   };
 
   wezterm = {
-    enable = true;
+    enable = false;
     extraConfig = ''
       local wezterm = require("wezterm")
       local config = {}
