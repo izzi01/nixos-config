@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 
-let name = "bscx";  # Update with your name
-    user = "bscx";
-    email = "bscx@example.com"; in  # Update with your email
+let name = "%NAME%";  # Update with your name
+    user = "%USER%";
+    email = "%EMAIL%"; in  # Update with your email
 {
 
   direnv = {
