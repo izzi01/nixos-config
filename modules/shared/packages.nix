@@ -106,9 +106,11 @@ with pkgs; [
   openssh # SSH client and server
   opentofu # Open-source Terraform alternative
   oh-my-posh
+  unstablePkgs.opencode # GPU-accelerated terminal emulator
 
   # S - Additional tools moved from Homebrew
   superfile # Pretty fancy and modern terminal file manager
+  sops # Sops encrupt
 
   # P
   pandoc # Document converter
