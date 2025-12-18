@@ -39,4 +39,10 @@
     source = ./config/nvim;
     recursive = true;
   };
+  
+  # Opencode
+  ".config/opencode" = {
+    source = ./config/opencode;
+    recursive = true;
+  };
 }
