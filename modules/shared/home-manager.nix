@@ -74,9 +74,12 @@ let name = "%NAME%";  # Update with your name
       esac
 
       # PATH variables from your .zshrc
-      export PATH=$HOME/.pnpm-packages/bin:$HOME/.pnpm-packages:$PATH
-      export PATH=$HOME/.npm-packages/bin:$HOME/bin:$PATH
-      export PATH=$HOME/.local/share/bin:$PATH
+       export PATH=$HOME/.pnpm-packages/bin:$HOME/.pnpm-packages:$PATH
+       export PATH=$HOME/.npm-packages/bin:$HOME/bin:$PATH
+       if [ -d "$HOME/.local/bin" ]; then
+         export PATH=$HOME/.local/bin:$PATH
+       fi
+       export PATH=$HOME/.local/share/bin:$PATH
 
       # Go PATH
       if command -v go &> /dev/null; then
