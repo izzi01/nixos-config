@@ -296,6 +296,16 @@ let name = "%NAME%";  # Update with your name
         tmux a -t "$1"
       }
 
+      dlm() {
+        yt-dlp -x \
+          --audio-format mp3 \
+          --audio-quality 0 \
+          --embed-metadata \
+          --embed-thumbnail \
+          -o "%(playlist_title)s/%(title)s.%(ext)s" \
+          "$1"
+      }
+
       # FZF configuration
       fg="#CAD3F5"
       bg="#24273A"
