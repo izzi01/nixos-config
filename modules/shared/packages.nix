@@ -133,7 +133,6 @@ with pkgs; [
   sqlite # SQL database engine
   # steam # Gaming platform - not available on macOS ARM64
   stow # Symlink farm manager
-  syncthing # Continuous file synchronization
 
   # T
   talosctl # CLI for out-of-band management of Kubernetes nodes created by Talos
@@ -184,4 +183,5 @@ with pkgs; [
   ])
   ++ (pkgs.lib.optionals (pkgs.stdenv.system != "x86_64-darwin") [
     pkgs.ncdu # Disk space utility - not for x64-darwin
+    syncthing # Continuous file synchronization
   ])
