@@ -2,25 +2,38 @@
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "google_auth": false,
   "agents": {
-    "Sisyphus": {
-      "model": "anthropic/claude-opus-4-5"
+    "sisyphus": {
+      "model": "openai/gpt-5.2-codex",
+      "variant": "medium"
     },
-    "librarian": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+    "sisyphus-junior": {
+      "model": "openai/gpt-5.2-codex"
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "google/antigravity-gemini-3-pro"
     },
-    "explore": {
+    "ultrabrain": {
+      "model": "openai/gpt-5.2-codex",
+      "variant": "xhigh"
+    },
+    "artistry": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "max"
+    },
+    "quick": {
       "model": "google/antigravity-gemini-3-flash"
     },
-    "oracle": {
-      "model": "google/antigravity-claude-opus-4-5-thinking"
+    "unspecified-low": {
+      "model": "openai/gpt-5.1-codex-mini",
+      "variant": "low"
     },
-    "frontend-ui-ux-engineer": {
-      "model": "google/antigravity-gemini-3-pro-high"
+    "unspecified-high": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "max"
     },
-    "document-writer": {
-      "model": "google/antigravity-gemini-3-flash"
-    },
-    "multimodal-looker": {
+    "writing": {
       "model": "google/antigravity-gemini-3-flash"
     }
   },
