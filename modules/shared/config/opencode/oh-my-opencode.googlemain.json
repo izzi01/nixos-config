@@ -1,0 +1,69 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "google_auth": false,
+  "agents": {
+    "sisyphus": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "medium"
+    },
+    "sisyphus-junior": {
+      "model": "google/antigravity-gemini-3-pro"
+    },
+    "prometheus": {
+      "model": "google/antigravity-gemini-3-pro"
+    },
+    "oracle": {
+      "model": "google/antigravity-gemini-3-pro"
+    },
+    "atlas": {
+      "model": "google/antigravity-gemini-3-pro"
+    },
+    "metis": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "max"
+    },
+    "momus": {
+      "model": "google/antigravity-gemini-3-pro"
+    },
+    "librarian": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "explore": {
+      "model": "opencode/gpt-5-nano"
+    },
+    "multimodal-looker": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "google/antigravity-gemini-3-pro"
+    },
+    "ultrabrain": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "xhigh"
+    },
+    "artistry": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "max"
+    },
+    "quick": {
+      "model": "google/antigravity-gemini-3-flash"
+    },
+    "unspecified-low": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "low"
+    },
+    "unspecified-high": {
+      "model": "google/antigravity-gemini-3-pro",
+      "variant": "max"
+    },
+    "writing": {
+      "model": "google/antigravity-gemini-3-flash"
+    }
+  },
+  "ralph_loop": {
+    "enabled": true,
+    "default_max_iterations": 100
+  }
+}
