@@ -3,27 +3,29 @@
   "google_auth": false,
   "agents": {
     "sisyphus": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "medium"
+      "model": "openai/gpt-5.2-codex",
+      "temperature": 0.2
     },
     "sisyphus-junior": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "zhipuai-coding-plan/glm-4.7"
     },
     "prometheus": {
-      "model": "google/antigravity-gemini-3-pro"
-    },
-    "oracle": {
-      "model": "google/antigravity-gemini-3-pro"
-    },
-    "atlas": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "openai/gpt-5.2-codex"
     },
     "metis": {
-      "model": "google/antigravity-gemini-3-pro",
+      "model": "zhipuai-coding-plan/glm-4.7",
       "variant": "max"
     },
     "momus": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "zhipuai-coding-plan/glm-4.7",
+      "variant": "medium"
+    },
+    "oracle": {
+      "model": "openai/gpt-5.2-codex",
+      "variant": "high"
+    },
+    "atlas": {
+      "model": "openai/gpt-5.2-codex"
     },
     "librarian": {
       "model": "zhipuai-coding-plan/glm-4.7"
@@ -32,6 +34,9 @@
       "model": "opencode/gpt-5-nano"
     },
     "multimodal-looker": {
+      "model": "google/antigravity-gemini-3-flash"
+    },
+    "mcp-manager": {
       "model": "zhipuai-coding-plan/glm-4.7"
     }
   },
@@ -40,30 +45,23 @@
       "model": "google/antigravity-gemini-3-pro"
     },
     "ultrabrain": {
-      "model": "google/antigravity-gemini-3-pro",
+      "model": "openai/gpt-5.2-codex",
       "variant": "xhigh"
     },
     "artistry": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "max"
+      "model": "zhipuai-coding-plan/glm-4.7"
     },
     "quick": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "zhipuai-coding-plan/glm-4.7"
     },
     "unspecified-low": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "low"
+      "model": "zhipuai-coding-plan/glm-4.7"
     },
     "unspecified-high": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "max"
+      "model": "zhipuai-coding-plan/glm-4.7"
     },
     "writing": {
       "model": "google/antigravity-gemini-3-flash"
     }
-  },
-  "ralph_loop": {
-    "enabled": true,
-    "default_max_iterations": 100
   }
 }

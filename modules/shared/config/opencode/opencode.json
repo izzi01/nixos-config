@@ -3,8 +3,68 @@
   "mcp": {},
   "plugin": [
     "opencode-antigravity-auth@latest",
-    "oh-my-opencode"
+    "oh-my-opencode@3.1.4",
+    "opencode-beads@0.4.0"
   ],
+  "agent": {
+    "bmad-master": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "agent-builder": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "module-builder": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "workflow-builder": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "analyst": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "architect": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "dev": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "pm": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "quick-flow-solo-dev": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "sm": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "tea": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "tech-writer": {
+      "model": "google/antigravity-gemini-3-flash"
+    },
+    "ux-designer": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "brainstorming-coach": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "creative-problem-solver": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "design-thinking-coach": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "innovation-strategist": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "presentation-master": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    },
+    "storyteller": {
+      "model": "zhipuai-coding-plan/glm-4.7"
+    }
+  },
   "provider": {
     "google": {
       "models": {

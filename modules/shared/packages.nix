@@ -32,6 +32,7 @@ with pkgs; [
   bat # Cat clone with syntax highlighting
   btop # System monitor and process viewer
   bun # JavaScript runtime and toolkit
+  beads # Lighware issue tracker for AI
 
   # C
   coreutils # Basic file/text/shell utilities
