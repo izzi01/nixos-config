@@ -106,7 +106,7 @@ in
   # Fully declarative dock using the latest from Nix Store
   local.dock = let
     unstablePkgs = import inputs.nixpkgs-unstable {
-      system = pkgs.system;
+      localSystem.system = pkgs.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
   in {

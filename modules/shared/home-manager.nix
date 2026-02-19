@@ -327,12 +327,14 @@ let name = "%NAME%";  # Update with your name
   git = {
     enable = true;
     ignores = [ "*.swp" ];
-    userName = name;
-    userEmail = email;
     lfs = {
       enable = true;
     };
-    extraConfig = {
+    settings = {
+      user = {
+        name = name;
+        email = email;
+      };
       init.defaultBranch = "main";
       core = {
 	    editor = "nvim";
@@ -534,6 +536,7 @@ let name = "%NAME%";  # Update with your name
 
   ssh = {
     enable = true;
+    enableDefaultConfig = false;
     includes = [
       (lib.mkIf pkgs.stdenv.hostPlatform.isLinux
         "/home/${user}/.ssh/config_external"

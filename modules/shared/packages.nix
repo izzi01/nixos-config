@@ -5,7 +5,7 @@ let
   # Packages from specific nixpkgs version
   specificPkgs = if nixpkgs-specific != null then
     import nixpkgs-specific {
-      system = pkgs.system;
+      localSystem.system = pkgs.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     }
   else pkgs;
@@ -13,7 +13,7 @@ let
   # Packages from nixpkgs-unstable
   unstablePkgs = if nixpkgs-unstable != null then
     import nixpkgs-unstable {
-      system = pkgs.system;
+      localSystem.system = pkgs.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     }
   else pkgs;
@@ -45,7 +45,7 @@ with pkgs; [
   docker-client # Docker CLI client from specific version
   docker-buildx # Docker CLI plugin for extended build capabilities
   docker-compose # Docker Compose from specific version
-  du-dust # Disk usage analyzer
+  dust # Disk usage analyzer
   doppler # Secret manager 
 
   # E
