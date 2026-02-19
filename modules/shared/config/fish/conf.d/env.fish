@@ -5,10 +5,13 @@
 set -gx EDITOR nvim
 set -gx TALOSCONFIG "_out/talosconfig"
 
-# Nix daemon setup
-if test -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-    source /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+# Nix setup for fish
+# On NixOS/darwin with nix-daemon, these are already set by the system
+# Only needed for standalone Nix installs
+if not set -q NIX_PROFILES
+    # Add Nix paths if not already present
+    fish_add_path --prepend /nix/var/nix/profiles/default/bin
+    set -gx NIX_PATH nixpkgs=channel:nixpkgs-unstable
 end
 
 # OS-specific configurations
