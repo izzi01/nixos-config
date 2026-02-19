@@ -5,6 +5,15 @@ let
   xdg_configHome  = "/home/${user}/.config";
   shared-programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
   shared-files = import ../shared/files.nix { inherit config pkgs; };
+  
+  # Fish conf.d files
+  fish-conf-files = {
+    "fish/conf.d/env.fish" = { source = ../shared/config/fish/conf.d/env.fish; };
+    "fish/conf.d/aliases.fish" = { source = ../shared/config/fish/conf.d/aliases.fish; };
+    "fish/conf.d/tools.fish" = { source = ../shared/config/fish/conf.d/tools.fish; };
+    "fish/conf.d/functions.fish" = { source = ../shared/config/fish/conf.d/functions.fish; };
+    "fish/conf.d/prompt.fish" = { source = ../shared/config/fish/conf.d/prompt.fish; };
+  };
 
   polybar-user_modules = builtins.readFile (pkgs.replaceVars ./config/polybar/user_modules.ini {
     packages = "${xdg_configHome}/polybar/bin/check-nixos-updates.sh";
@@ -32,6 +41,12 @@ in
     packages = map (pkg: lib.setPrio 10 pkg) (pkgs.callPackage ./packages.nix { nixpkgs-specific = inputs.nixpkgs-specific; nixpkgs-unstable = inputs.nixpkgs-unstable; });
     file = shared-files // import ./files.nix { inherit user; };
     stateVersion = "21.05";
+  };
+
+  # Enable XDG base directory support
+  xdg = {
+    enable = true;
+    configFile = fish-conf-files;
   };
 
   # Use a dark theme

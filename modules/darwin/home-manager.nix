@@ -4,6 +4,15 @@ let
   user = "%USER%";
   sharedFiles = import ../shared/files.nix { inherit config pkgs; };
   additionalFiles = import ./files.nix { inherit user config pkgs; };
+  
+  # Fish conf.d files
+  fish-conf-files = {
+    "fish/conf.d/env.fish" = { source = ../shared/config/fish/conf.d/env.fish; };
+    "fish/conf.d/aliases.fish" = { source = ../shared/config/fish/conf.d/aliases.fish; };
+    "fish/conf.d/tools.fish" = { source = ../shared/config/fish/conf.d/tools.fish; };
+    "fish/conf.d/functions.fish" = { source = ../shared/config/fish/conf.d/functions.fish; };
+    "fish/conf.d/prompt.fish" = { source = ../shared/config/fish/conf.d/prompt.fish; };
+  };
 in
 {
   imports = [
@@ -15,7 +24,7 @@ in
     name = "${user}";
     home = "/Users/${user}";
     isHidden = false;
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
 
   # Allow passwordless sudo for Homebrew operations
@@ -79,6 +88,13 @@ in
           '';
         };
       };
+      
+      # Enable XDG base directory support
+      xdg = {
+        enable = true;
+        configFile = fish-conf-files;
+      };
+      
       programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
 
       # Marked broken Oct 20, 2022 check later to remove this

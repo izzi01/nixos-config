@@ -8,9 +8,11 @@ let name = "%NAME%";  # Update with your name
   direnv = {
       enable = true;
       enableZshIntegration = true;
+      enableFishIntegration = true;
       nix-direnv.enable = true;
     };
 
+  # Zsh shell configuration
   zsh = {
     enable = true;
     autocd = true;  # From your .zshrc: setopt autocd
@@ -103,6 +105,12 @@ let name = "%NAME%";  # Update with your name
 
       # Tool initializations from your .zshrc
       # zoxide init is handled by programs.zoxide.enableZshIntegration
+      
+      # Keychain - SSH/GPG agent manager
+      if command -v keychain &> /dev/null; then
+        eval "$(keychain --eval --quiet)"
+      fi
+      
       source <(fzf --zsh)
       eval "$(direnv hook zsh)"
 
@@ -280,150 +288,6 @@ let name = "%NAME%";  # Update with your name
         command claude "$@"
       }
 
-      function of() {
-        open "$(fzf)" "$@"
-      }
-
-      function nf() {
-        nvim "$(fzf)" "$@"
-      }
-
-      function tn() {
-        tmux new -s "$1"
-      }
-
-      function ta() {
-        tmux a -t "$1"
-      }
-
-      dlm() {
-        yt-dlp -x \
-          --audio-format mp3 \
-          --audio-quality 0 \
-          --embed-metadata \
-          --embed-thumbnail \
-          -o "%(playlist_title)s/%(title)s.%(ext)s" \
-          "$1"
-      }
-
-      # FZF configuration
-      fg="#CAD3F5"
-      bg="#24273A"
-      bg_highlight="#1E2030"
-      purple="#C6A0F6"
-      blue="#8AADF4"
-      cyan="#91D7E3"
-
-      export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
-      export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
-      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-      export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-
-      # FZF completion functions
-      _fzf_compgen_path() {
-        fd --hidden --exclude .git . "$1"
-      }
-
-      _fzf_compgen_dir() {
-        fd --type=d --hidden --exclude .git . "$1"
-      }
-
-      show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
-      export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
-      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
-
-      _fzf_comprun() {
-        local command=$1
-        shift
-        case "$command" in
-          cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
-          export|unset) fzf --preview "eval 'echo \''${}'"         "$@" ;;
-          ssh)          fzf --preview 'dig {}'                   "$@" ;;
-          *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
-        esac
-      }
-
-      # Add Go bin to PATH if Go is installed
-      if command -v go &> /dev/null; then
-        export PATH="$PATH:$(go env GOPATH)/bin"
-      fi
-
-      # Podman as Docker alias if Docker is not installed
-      if command -v podman &> /dev/null && ! command -v docker &> /dev/null; then
-        alias docker='podman'
-        export DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
-      fi
-
-      # Laravel Artisan
-      alias art='php artisan'
-
-      # Use difftastic, syntax-aware diffing
-      alias diff=difft
-
-      # Always color ls and group directories
-      alias ls='ls --color=auto'
-      
-      # SSH wrapper functions with terminal color changes
-      ssh-production() {
-          # Change terminal background to dark red
-          printf '\033]11;#3d1515\007'
-          command ssh production "$@"
-          # Reset terminal background
-          printf '\033]11;#1f2528\007'
-      }
-      
-      ssh-staging() {
-          # Change terminal background to dark orange
-          printf '\033]11;#3d2915\007'
-          command ssh staging "$@"
-          # Reset terminal background
-          printf '\033]11;#1f2528\007'
-      }
-      
-      ssh-droplet() {
-          # Change terminal background to dark green
-          printf '\033]11;#153d15\007'
-          command ssh droplet "$@"
-          # Reset terminal background
-          printf '\033]11;#1f2528\007'
-      }
-      
-      # Override ssh command to detect known hosts
-      ssh() {
-          case "$1" in
-              production|209.97.152.81)
-                  # Change terminal background to dark red
-                  printf '\033]11;#3d1515\007'
-                  command ssh "$@"
-                  # Reset terminal background
-                  printf '\033]11;#1f2528\007'
-                  ;;
-              staging|174.138.88.191)
-                  # Change terminal background to dark orange
-                  printf '\033]11;#3d2915\007'
-                  command ssh "$@"
-                  # Reset terminal background
-                  printf '\033]11;#1f2528\007'
-                  ;;
-              droplet|165.227.66.119)
-                  # Change terminal background to dark green
-                  printf '\033]11;#153d15\007'
-                  command ssh "$@"
-                  # Reset terminal background
-                  printf '\033]11;#1f2528\007'
-                  ;;
-              *)
-                  command ssh "$@"
-                  ;;
-          esac
-      }
-      
-      # Tmux alias for conductly devenv session
-      alias conductly='tmux -S /run/user/1000/tmux-conductly attach -t conductly'
-      
-      # Tmux alias for river devenv session
-      alias river='tmux -S /run/user/1000/tmux-river attach -t river'
-
       # macOS-style open command using Nautilus
       ${lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
         alias open="xdg-open"
@@ -432,44 +296,31 @@ let name = "%NAME%";  # Update with your name
         # Reboot to Windows partition (Linux only)
         alias windows='sudo systemctl reboot --boot-loader-entry=auto-windows'
       ''}
-      
-      # Screenshot function with path selection
-      screenshot() {
-          local project_path
-          case "$1" in
-              conductly|c)
-                  project_path="/home/dustin/.local/share/src/conductly"
-                  ;;
-              bitcoin-noobs|b)
-                  project_path="/home/dustin/.local/share/src/bitcoin-noobs"
-                  ;;
-              *)
-                  echo "Usage: screenshot [conductly|c|bitcoin-noobs|b]"
-                  echo "  conductly (c) - Save to conductly project"
-                  echo "  bitcoin-noobs (b) - Save to bitcoin-noobs project"
-                  return 1
-                  ;;
-          esac
-          
-          # Prompt user for filename
-          echo -n "Enter screenshot filename (without .png extension): "
-          read -r user_filename
-          
-          # Use user input or fallback to timestamp if empty
-          if [[ -n "$user_filename" ]]; then
-              local filename="$user_filename.png"
-          else
-              local filename="screenshot-$(date +'%Y%m%d-%H%M%S').png"
-          fi
-          
-          spectacle -r -b -o "$project_path/$filename"
-          echo "Screenshot saved to: $project_path/$filename"
-      }
-      # SSH Agent Startup Script
-      if [ -z "$SSH_AUTH_SOCK" ]; then
-          # Start the agent only if the environment variable is not set
-          eval "$(ssh-agent -s)"
-      fi
+    '';
+  };
+
+  # Fish shell configuration
+  # Configuration is split into conf.d files for better organization:
+  # - env.fish: Environment variables and PATH
+  # - aliases.fish: Aliases and abbreviations  
+  # - tools.fish: Tool integrations (fzf, direnv, zoxide, etc)
+  # - functions.fish: Fish functions (tmux, yazi, claude, ssh)
+  # - prompt.fish: Oh-my-posh/prompt configuration
+  fish = {
+    enable = true;
+    
+    # Shell aliases (simple ones - abbreviations are in conf.d/aliases.fish)
+    shellAliases = {
+      cat = "bat";
+      ls = "eza --color=always";
+      zz = "zellij";
+      lg = "lazygit";
+    };
+    
+    # Interactive shell init (minimal - main config is in conf.d files)
+    interactiveShellInit = ''
+      # Disable greeting
+      set fish_greeting
     '';
   };
 
@@ -524,6 +375,7 @@ let name = "%NAME%";  # Update with your name
   zoxide = {
     enable = true;
     enableZshIntegration = true;
+    enableFishIntegration = true;
   };
 
   kitty = {
@@ -711,7 +563,7 @@ let name = "%NAME%";  # Update with your name
 
   tmux = {
     enable = true;
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "${pkgs.fish}/bin/fish";
     sensibleOnTop = false;
     plugins = with pkgs.tmuxPlugins; [
       vim-tmux-navigator

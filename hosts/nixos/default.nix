@@ -62,8 +62,9 @@ in {
     # Needed for anything GTK related
     dconf.enable = true;
 
-    # My shell
+    # My shells
     zsh.enable = true;
+    fish.enable = true;
   };
 
   services = {
@@ -272,10 +273,10 @@ in {
     ${user} = {
       isNormalUser = true;
       extraGroups = [
-        "wheel" # Enable ‘sudo’ for the user.
+        "wheel" # Enable 'sudo' for the user.
         "docker"
       ];
-      shell = pkgs.zsh;
+      shell = pkgs.fish;
       openssh.authorizedKeys.keys = sshKeys;
     };
 

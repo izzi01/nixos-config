@@ -120,4 +120,15 @@ config.ssh_domains = {
 		-- or configure the domain without a proxy_command.
 	},
 }
+
+local external_config_path = os.getenv("HOME") .. "/.config/wezterm/external.lua"
+local file = io.open(external_config_path, "r")
+if file then
+	file:close()
+	local external = dofile(external_config_path)
+	if external and external.setup then
+		external.setup(config, wezterm)
+	end
+end
+
 return config

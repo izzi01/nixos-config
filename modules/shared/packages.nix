@@ -79,6 +79,7 @@ with pkgs; [
   jq # JSON processor
 
   # K
+  keychain # SSH/GPG agent manager
   killall # Kill processes by name
   kitty # GPU-accelerated terminal emulator
   kpt # Automate Kubernetes Configuration Editing
@@ -168,6 +169,7 @@ with pkgs; [
   zoxide # Smarter cd command
   zsh # Z shell
   zsh-powerlevel10k # Zsh theme
+  fish # Friendly interactive shell
 
   # Other tools
   androidenv.androidPkgs.platform-tools
