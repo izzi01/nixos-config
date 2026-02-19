@@ -44,25 +44,25 @@
       "model": "google/antigravity-gemini-3-flash"
     },
     "ux-designer": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "google/antigravity-gemini-3-flash"
     },
     "brainstorming-coach": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "google/antigravity-gemini-3-flash"
     },
     "creative-problem-solver": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "google/antigravity-gemini-3-flash"
     },
     "design-thinking-coach": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "google/antigravity-gemini-3-flash"
     },
     "innovation-strategist": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "google/antigravity-gemini-3-flash"
     },
     "presentation-master": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "google/antigravity-gemini-3-flash"
     },
     "storyteller": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "google/antigravity-gemini-3-flash"
     }
   },
   "provider": {

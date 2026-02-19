@@ -10,15 +10,14 @@
       "model": "zhipuai-coding-plan/glm-4.7"
     },
     "prometheus": {
-      "model": "openai/gpt-5.2-codex"
+      "model": "openai/gpt-5.2-codex",
+      "variant": "high"
     },
     "metis": {
-      "model": "zhipuai-coding-plan/glm-4.7",
-      "variant": "max"
+      "model": "opencode/minimax-m2.1-free"
     },
     "momus": {
-      "model": "zhipuai-coding-plan/glm-4.7",
-      "variant": "medium"
+      "model": "opencode/minimax-m2.1-free"
     },
     "oracle": {
       "model": "openai/gpt-5.2-codex",
