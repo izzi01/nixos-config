@@ -18,4 +18,4 @@ end
 # fish_vi_key_bindings
 
 # Hybrid key bindings (vi mode with emacs-style word movement)
-# fish_hybrid_key_bindings
+fish_hybrid_key_bindings

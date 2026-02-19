@@ -102,7 +102,6 @@ with pkgs; [
   ncurses # Terminal control library with terminfo database
   neofetch # System information tool
   ngrok # Secure tunneling service
-  nodejs_20 # Node.js JavaScript runtime (includes npm)
 
   # O
   openssh # SSH client and server
@@ -151,6 +150,7 @@ with pkgs; [
 
   # V
   vscode # Visual Studio Code editor
+  vfox # Vfox tooling
 
   # W
   wget # File downloader
