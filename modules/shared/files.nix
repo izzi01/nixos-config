@@ -45,4 +45,10 @@
     source = ./config/opencode;
     recursive = true;
   };
+
+  # Fish 
+  ".config/fish" = {
+    source = ./config/fish;
+    recursive = true;
+  };
 }
