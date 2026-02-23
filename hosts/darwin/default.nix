@@ -30,7 +30,7 @@ let user = "%USER%"; in
 
 
   environment.systemPackages = (import ../../modules/shared/packages.nix { inherit pkgs; nixpkgs-specific = inputs.nixpkgs-specific; nixpkgs-unstable = inputs.nixpkgs-unstable; });
-
+  programs.fish.enable = true;
   system = {
     checks.verifyNixPath = false;
     primaryUser = user;
