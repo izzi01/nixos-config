@@ -3,66 +3,66 @@
   "mcp": {},
   "plugin": [
     "opencode-antigravity-auth@latest",
-    "oh-my-opencode@3.1.4",
+    "oh-my-opencode@latest",
     "opencode-beads@0.4.0"
   ],
   "agent": {
     "bmad-master": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/bmad-master"
     },
     "agent-builder": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/agent-builder"
     },
     "module-builder": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/module-builder"
     },
     "workflow-builder": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/workflow-builder"
     },
     "analyst": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/analyst"
     },
     "architect": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/architect"
     },
     "dev": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/dev"
     },
     "pm": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/pm"
     },
     "quick-flow-solo-dev": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/quick-flow-solo-dev"
     },
     "sm": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/sm"
     },
     "tea": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/tea"
     },
     "tech-writer": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "bmad/bmad/tech-writer"
     },
     "ux-designer": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/ux-designer"
     },
     "brainstorming-coach": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/brainstorming-coach"
     },
     "creative-problem-solver": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/creative-problem-solver"
     },
     "design-thinking-coach": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/design-thinking-coach"
     },
     "innovation-strategist": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/innovation-strategist"
     },
     "presentation-master": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/presentation-master"
     },
     "storyteller": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "bmad/bmad/storyteller"
     }
   },
   "provider": {
@@ -268,6 +268,307 @@
           }
         }
       }
+    },
+    "omo": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "Omni (OMO)",
+      "options": {
+        "baseURL": "{env:OMNI_BASE_URL}",
+        "apiKey": "{env:OMNI_API_KEY}"
+      },
+      "models": {
+        "omo/deep": {
+          "name": "Deep",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/hephaestus": {
+          "name": "Hephaestus",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/sisyphus": {
+          "name": "Sisyphus",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/sisyphus-junior": {
+          "name": "Sisyphus Junior",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/prometheus": {
+          "name": "Prometheus",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/metis": {
+          "name": "Metis",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/momus": {
+          "name": "Momus",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/oracle": {
+          "name": "Oracle",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/atlas": {
+          "name": "Atlas",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/librarian": {
+          "name": "Librarian",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/explore": {
+          "name": "Explore",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/multimodal-looker": {
+          "name": "Multimodal Looker",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/mcp-manager": {
+          "name": "MCP Manager",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/visual-engineering": {
+          "name": "Visual Engineering",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/ultrabrain": {
+          "name": "Ultrabrain",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/artistry": {
+          "name": "Artistry",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/quick": {
+          "name": "Quick",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/unspecified-low": {
+          "name": "Unspecified Low",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/unspecified-high": {
+          "name": "Unspecified High",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "omo/writing": {
+          "name": "Writing",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        }
+      }
+    },
+    "bmad": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "Omni (BMAD)",
+      "options": {
+        "baseURL": "{env:OMNI_BASE_URL}",
+        "apiKey": "{env:OMNI_API_KEY}"
+      },
+      "models": {
+        "bmad/bmad-master": {
+          "name": "BMAD Master",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/agent-builder": {
+          "name": "Agent Builder",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/module-builder": {
+          "name": "Module Builder",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/workflow-builder": {
+          "name": "Workflow Builder",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/analyst": {
+          "name": "Analyst",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/architect": {
+          "name": "Architect",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/dev": {
+          "name": "Developer",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/pm": {
+          "name": "Product Manager",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/quick-flow-solo-dev": {
+          "name": "Quick Flow Solo Dev",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/sm": {
+          "name": "Scrum Master",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/tea": {
+          "name": "Test Architect",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/tech-writer": {
+          "name": "Tech Writer",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/ux-designer": {
+          "name": "UX Designer",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/brainstorming-coach": {
+          "name": "Brainstorming Coach",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/creative-problem-solver": {
+          "name": "Creative Problem Solver",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/design-thinking-coach": {
+          "name": "Design Thinking Coach",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/innovation-strategist": {
+          "name": "Innovation Strategist",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/presentation-master": {
+          "name": "Presentation Master",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        },
+        "bmad/storyteller": {
+          "name": "Storyteller",
+          "limit": {
+            "context": 200000,
+            "output": 65536
+          }
+        }
+      }
+    }
+  },
+  "permission": {
+    "read": {
+      "~/.config/opencode/get-shit-done/*": "allow"
+    },
+    "external_directory": {
+      "~/.config/opencode/get-shit-done/*": "allow"
     }
   }
 }

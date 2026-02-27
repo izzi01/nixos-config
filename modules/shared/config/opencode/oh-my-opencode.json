@@ -3,65 +3,64 @@
   "google_auth": false,
   "agents": {
     "sisyphus": {
-      "model": "openai/gpt-5.2-codex",
+      "model": "omo/omo/sisyphus",
       "temperature": 0.2
     },
     "sisyphus-junior": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "omo/omo/sisyphus-junior"
     },
     "prometheus": {
-      "model": "openai/gpt-5.2-codex"
+      "model": "omo/omo/prometheus"
     },
     "metis": {
-      "model": "zhipuai-coding-plan/glm-4.7",
-      "variant": "max"
+      "model": "omo/omo/metis"
     },
     "momus": {
-      "model": "zhipuai-coding-plan/glm-4.7",
-      "variant": "medium"
+      "model": "omo/omo/momus"
     },
     "oracle": {
-      "model": "openai/gpt-5.2-codex",
-      "variant": "high"
+      "model": "omo/omo/oracle"
     },
     "atlas": {
-      "model": "openai/gpt-5.2-codex"
+      "model": "omo/omo/atlas"
     },
     "librarian": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "omo/omo/librarian"
     },
     "explore": {
-      "model": "opencode/gpt-5-nano"
+      "model": "omo/omo/explore"
     },
     "multimodal-looker": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "omo/omo/multimodal-looker"
     },
     "mcp-manager": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "omo/omo/mcp-manager"
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "google/antigravity-gemini-3-pro"
+      "model": "omo/omo/visual-engineering"
     },
     "ultrabrain": {
-      "model": "openai/gpt-5.2-codex",
-      "variant": "xhigh"
+      "model": "omo/omo/ultrabrain"
+    },
+    "deep": {
+      "model": "omo/omo/deep"
     },
     "artistry": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "omo/omo/artistry"
     },
     "quick": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "omo/omo/quick"
     },
     "unspecified-low": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "omo/omo/unspecified-low"
     },
     "unspecified-high": {
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "omo/omo/unspecified-high"
     },
     "writing": {
-      "model": "google/antigravity-gemini-3-flash"
+      "model": "omo/omo/writing"
     }
   }
 }
