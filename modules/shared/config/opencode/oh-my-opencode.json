@@ -6,6 +6,10 @@
       "model": "omo/omo/sisyphus",
       "temperature": 0.2
     },
+    "hephaestus": {
+      "model": "omo/omo/hephaestus",
+      "allow_non_gpt_model": true
+    },
     "sisyphus-junior": {
       "model": "omo/omo/sisyphus-junior"
     },
@@ -62,5 +66,8 @@
     "writing": {
       "model": "omo/omo/writing"
     }
-  }
+  },
+  "disabled_hooks": [
+    "todo-continuation-enforcer"
+  ]
 }
