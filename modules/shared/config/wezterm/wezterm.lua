@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local config = {}
+local mux = wezterm.mux
 
 config.font = wezterm.font("JetBrains Mono")
 config.font_size = 16.0
@@ -120,6 +121,12 @@ config.ssh_domains = {
 		-- or configure the domain without a proxy_command.
 	},
 }
+config.window_decorations = "RESIZE"
+config.hide_tab_bar_if_only_one_tab = true
+wezterm.on("gui-startup", function(cmd)
+	local tab, pane, window = mux.spawn_window(cmd or {})
+	window:gui_window():maximize()
+end)
 
 local external_config_path = os.getenv("HOME") .. "/.config/wezterm/external.lua"
 local file = io.open(external_config_path, "r")

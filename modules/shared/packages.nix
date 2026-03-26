@@ -21,6 +21,7 @@ in
 with pkgs; [
   # A
   act # Run Github actions locally
+  atac # Posting clinet 
   age # File encryption tool
   age-plugin-yubikey # YubiKey plugin for age encryption
   ansible # Automations tools
@@ -57,6 +58,7 @@ with pkgs; [
   specificPkgs.fluxcd # GitOps toolkit for Kubernetes
   flyctl # Fly.io tools
   fzf # Fuzzy finder
+  fx # Json viewer
 
   # G
   go # Go
@@ -137,11 +139,15 @@ with pkgs; [
 
   # T
   talosctl # CLI for out-of-band management of Kubernetes nodes created by Talos
+  television # Fuzzy finder
   termscp # Terminal file transfer client
   pay-respects # Command correction tool (replacement for thefuck)
   tmux # Terminal multiplexer
   tree # Directory tree viewer
   tree-sitter # Parsing system for programming tools
+  tasktimer # TT timer app
+  taskwarrior3 
+  taskwarrior-tui
 
   # U
   unbound # Validating, recursive, and caching DNS resolver

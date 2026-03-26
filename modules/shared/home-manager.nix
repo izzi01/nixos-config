@@ -114,6 +114,10 @@ let name = "%NAME%";  # Update with your name
       source <(fzf --zsh)
       eval "$(direnv hook zsh)"
 
+      if command -v tv &> /dev/null; then
+        eval "$(tv init zsh)"
+      fi
+
       # Oh-my-posh with PowerLevel10k theme (using nixpkgs)
       if command -v oh-my-posh &> /dev/null; then
         # Find oh-my-posh theme directory from nix store

@@ -44,6 +44,10 @@ if command -v pay-respects &>/dev/null
     pay-respects fish --alias | source
 end
 
+if command -v tv &>/dev/null
+    tv init fish | source
+end
+
 # Doppler auto-inject (only with internet connection)
 if command -v doppler &>/dev/null
     # Check for internet connection
