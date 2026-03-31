@@ -40,6 +40,7 @@ with pkgs; [
   colima # Docker tools
 
   # D
+  devbox # Development environments
   direnv # Environment variable management per directory
   difftastic # Structural diff tool
   # Docker - use specific version to avoid conflicts
@@ -163,6 +164,7 @@ with pkgs; [
   watch # Execute program periodically
   unstablePkgs.wezterm # GPU-accelerated terminal emulator
   wireshark # Network protocol analyzer
+  worktrunk # Git worktree manager
 
   # Y
   yazi # Terminal file manager
