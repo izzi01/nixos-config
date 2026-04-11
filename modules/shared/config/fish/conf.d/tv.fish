@@ -18,4 +18,3 @@ function fish_user_key_bindings
     # Bind Ctrl+S to forward-char
     bind \cs ztv
 end
-tv init fish | source

@@ -48,32 +48,32 @@ if command -v tv &>/dev/null
     tv init fish | source
 end
 
-# Doppler auto-inject (only with internet connection)
-if command -v doppler &>/dev/null
-    # Check for internet connection
-    set -l internet_connected false
-    
-    # Method 1: Try to ping Google's DNS
-    if ping -c 1 -W 2 8.8.8.8 &>/dev/null
-        set internet_connected true
-    # Method 2: Try to connect to a reliable HTTP endpoint
-    else if curl -s --max-time 2 --connect-timeout 2 https://api.doppler.com &>/dev/null
-        set internet_connected true
-    # Method 3: Check if we can reach Apple's connectivity test (macOS specific)
-    else if test (uname -s) = "Darwin"; and ping -c 1 -W 2 17.253.144.10 &>/dev/null
-        set internet_connected true
-    end
-    
-    if test "$internet_connected" = true
-        set -gx DOPPLER_PROJECT "api-key"
-        set -gx DOPPLER_CONFIG "dev"
-        eval (doppler secrets download --no-file --format env-no-quotes)
-        set -e DOPPLER_PROJECT
-        set -e DOPPLER_CONFIG
-    else
-        echo "⚠️  No internet connection detected - skipping Doppler secrets injection"
-    end
-end
+# # Doppler auto-inject (only with internet connection)
+# if command -v doppler &>/dev/null
+#     # Check for internet connection
+#     set -l internet_connected false
+#
+#     # Method 1: Try to ping Google's DNS
+#     if ping -c 1 -W 2 8.8.8.8 &>/dev/null
+#         set internet_connected true
+#     # Method 2: Try to connect to a reliable HTTP endpoint
+#     else if curl -s --max-time 2 --connect-timeout 2 https://api.doppler.com &>/dev/null
+#         set internet_connected true
+#     # Method 3: Check if we can reach Apple's connectivity test (macOS specific)
+#     else if test (uname -s) = "Darwin"; and ping -c 1 -W 2 17.253.144.10 &>/dev/null
+#         set internet_connected true
+#     end
+#
+#     if test "$internet_connected" = true
+#         set -gx DOPPLER_PROJECT "api-key"
+#         set -gx DOPPLER_CONFIG "dev"
+#         eval (doppler secrets download --no-file --format env-no-quotes)
+#         set -e DOPPLER_PROJECT
+#         set -e DOPPLER_CONFIG
+#     else
+#         echo "⚠️  No internet connection detected - skipping Doppler secrets injection"
+#     end
+# end
 
 # Keychain - SSH/GPG agent manager
 # Manages SSH and GPG agents persistently across sessions

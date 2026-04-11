@@ -162,9 +162,8 @@ with pkgs; [
   # W
   wget # File downloader
   watch # Execute program periodically
-  unstablePkgs.wezterm # GPU-accelerated terminal emulator
   wireshark # Network protocol analyzer
-  worktrunk # Git worktree manager
+  # worktrunk # Git worktree manager
 
   # Y
   yazi # Terminal file manager
@@ -184,6 +183,9 @@ with pkgs; [
 ] ++ myFonts
   ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
     pkgs.vlc # Media player - Linux only (depends on libudev)
+  ])
+  ++ (pkgs.lib.optionals (pkgs.stdenv.system == "aarch64-darwin") [
+    unstablePkgs.wezterm # GPU-accelerated terminal emulator
   ])
   ++ (pkgs.lib.optionals (pkgs.stdenv.system == "x86_64-linux") [
     pkgs.steam # Gaming platform - x86_64-linux only (requires i686 support)
