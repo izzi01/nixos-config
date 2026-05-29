@@ -74,13 +74,13 @@ function dlm --description "Download music from YouTube"
 end
 
 # Zellij tab name function
-function set_zellij_tab_name --on-event fish_preexec
-    if set -q ZELLIJ
-        set -l cmd $argv[1]
-        set -l new_name (basename (string split ' ' $cmd)[1])
-        zellij action rename-tab $new_name >/dev/null 2>&1
-    end
-end
+# function set_zellij_tab_name --on-event fish_preexec
+#     if set -q ZELLIJ
+#         set -l cmd $argv[1]
+#         set -l new_name (basename (string split ' ' $cmd)[1])
+#         zellij action rename-tab $new_name >/dev/null 2>&1
+#     end
+# end
 
 # SSH wrapper functions with terminal color changes
 function ssh-production --description "SSH to production with red background"

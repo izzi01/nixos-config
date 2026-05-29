@@ -3,7 +3,11 @@ local config = {}
 local mux = wezterm.mux
 
 config.font = wezterm.font("JetBrains Mono")
-config.font_size = 16.0
+config.font_size = 12.0
+config.tab_bar_at_bottom = true
+config.use_fancy_tab_bar = false
+config.show_new_tab_button_in_tab_bar = false
+config.tab_max_width = 999
 
 -- Set default program based on operating system
 if wezterm.target_triple:find("windows") then
